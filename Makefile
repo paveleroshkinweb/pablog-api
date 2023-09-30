@@ -15,7 +15,7 @@ mypy:
 	poetry run mypy
 
 bandit:
-	poetry run bandit pablog_api
+	poetry run bandit pablog_api -r
 
 clean:
 	find . -type f -name "*.pyc" | xargs rm -fr
