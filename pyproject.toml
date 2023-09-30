@@ -1,0 +1,83 @@
+[tool.poetry]
+name = "pablog-api"
+version = "1.0.0"
+description = ""
+authors = ["paveleroshkinweb <eroshkin321@gmail.com>"]
+readme = "README.md"
+packages = [{include = "pablog_api"}]
+
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.2"
+ruff = "^0.0.291"
+mypy = "^1.5.1"
+isort = "^5.12.0"
+bandit = "^1.7.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::RuntimeWarning",
+    "ignore::pytest.PytestCollectionWarning"
+]
+
+
+[tool.ruff]
+exclude = [
+    ".git",
+    "docs",
+    "build",
+    "dist",
+    "venv"
+]
+line-length = 100
+target-version = "py310"
+fixable = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ANN", "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN", "INP", "ISC", "NPY", "PD", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
+select = [
+  "E",   # pycodestyle
+  "F",   # pyflakes
+  "UP",  # pyupgrade,
+  "I",   # isort
+]
+ignore = [
+    "A003",
+    "B008",
+    "D104",
+    "D202",
+    "D205",
+    "D301",
+    "D400",
+    "E501",
+    "PGH003",
+    "PLR0911",
+    "PLR2004",
+    "RET504",
+    "RET506",
+    "TRY003",
+    "TRY300",
+]
+
+
+[tool.mypy]
+files = "pablog_api/"
+ignore_missing_imports = "True"
+strict_optional = "True"
+plugins = ["pydantic.mypy"]
+
+
+[tool.isort]
+profile = "google"
+line_length = 100
+lines_after_imports = 2
+force_alphabetical_sort = "True"
+include_trailing_comma = "True"
+src_paths = ["pablog_api", "tests"]
