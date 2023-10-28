@@ -1,9 +1,15 @@
 SHELL := /bin/bash
- 
-# .PHONY: all devenv devenv-down migrations migrate run-tests testenv testenv-down
+
+.PHONY: all server check-server-cfg lint fix mypy bandit clean
 
 all:
 	# intentionally left empty to prevent accidental run of first recipe
+
+server:
+	gunicorn --config pablog_api/gunicorn.conf.py pablog_api.api.server:app
+
+check-server-cfg:
+	gunicorn --config pablog_api/gunicorn.conf.py --check-config pablog_api.api.server:app
 
 lint:
 	poetry run ruff check .

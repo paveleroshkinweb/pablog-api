@@ -18,9 +18,3 @@ def handle_uncaught_exception(exc_type, exc_value, exc_traceback):
 
 
 sys.excepthook = handle_uncaught_exception
-
-
-if __name__ == "__main__":
-    from pablog_api.commands.app import app
-
-    app()
