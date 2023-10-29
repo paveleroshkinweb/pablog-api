@@ -20,9 +20,6 @@ fix:
 mypy:
 	poetry run mypy
 
-bandit:
-	poetry run bandit pablog_api -r
-
 clean:
 	find . -type f -name "*.pyc" | xargs rm -fr
 	find . -type d -name __pycache__ | xargs rm -fr
