@@ -6,13 +6,14 @@ from fastapi.responses import ORJSONResponse, Response
 
 API_PATH_V1 = "/api/v1"
 
+VERSION = "1.0.0"
 
 app = FastAPI(
     title="PablogAPI",
     docs_url="/docs/openapi",
     openapi_url="/docs/openapi.json",
     default_response_class=ORJSONResponse,
-    version="1.0.0",
+    version=VERSION,
 )
 
 

@@ -11,6 +11,9 @@ server:
 check-server-cfg:
 	gunicorn --config pablog_api/gunicorn.conf.py --check-config pablog_api.api.server:app
 
+schema:
+	 poetry run python pablog_api/main.py schema
+
 lint:
 	poetry run ruff check .
 
