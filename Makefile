@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: all server check-server-cfg lint fix mypy bandit clean
+.PHONY: all server check-server-cfg schema lint fix mypy bandit clean
 
 all:
 	# intentionally left empty to prevent accidental run of first recipe
