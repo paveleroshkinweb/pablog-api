@@ -1,7 +1,44 @@
+files: pablog_api/
+
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.3.0
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
     hooks:
-    -   id: check-yaml
-    -   id: end-of-file-fixer
-    -   id: trailing-whitespace
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: name-tests-test
+        args: [--django]
+      - id: fix-byte-order-marker
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: mixed-line-ending
+        args: [--fix=auto]
+      - id: end-of-file-fixer
+      - id: requirements-txt-fixer
+      - id: check-ast
+      - id: check-json
+      - id: check-toml
+      - id: check-xml
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+
+  - repo: local
+    hooks:
+      - id: lint-fix
+        name: lint-fix
+        entry: bash -c 'poetry run ruff check --fix .'
+        language: system
+
+  - repo: local
+    hooks:
+      - id: mypy-check
+        name: mypy-check
+        entry: bash -c 'poetry run mypy'
+        language: system
+
+  - repo: local
+    hooks:
+      - id: validate-gunicorn-config
+        name: validate-gunicorn-config
+        entry: bash -c 'set -a && source .env.example && poetry run gunicorn --config pablog_api/gunicorn.conf.py --check-config pablog_api.api.server:app'
+        language: system
