@@ -43,7 +43,8 @@ exclude = [
     "docs",
     "build",
     "dist",
-    "venv"
+    "venv",
+    ".venv"
 ]
 line-length = 100
 target-version = "py310"
