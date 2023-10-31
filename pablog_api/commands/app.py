@@ -3,6 +3,8 @@ import os
 
 from pablog_api.api.server import VERSION
 from pablog_api.api.server import app as server
+from pablog_api.api.server import run_dev_server as dev_server
+from pablog_api.settings.app import settings
 
 import typer
 
@@ -29,6 +31,9 @@ def generate_schema():
         file.flush()
 
 
-@app.command()
-def check():
-    pass
+@app.command(
+    name="dev-server",
+    help="Command to run a dev server that is easy to debug"
+)
+def run_dev_server():
+    dev_server(settings)
