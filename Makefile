@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: all prod-server dev-server check-server-cfg schema lint fix mypy clean
+.PHONY: all prod-server dev-server check-server-cfg schema lint fix mypy init-dev-structure clean
 
 all:
 	# intentionally left empty to prevent accidental run of first recipe
@@ -25,6 +25,11 @@ fix:
 
 mypy:
 	poetry run mypy
+
+init-dev-structure:
+	mkdir -p pid
+	mkdir -p logs
+	touch logs/pablog.logs
 
 clean:
 	find . -type f -name "*.pyc" | xargs rm -fr
