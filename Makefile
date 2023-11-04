@@ -26,6 +26,9 @@ fix:
 mypy:
 	poetry run mypy
 
+bandit:
+	poetry run bandit -r pablog_api/
+
 init-dev-structure:
 	mkdir -p pid
 	mkdir -p logs
