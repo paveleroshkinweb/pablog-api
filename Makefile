@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: all prod-server dev-server check-server-cfg schema lint fix mypy init-dev-structure clean
+.PHONY: all prod-server dev-server check-server-cfg schema lint fix mypy bandit init-dev-structure clean
 
 all:
 	# intentionally left empty to prevent accidental run of first recipe
