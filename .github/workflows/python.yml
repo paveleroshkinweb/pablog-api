@@ -46,3 +46,8 @@ jobs:
       - name: Check security issues
         run: |
           poetry run bandit -r pablog_api/
+
+      - name: Check Dockerfile issues
+        run: |
+          docker pull hadolint/hadolint
+          docker run --rm -i hadolint/hadolint < Dockerfile
