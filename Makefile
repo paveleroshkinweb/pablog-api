@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: all prod-server dev-server check-server-cfg schema lint fix mypy bandit init-dev-structure check-docker clean
+.PHONY: all prod-server dev-server shell check-server-cfg schema lint fix mypy bandit init-dev-structure check-docker clean
 
 all:
 	# intentionally left empty to prevent accidental run of first recipe
@@ -10,6 +10,9 @@ prod-server:
 
 dev-server:
 	set -a && source .env && poetry run python pablog_api/main.py dev-server
+
+shell:
+	set -a && source .env && poetry run python
 
 check-server-cfg:
 	set -a && source .env.example && poetry run gunicorn --config pablog_api/gunicorn.conf.py --check-config pablog_api.api.server:app
