@@ -43,6 +43,8 @@ USER ${USER}
 
 WORKDIR ${APP_PATH}
 
+RUN chown -R ${USER}:${GROUP} ${APP_PATH}
+
 ENV VIRTUAL_ENV=${APP_PATH}/.venv \
     PATH="${APP_PATH}/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 \

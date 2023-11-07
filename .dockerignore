@@ -98,4 +98,3 @@ logs/
 pid/
 .pre-commit-config.yaml
 .env.example
-Makefile
