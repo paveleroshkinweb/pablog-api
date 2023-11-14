@@ -7,8 +7,9 @@ from fastapi.responses import ORJSONResponse, Response
 
 configure_logger(settings)
 
+API_VERSION = "v1"
 
-API_PATH_V1 = "/api/v1"
+API_PATH_V1 = f"/api/{API_VERSION}"
 
 VERSION = "1.0.0"
 
