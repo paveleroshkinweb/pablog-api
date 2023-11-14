@@ -1,20 +1,43 @@
 import logging.config
-import sys
 
-from pablog_api.settings.app import settings
+from pablog_api.settings.app import AppSettings
+from pablog_api.settings.code_environment import CodeEnvironment
 
-
-logging.config.dictConfig(settings.logging.get_config(settings.environment))
-
-logger = logging.getLogger(__name__)
+import structlog
 
 
-def handle_uncaught_exception(exc_type, exc_value, exc_traceback):
-    if issubclass(exc_type, KeyboardInterrupt):
-        sys.__excepthook__(exc_type, exc_value, exc_traceback)
-        return
+def configure_logger(settings: AppSettings):
+    logging.config.dictConfig(settings.logging.get_config(settings.environment))
 
-    logger.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
+    # Remove uvicorn loggers
+    if settings.environment == CodeEnvironment.DEV:
+        uvicorn_error = logging.getLogger("uvicorn.error")
+        uvicorn_access = logging.getLogger("uvicorn.access")
 
+        uvicorn_error.disabled = True
+        uvicorn_error.propagate = True
 
-sys.excepthook = handle_uncaught_exception
+        uvicorn_access.disabled = True
+        uvicorn_access.propagate = True
+
+    if settings.environment in [CodeEnvironment.DEV, CodeEnvironment.PROD]:
+        shared_processors = (
+            structlog.contextvars.merge_contextvars,
+            structlog.stdlib.filter_by_level,
+            structlog.processors.TimeStamper(fmt="iso"),
+            structlog.stdlib.add_logger_name,
+            structlog.stdlib.add_log_level,
+            structlog.stdlib.PositionalArgumentsFormatter(),
+            structlog.processors.StackInfoRenderer(),
+            structlog.processors.format_exc_info,
+            structlog.processors.UnicodeDecoder(),
+            structlog.stdlib.ExtraAdder(),
+            structlog.stdlib.ProcessorFormatter.wrap_for_formatter,
+        )
+        logger_wrapper = structlog.stdlib.BoundLogger
+        structlog.configure(
+            processors=shared_processors,
+            logger_factory=structlog.stdlib.LoggerFactory(),
+            wrapper_class=logger_wrapper,
+            cache_logger_on_first_use=True,
+        )

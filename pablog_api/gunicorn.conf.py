@@ -24,3 +24,5 @@ pidfile = settings.service_settings.pidfile
 max_requests = 20000
 
 max_requests_jitter = 10000
+
+enable_stdio_inheritance = True

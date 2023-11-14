@@ -1,7 +1,11 @@
-from pablog_api.settings.app import AppSettings
+from pablog_api.settings.app import settings
+from pablog_api.utils.setup_logger import configure_logger
 
 from fastapi import FastAPI, status
 from fastapi.responses import ORJSONResponse, Response
+
+
+configure_logger(settings)
 
 
 API_PATH_V1 = "/api/v1"
@@ -22,7 +26,7 @@ def pong() -> Response:
     return Response(status_code=status.HTTP_200_OK)
 
 
-def run_dev_server(settings: AppSettings):
+def run_dev_server():
     import uvicorn
     uvicorn.run(
         "pablog_api.api.server:app",
