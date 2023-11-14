@@ -6,6 +6,12 @@ from pablog_api.settings.code_environment import CodeEnvironment
 import structlog
 
 
+def filter_messages(_, __, event_dict):
+    if event_dict.get("route") == "util":
+        raise structlog.DropEvent
+    return event_dict
+
+
 def configure_logger(settings: AppSettings):
     logging.config.dictConfig(settings.logging.get_config(settings.environment))
 
@@ -25,6 +31,7 @@ def configure_logger(settings: AppSettings):
             structlog.contextvars.merge_contextvars,
             structlog.stdlib.filter_by_level,
             structlog.processors.TimeStamper(fmt="iso"),
+            filter_messages,
             structlog.processors.dict_tracebacks,
             structlog.stdlib.add_logger_name,
             structlog.stdlib.add_log_level,
