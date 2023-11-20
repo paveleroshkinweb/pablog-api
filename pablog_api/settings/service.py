@@ -15,7 +15,5 @@ class ServiceSettings(BaseAppSettings):
 
     pidfile: str = pydantic.Field(default="/var/run/pablog.pid")
 
-    service_name: str = pydantic.Field(default="pablog_api")
-
     def dsn(self) -> str:
         return f'{self.api_host}:{self.api_port}'

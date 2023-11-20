@@ -1,10 +1,9 @@
+import logging
+
 from collections.abc import Awaitable, Callable
 
 from pablog_api.settings.app import settings
-from pablog_api.utils.http_helper import get_route_base_from_path
 from pablog_api.utils.setup_logger import configure_logger
-
-import structlog
 
 from fastapi import FastAPI, Request, status
 from fastapi.responses import ORJSONResponse, Response
@@ -19,11 +18,6 @@ API_PATH_V1 = f"/api/{API_VERSION}"
 VERSION = "1.0.0"
 
 
-ROUTE_MAP = {
-    "util": "util"
-}
-
-
 app = FastAPI(
     title="PablogAPI",
     docs_url="/docs/openapi",
@@ -34,22 +28,21 @@ app = FastAPI(
 
 
 @app.middleware("http")
-async def logging_middleware(
+async def trace_middleware(
     request: Request, call_next: Callable[[Request], Awaitable[Response]]
 ) -> Response:
-    structlog.contextvars.clear_contextvars()
-    structlog.contextvars.bind_contextvars(
-        request_id=request.headers.get("X-Request-Id"),
-        service_name=settings.service_settings.service_name,
-        route=ROUTE_MAP.get(get_route_base_from_path(request.url.path))
-    )
+    logger = logging.getLogger(__name__)
+    request_id = request.headers.get('X-Request-Id')
+
+    if not request_id:
+        logger.warning("No X-Request-Id was provided!")
 
     response: Response = await call_next(request)
 
     return response
 
 
-@app.get(f"{API_PATH_V1}/util/ping", status_code=status.HTTP_200_OK)
+@app.get(f"{API_PATH_V1}/ping", status_code=status.HTTP_200_OK)
 def pong() -> Response:
     return Response(status_code=status.HTTP_200_OK)
 

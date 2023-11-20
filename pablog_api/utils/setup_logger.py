@@ -1,52 +1,27 @@
+import logging
 import logging.config
+import sys
 
 from pablog_api.settings.app import AppSettings
-from pablog_api.settings.code_environment import CodeEnvironment
-
-import structlog
-
-
-def filter_messages(_, __, event_dict):
-    if event_dict.get("route") == "util":
-        raise structlog.DropEvent
-    return event_dict
 
 
 def configure_logger(settings: AppSettings):
     logging.config.dictConfig(settings.logging.get_config(settings.environment))
 
-    # Remove uvicorn loggers
-    if settings.environment == CodeEnvironment.DEV:
-        uvicorn_error = logging.getLogger("uvicorn.error")
-        uvicorn_access = logging.getLogger("uvicorn.access")
+    logger = logging.getLogger()
 
-        uvicorn_error.disabled = True
-        uvicorn_error.propagate = True
+    def handle_exception(exc_type, exc_value, exc_traceback):
+        """
+        Log any uncaught exception instead of letting it be printed by Python
+        (but leave KeyboardInterrupt untouched to allow users to Ctrl+C to stop)
+        See https://stackoverflow.com/a/16993115/3641865
+        """
+        if issubclass(exc_type, KeyboardInterrupt):
+            sys.__excepthook__(exc_type, exc_value, exc_traceback)
+            return
 
-        uvicorn_access.disabled = True
-        uvicorn_access.propagate = True
-
-    if settings.environment in [CodeEnvironment.DEV, CodeEnvironment.PROD]:
-        shared_processors = (
-            structlog.contextvars.merge_contextvars,
-            structlog.stdlib.filter_by_level,
-            structlog.processors.TimeStamper(fmt="iso"),
-            filter_messages,
-            structlog.processors.dict_tracebacks,
-            structlog.stdlib.add_logger_name,
-            structlog.stdlib.add_log_level,
-            structlog.stdlib.PositionalArgumentsFormatter(),
-            structlog.processors.EventRenamer("msg"),
-            structlog.processors.StackInfoRenderer(),
-            structlog.processors.format_exc_info,
-            structlog.processors.UnicodeDecoder(),
-            structlog.stdlib.ExtraAdder(),
-            structlog.stdlib.ProcessorFormatter.wrap_for_formatter,
+        logger.error(
+            "Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback)
         )
-        logger_wrapper = structlog.stdlib.BoundLogger
-        structlog.configure(
-            processors=shared_processors,
-            logger_factory=structlog.stdlib.LoggerFactory(),
-            wrapper_class=logger_wrapper,
-            cache_logger_on_first_use=True,
-        )
+
+    sys.excepthook = handle_exception
