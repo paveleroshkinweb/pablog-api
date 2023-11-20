@@ -91,9 +91,9 @@ class LoggingSettings(BaseAppSettings):
 
     log_file_path: str = pydantic.Field(default=os.path.join(os.getcwd(), "logs", "pablog.logs"))
 
-    def get_config(self, environment: CodeEnvironment = CodeEnvironment.DEV) -> dict[str, Any]:
+    def get_config(self, environment: CodeEnvironment = CodeEnvironment.DEV) -> dict[str, Any] | None:
         if environment == CodeEnvironment.DEV:
             return get_dev_config(self.log_level, self.log_file_path)
         elif environment == CodeEnvironment.PROD:
             return get_prod_config(self.log_level)
-        raise ValueError(f"No logging config for a specified environment = {environment}")
+        return None

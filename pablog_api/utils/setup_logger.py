@@ -6,7 +6,12 @@ from pablog_api.settings.app import AppSettings
 
 
 def configure_logger(settings: AppSettings):
-    logging.config.dictConfig(settings.logging.get_config(settings.environment))
+    config = settings.logging.get_config(settings.environment)
+
+    if not config:
+        return
+
+    logging.config.dictConfig(config)
 
     logger = logging.getLogger()
 
