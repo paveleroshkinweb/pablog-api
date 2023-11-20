@@ -6,15 +6,12 @@ repos:
     hooks:
       - id: check-case-conflict
       - id: check-merge-conflict
-      - id: name-tests-test
-        args: [--django]
       - id: fix-byte-order-marker
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
       - id: mixed-line-ending
         args: [--fix=auto]
       - id: end-of-file-fixer
-      - id: requirements-txt-fixer
       - id: check-ast
       - id: check-json
       - id: check-toml
