@@ -25,4 +25,15 @@ max_requests = 20000
 
 max_requests_jitter = 10000
 
+# logging
+disable_redirect_access_to_syslog = True
+
 enable_stdio_inheritance = True
+
+errorlog = "-"
+
+loglevel = settings.logging.log_level.value.lower()
+
+capture_output = True
+
+logconfig_dict = settings.logging.get_config(settings.environment)

@@ -14,6 +14,9 @@ import pydantic
 logging.Formatter.converter = time.gmtime
 
 
+COMMON_FORMAT = "[%(asctime)s] [%(name)s] [%(levelname)s] [%(process)d] [%(message)s]"
+
+
 @unique
 class LoggerLevelType(str, Enum):
     CRITICAL: str = "CRITICAL"
@@ -29,7 +32,7 @@ def get_dev_config(log_level: LoggerLevelType, log_file_path: str) -> dict[str, 
         "disable_existing_loggers": False,
         "formatters": {
             "default": {
-                "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+                "format": COMMON_FORMAT
             }
         },
         "handlers": {
@@ -64,7 +67,7 @@ def get_prod_config(log_level: LoggerLevelType) -> dict[str, Any]:
         "disable_existing_loggers": False,
         "formatters": {
             "default": {
-                "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+                "format": COMMON_FORMAT
             }
         },
         "handlers": {
@@ -79,7 +82,13 @@ def get_prod_config(log_level: LoggerLevelType) -> dict[str, Any]:
             "": {
                 "handlers": ["console"],
                 "level": log_level.value
-            }
+            },
+            "gunicorn.error": {
+                "level": "INFO",
+                "handlers": ["console"],
+                "propagate": False,
+                "qualname": "gunicorn.error"
+            },
         }
     }
     return config
@@ -96,4 +105,4 @@ class LoggingSettings(BaseAppSettings):
             return get_dev_config(self.log_level, self.log_file_path)
         elif environment == CodeEnvironment.PROD:
             return get_prod_config(self.log_level)
-        return None
+        return {}

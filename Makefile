@@ -40,6 +40,9 @@ init-dev-structure:
 check-docker:
 	hadolint --ignore DL3008 --ignore DL4006 Dockerfile
 
+kill:
+	pkill gunicorn
+
 clean:
 	find . -type f -name "*.pyc" | xargs rm -fr
 	find . -type d -name __pycache__ | xargs rm -fr
