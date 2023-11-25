@@ -19,12 +19,6 @@ preload_app = True
 
 reuse_port = True
 
-# Increase default (30) timeout in case of long sync or third party sync requests
-timeout = 45
-
-# As gunicorn will be deployed behind the load balancer we should increase default (2) value
-keepalive = 4
-
 pidfile = settings.service_settings.pidfile
 
 max_requests = 50000
