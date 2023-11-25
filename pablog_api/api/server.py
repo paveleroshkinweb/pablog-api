@@ -1,4 +1,5 @@
 import logging
+import time
 
 from collections.abc import Awaitable, Callable
 
@@ -31,14 +32,19 @@ app = FastAPI(
 async def trace_middleware(
     request: Request, call_next: Callable[[Request], Awaitable[Response]]
 ) -> Response:
-    logger = logging.getLogger(__name__)
-    request_id = request.headers.get('X-Request-Id')
+    logger = logging.getLogger("pablog_api.access")
 
+    request_id = request.headers.get('X-Request-Id')
     if not request_id:
         logger.warning("No X-Request-Id was provided!")
 
+    start_time = time.time()
     response: Response = await call_next(request)
+    process_time = time.time() - start_time
 
+    response.headers["X-Request-Id"] = request_id or ""
+    response.headers["X-Process-Time"] = str(process_time)
+    response.headers
     return response
 
 

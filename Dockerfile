@@ -54,4 +54,4 @@ COPY --from=base --chown=${USER}:${GROUP} ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
 COPY --chown=${USER}:${GROUP} pablog_api ./pablog_api
 
-CMD ["gunicorn", "--config", "pablog_api/gunicorn.conf.py", "pablog_api.api.server:app"]
+CMD ["gunicorn", "--config", "pablog_api/gunicorn_conf.py", "pablog_api.api.server:app"]

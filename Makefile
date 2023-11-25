@@ -6,7 +6,7 @@ all:
 	# intentionally left empty to prevent accidental run of first recipe
 
 prod-server:
-	set -a && source .env && poetry run gunicorn --config pablog_api/gunicorn.conf.py pablog_api.api.server:app
+	set -a && source .env && poetry run gunicorn --config pablog_api/gunicorn_conf.py pablog_api.api.server:app
 
 dev-server:
 	set -a && source .env && poetry run python pablog_api/main.py dev-server
@@ -15,7 +15,7 @@ shell:
 	set -a && source .env && poetry run python
 
 check-server-cfg:
-	set -a && source .env.example && poetry run gunicorn --config pablog_api/gunicorn.conf.py --check-config pablog_api.api.server:app
+	set -a && source .env.example && poetry run gunicorn --config pablog_api/gunicorn_conf.py --check-config pablog_api.api.server:app
 
 schema:
 	 poetry run python pablog_api/main.py schema
@@ -41,7 +41,9 @@ check-docker:
 	hadolint --ignore DL3008 --ignore DL4006 Dockerfile
 
 kill:
-	pkill gunicorn
+	kill -9 $(lsof -t -i:8001) || true
+#	pkill -P1 gunicorn || true
+#	kill -9 $(cat ./pid/pablog.pid)
 
 clean:
 	find . -type f -name "*.pyc" | xargs rm -fr

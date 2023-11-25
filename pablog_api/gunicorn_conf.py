@@ -1,11 +1,17 @@
 from pablog_api.settings.app import settings
 
+from uvicorn.workers import UvicornH11Worker
+
+
+class HeadlessUvicornWorker(UvicornH11Worker):
+    CONFIG_KWARGS = {**UvicornH11Worker.CONFIG_KWARGS, "server_header": False}
+
 
 bind = settings.service_settings.dsn()
 
 workers = settings.service_settings.workers
 
-worker_class = "uvicorn.workers.UvicornWorker"
+worker_class = "pablog_api.gunicorn_conf.HeadlessUvicornWorker"
 
 reload = settings.is_development()
 
