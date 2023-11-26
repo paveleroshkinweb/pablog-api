@@ -56,6 +56,6 @@ jobs:
         run: |
            docker build --target test -t pablog-test .
 
-      - name: Run unit tess
+      - name: Run unit tests
         run: |
           docker run --env-file tests/unit/.env.test pablog-test
