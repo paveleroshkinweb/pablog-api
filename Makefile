@@ -41,7 +41,7 @@ init-dev-structure:
 	touch logs/pablog.logs
 
 check-docker:
-	hadolint --ignore DL3008 --ignore DL4006 Dockerfile
+	docker run --rm -i hadolint/hadolint hadolint --ignore DL3008 --ignore DL4006 - < Dockerfile
 
 clean:
 	find . -type f -name "*.pyc" | xargs rm -fr

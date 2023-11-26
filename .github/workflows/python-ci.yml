@@ -1,4 +1,4 @@
-name: pablog service ci
+name: pablog service base ci
 
 
 on:
@@ -45,15 +45,10 @@ jobs:
         run: |
           make bandit
 
-      - name: Check Dockerfile issues
+      - name: Install hadolint
         run: |
           docker pull hadolint/hadolint
-          docker run --rm -i hadolint/hadolint hadolint --ignore DL3008 --ignore DL4006 - < Dockerfile
 
-      - name: Build test docker image
+      - name: Check Dockerfile issues
         run: |
-           docker build --target test -t pablog-test .
-
-      - name: Run unit tests
-        run: |
-          docker run --env-file tests/unit/.env.test pablog-test
+          make check-docker
