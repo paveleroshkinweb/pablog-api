@@ -31,21 +31,19 @@ jobs:
 
       - name: Run linter
         run: |
-          poetry run ruff check .
+          make lint
 
       - name: Run mypy
         run: |
-          poetry run mypy
+          make mypy
 
       - name: Check gunicorn config
         run: |
-          set -a
-          source .env.example
-          poetry run gunicorn --config pablog_api/gunicorn_conf.py --check-config pablog_api.api.server:app
+          make check-server-cfg
 
       - name: Check security issues
         run: |
-          poetry run bandit -r pablog_api/
+          make bandit
 
       - name: Check Dockerfile issues
         run: |
