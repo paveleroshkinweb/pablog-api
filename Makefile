@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: all prod-server dev-server shell check-server-cfg schema lint fix mypy bandit init-dev-structure check-docker clean
+.PHONY: all prod-server dev-server unit-test shell check-server-cfg schema lint fix mypy bandit init-dev-structure check-docker clean
 
 all:
 	# intentionally left empty to prevent accidental run of first recipe
@@ -10,6 +10,9 @@ prod-server:
 
 dev-server:
 	set -a && source .env && poetry run python pablog_api/main.py dev-server
+
+unit-test:
+	set -a && source tests/unit/.env.test && poetry run pytest tests/unit
 
 shell:
 	set -a && source .env && poetry run python

@@ -51,3 +51,11 @@ jobs:
         run: |
           docker pull hadolint/hadolint
           docker run --rm -i hadolint/hadolint hadolint --ignore DL3008 --ignore DL4006 - < Dockerfile
+
+      - name: Build test docker image
+        run: |
+           docker build --target test -t pablog-test .
+
+      - name: Run unit tess
+        run: |
+          docker run --env-file tests/unit/.env.test pablog-test
