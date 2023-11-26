@@ -23,26 +23,26 @@ repos:
     hooks:
       - id: lint-fix
         name: lint-fix
-        entry: bash -c 'poetry run ruff check --fix .'
+        entry: bash -c 'make fix'
         language: system
 
   - repo: local
     hooks:
       - id: mypy-check
         name: mypy-check
-        entry: bash -c 'poetry run mypy'
+        entry: bash -c 'make mypy'
         language: system
 
   - repo: local
     hooks:
       - id: validate-gunicorn-config
         name: validate-gunicorn-config
-        entry: bash -c 'set -a && source .env.example && poetry run gunicorn --config pablog_api/gunicorn_conf.py --check-config pablog_api.api.server:app'
+        entry: bash -c 'make check-server-cfg'
         language: system
 
   - repo: local
     hooks:
       - id: check-security-issues
         name: check-security-issues
-        entry: bash -c 'poetry run bandit -r pablog_api/'
+        entry: bash -c 'make bandit'
         language: system
