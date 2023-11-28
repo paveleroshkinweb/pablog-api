@@ -15,7 +15,7 @@ unit-test:
 	set -a && source tests/unit/.env.test && poetry run pytest tests/unit
 
 shell:
-	set -a && source .env && poetry run python
+	set -a && source .env && poetry run ipython
 
 check-server-cfg:
 	set -a && source .env.example && poetry run gunicorn --config pablog_api/gunicorn_conf.py --check-config pablog_api.api.server:app
