@@ -1,4 +1,4 @@
-from pablog_api.settings.app import settings
+from pablog_api.settings.app import get_app_settings
 
 from uvicorn.workers import UvicornH11Worker
 
@@ -6,6 +6,8 @@ from uvicorn.workers import UvicornH11Worker
 class HeadlessUvicornWorker(UvicornH11Worker):
     CONFIG_KWARGS = {**UvicornH11Worker.CONFIG_KWARGS, "server_header": False}
 
+
+settings = get_app_settings()
 
 bind = settings.service_settings.dsn()
 

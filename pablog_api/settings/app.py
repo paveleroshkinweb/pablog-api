@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 from pablog_api.settings.base import BaseAppSettings
 from pablog_api.settings.code_environment import CodeEnvironment
 from pablog_api.settings.logging import LoggingSettings
@@ -16,4 +18,6 @@ class AppSettings(BaseAppSettings):
         return self.environment == CodeEnvironment.DEV
 
 
-settings = AppSettings()
+@lru_cache(maxsize=1)
+def get_app_settings():
+    return AppSettings()

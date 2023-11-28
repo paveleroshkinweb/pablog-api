@@ -4,12 +4,14 @@ import time
 from collections.abc import Awaitable, Callable
 from datetime import datetime
 
-from pablog_api.settings.app import settings
+from pablog_api.settings.app import get_app_settings
 from pablog_api.utils.setup_logger import configure_logger
 
 from fastapi import FastAPI, Request, status
 from fastapi.responses import ORJSONResponse, Response
 
+
+settings = get_app_settings()
 
 configure_logger(settings)
 

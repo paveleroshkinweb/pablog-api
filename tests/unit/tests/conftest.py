@@ -1,11 +1,14 @@
 import asyncio
 
 from pablog_api.api.server import API_PATH_V1, app
-from pablog_api.settings.app import settings
+from pablog_api.settings.app import get_app_settings
 
 import pytest_asyncio
 
 from httpx import AsyncClient
+
+
+settings = get_app_settings()
 
 
 @pytest_asyncio.fixture(scope="session")
