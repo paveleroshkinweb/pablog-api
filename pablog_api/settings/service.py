@@ -7,9 +7,9 @@ import pydantic
 
 class ServiceSettings(BaseAppSettings):
 
-    api_host: str
+    api_host: str = pydantic.Field(default="127.0.0.1")
 
-    api_port: int
+    api_port: int = pydantic.Field(default=8001)
 
     workers: int = pydantic.Field(default=multiprocessing.cpu_count() * 2 + 1)
 

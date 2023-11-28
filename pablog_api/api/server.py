@@ -19,7 +19,7 @@ API_PATH_V1 = f"/api/{API_VERSION}"
 
 VERSION = "1.0.0"
 
-ACCESS_LOGS_BLACKLIST = [f"{API_PATH_V1}/ping"]
+ACCESS_LOGS_BLACKLIST = [f"{API_PATH_V1}/status"]
 
 app = FastAPI(
     title="PablogAPI",
@@ -78,7 +78,7 @@ async def logging_middleware(
     return response
 
 
-@app.get(f"{API_PATH_V1}/ping")
+@app.get(f"{API_PATH_V1}/status")
 def pong() -> Response:
     return Response(status_code=status.HTTP_200_OK)
 
