@@ -1,11 +1,12 @@
-import logging
 import time
 
 from collections.abc import Awaitable, Callable
 from datetime import datetime
 
-from pablog_api.logging.setup_logger import configure_logger
+from pablog_api.logging_utils.setup_logger import configure_logger
 from pablog_api.settings.app import get_app_settings
+
+import structlog
 
 from fastapi import FastAPI, Request, status
 from fastapi.responses import ORJSONResponse, Response
@@ -36,7 +37,7 @@ app = FastAPI(
 async def logging_middleware(
     request: Request, call_next: Callable[[Request], Awaitable[Response]]
 ) -> Response:
-    logger = logging.getLogger("pablog_api.access")
+    logger = structlog.get_logger("pablog_api.access")
 
     request_id = request.headers.get("X-Request-Id", "")
     if not request_id:
@@ -54,26 +55,27 @@ async def logging_middleware(
         real_remote_addr = request.headers.get("X-Real-IP", "")
         user_agent = request.headers.get("User-Agent", "")
         request_method = request.method
-        response_body_size = response.headers["content-length"]
-        str_start_time = datetime.utcfromtimestamp(start_time)
+        response_body_size = int(response.headers["content-length"])
+        str_start_time = str(datetime.utcfromtimestamp(start_time))
         status_code = response.status_code
-        url = request.url
+        url = str(request.url)
 
         request_body_size = 0
         if hasattr(request, "_body"):
             request_body_size = len(request._body)
 
-        logger.info(f"\
-            REMOTE_ADDR: {real_remote_addr or remote_addr},\
-            REQUEST_BODY_SIZE: {request_body_size},\
-            USER_AGENT: {user_agent},\
-            REQUEST_METHOD: {request_method},\
-            URL: {url},\
-            RESPONSE_STATUS: {status_code},\
-            RESPONSE_BODY_SIZE: {response_body_size},\
-            START_TIME: {str_start_time},\
-            TIME_TOOK: {str_process_time}\
-        ")
+        logger.info(
+            "Received new response",
+            remote_addr=(real_remote_addr or remote_addr),
+            request_body_size=request_body_size,
+            user_agent=user_agent,
+            request_method=request_method,
+            url=url,
+            response_status=status_code,
+            response_body_size=response_body_size,
+            start_time=str_start_time,
+            time_took=process_time
+        )
 
     response.headers["X-Request-Id"] = request_id
     response.headers["X-Process-Time"] = str_process_time
