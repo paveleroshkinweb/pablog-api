@@ -9,6 +9,7 @@ from pablog_api.settings.base import BaseAppSettings
 from pablog_api.settings.code_environment import CodeEnvironment
 
 import pydantic
+import structlog
 
 
 logging.Formatter.converter = time.gmtime
@@ -32,7 +33,9 @@ def get_dev_config(log_level: LoggerLevelType, log_file_path: str) -> dict[str, 
         "disable_existing_loggers": False,
         "formatters": {
             "default": {
-                "format": COMMON_FORMAT
+                "()": structlog.stdlib.ProcessorFormatter,
+                "processor": structlog.processors.format_exc_info,
+                "fmt": COMMON_FORMAT
             }
         },
         "handlers": {
@@ -67,7 +70,9 @@ def get_prod_config(log_level: LoggerLevelType) -> dict[str, Any]:
         "disable_existing_loggers": False,
         "formatters": {
             "default": {
-                "format": COMMON_FORMAT
+                "()": structlog.stdlib.ProcessorFormatter,
+                "processor": structlog.processors.format_exc_info,
+                "fmt": COMMON_FORMAT
             }
         },
         "handlers": {
