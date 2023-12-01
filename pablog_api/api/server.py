@@ -1,4 +1,5 @@
 import time
+import uuid
 
 from collections.abc import Awaitable, Callable
 from datetime import datetime
@@ -37,11 +38,18 @@ app = FastAPI(
 async def logging_middleware(
     request: Request, call_next: Callable[[Request], Awaitable[Response]]
 ) -> Response:
+    structlog.contextvars.clear_contextvars()
+
     logger = structlog.get_logger("pablog_api.access")
 
     request_id = request.headers.get("X-Request-Id", "")
     if not request_id:
-        logger.warning("No X-Request-Id was provided!")
+        request_id = uuid.uuid4().hex
+        logger.warning("No X-Request-Id was provided, generating a new one", new=request_id)
+
+    structlog.contextvars.bind_contextvars(
+        request_id=request_id,
+    )
 
     start_time = time.time()
 
