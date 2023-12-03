@@ -41,6 +41,10 @@ ARG GROUP
 RUN groupadd -r ${GROUP} \
   && useradd -d ${APP_PATH} -r -g ${GROUP} ${USER}
 
+RUN mkdir /var/run/pablog-service \
+  && touch /var/run/pablog-service/pablog.pid \
+  && chown -R ${USER}:${GROUP} /var/run/pablog-service
+
 USER ${USER}
 
 WORKDIR ${APP_PATH}

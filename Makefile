@@ -6,10 +6,10 @@ all:
 	# intentionally left empty to prevent accidental run of first recipe
 
 prod-server:
-	set -a && source .env && poetry run gunicorn --config pablog_api/gunicorn_conf.py pablog_api.api.server:app
+	docker-compose -f ./compose/docker-compose.dev.yaml up --build
 
 dev-server:
-	set -a && source .env && poetry run python -m cProfile -s tottime pablog_api/main.py dev-server
+	set -a && source .env && poetry run python pablog_api/main.py dev-server
 
 unit-test:
 	set -a && source tests/unit/.env.test && poetry run pytest tests/unit

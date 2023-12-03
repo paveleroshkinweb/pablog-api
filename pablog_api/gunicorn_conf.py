@@ -9,7 +9,7 @@ class HeadlessUvicornWorker(UvicornH11Worker):
 
 settings = get_app_settings()
 
-bind = settings.service_settings.dsn()
+bind = settings.service_settings.unix_sock_path
 
 workers = settings.service_settings.workers
 
