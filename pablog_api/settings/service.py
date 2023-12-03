@@ -18,4 +18,6 @@ class ServiceSettings(BaseAppSettings):
     unix_sock_path: str | None = pydantic.Field(default=None)
 
     def dsn(self) -> str:
+        if self.unix_sock_path is not None:
+            return self.unix_sock_path
         return f'{self.api_host}:{self.api_port}'
