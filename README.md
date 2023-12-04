@@ -52,6 +52,6 @@ Each node is a dedicated Linux virtual machine. It consists of the following par
    * pass api requests to application server
 2) **Gunicorn**
    * communicate with nginx to accept/respond on new requests
-   * supervise FastAPI application server instances
+   * supervise Uvicorn workers instances (spot/restart new instances)
 3) **Uvicorn worker**
    * handle application business logic
