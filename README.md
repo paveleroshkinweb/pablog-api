@@ -35,4 +35,23 @@ It includes 2 main workflows:
 9) ```make mypy``` - run static analysis with mypy
 10) ```make bandit``` - check for security issues in python code
 11) ```make check-docker``` - validate docker config
-12) ```make clean``` - clean trash from project
+12) ```make init-dev-structure``` - setup basic folders for local development. i.e logs, pid folders
+13) ```make clean``` - clean trash from project
+
+
+### Architecture
+
+#### Application node architecture
+
+![Node structure img](https://github.com/paveleroshkinweb/pablog-api/blob/main/docs/architecture/img/node.drawio.png)
+
+Each node is a dedicated Linux virtual machine. It consists of the following parts:
+1) **Nginx**
+   * handle tcp connections
+   * compress traffic
+   * pass api requests to application server
+2) **Gunicorn**
+   * communicate with nginx to accept/respond on new requests
+   * supervise FastAPI application server instances
+3) **Uvicorn worker**
+   * handle application business logic
