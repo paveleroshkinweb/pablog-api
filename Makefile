@@ -6,7 +6,7 @@ all:
 	# intentionally left empty to prevent accidental run of first recipe
 
 prod-server:
-	docker-compose -f ./compose/docker-compose.dev.yaml up --build
+	docker-compose -f ./compose/docker-compose.server.yaml up --build
 
 dev-server:
 	set -a && source .env && poetry run python pablog_api/main.py dev-server
