@@ -1,8 +1,4 @@
-import time
-import uuid
-
 from collections.abc import Awaitable, Callable
-from datetime import datetime
 
 from pablog_api.logging_utils.setup_logger import configure_logger
 from pablog_api.settings.app import get_app_settings
@@ -40,53 +36,14 @@ async def logging_middleware(
 ) -> Response:
     structlog.contextvars.clear_contextvars()
 
-    logger = structlog.get_logger("pablog_api.access")
-
     request_id = request.headers.get("X-Request-Id", "")
-    if not request_id:
-        request_id = uuid.uuid4().hex
-        logger.warning("No X-Request-Id was provided, generating a new one", new=request_id)
 
     structlog.contextvars.bind_contextvars(
         request_id=request_id,
     )
 
-    start_time = time.time()
-
     response = await call_next(request)
 
-    process_time = time.time() - start_time
-    str_process_time = str(process_time)
-
-    if request.url.path not in ACCESS_LOGS_BLACKLIST:
-        remote_addr = request.scope["client"][0]
-        real_remote_addr = request.headers.get("X-Real-IP", "")
-        user_agent = request.headers.get("User-Agent", "")
-        request_method = request.method
-        response_body_size = int(response.headers["content-length"])
-        str_start_time = str(datetime.utcfromtimestamp(start_time))
-        status_code = response.status_code
-        url = str(request.url)
-
-        request_body_size = 0
-        if hasattr(request, "_body"):
-            request_body_size = len(request._body)
-
-        logger.info(
-            "Received new response",
-            remote_addr=(real_remote_addr or remote_addr),
-            request_body_size=request_body_size,
-            user_agent=user_agent,
-            request_method=request_method,
-            url=url,
-            response_status=status_code,
-            response_body_size=response_body_size,
-            start_time=str_start_time,
-            time_took=process_time
-        )
-
-    response.headers["X-Request-Id"] = request_id
-    response.headers["X-Process-Time"] = str_process_time
     return response
 
 
