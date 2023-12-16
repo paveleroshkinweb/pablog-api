@@ -1,0 +1,19 @@
+name: extra tools validation
+
+
+on: [push]
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install hadolint
+        run: |
+          docker pull hadolint/hadolint
+
+      - name: Check Dockerfile issues
+        run: |
+          make check-docker
