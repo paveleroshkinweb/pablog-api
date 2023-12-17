@@ -12,7 +12,7 @@ jobs:
 
       - name: Install hadolint
         run: |
-          docker pull hadolint/hadolint
+          docker pull pipelinecomponents/hadolint:0.25.8
 
       - name: Check Dockerfile issues
         run: |
@@ -20,7 +20,7 @@ jobs:
 
       - name: Install nginx
         run: |
-          docker pull nginx:latest
+          docker pull nginx:1.25.0-alpine
 
       - name: Validate nginx
         run:
