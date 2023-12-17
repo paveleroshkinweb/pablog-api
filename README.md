@@ -35,8 +35,9 @@ It includes 2 main workflows:
 9) ```make mypy``` - run static analysis with mypy
 10) ```make bandit``` - check for security issues in python code
 11) ```make check-docker``` - validate docker config
-12) ```make init-dev-structure``` - setup basic folders for local development. i.e logs, pid folders
-13) ```make clean``` - clean trash from project
+12) ```make check-nginx``` - validate nginx config
+13) ```make init-dev-structure``` - setup basic folders for local development. i.e logs, pid folders
+14) ```make clean``` - clean trash from project
 
 
 ### Architecture

@@ -17,3 +17,11 @@ jobs:
       - name: Check Dockerfile issues
         run: |
           make check-docker
+
+      - name: Install nginx
+        run: |
+          docker pull nginx:latest
+
+      - name: Validate nginx
+        run:
+          make check-nginx

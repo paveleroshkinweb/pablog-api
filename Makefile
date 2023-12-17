@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: all prod-server dev-server unit-test shell check-server-cfg schema lint fix mypy bandit init-dev-structure check-docker clean
+.PHONY: all prod-server dev-server unit-test shell check-server-cfg schema lint fix mypy bandit init-dev-structure check-docker check-nginx clean
 
 all:
 	# intentionally left empty to prevent accidental run of first recipe
@@ -42,6 +42,9 @@ init-dev-structure:
 
 check-docker:
 	docker run --rm -i hadolint/hadolint hadolint --ignore DL3008 --ignore DL4006 - < Dockerfile
+
+check-nginx:
+	docker run --rm -v $(pwd)/nginx/nginx.conf:/etc/nginx/nginx.conf -v $(pwd)/nginx/site.conf:/etc/nginx/conf.d/default.conf nginx nginx -t
 
 clean:
 	find . -type f -name "*.pyc" | xargs rm -fr
