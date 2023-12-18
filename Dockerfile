@@ -58,9 +58,13 @@ ENV VIRTUAL_ENV=${APP_PATH}/.venv \
 
 COPY --from=base --chown=${USER}:${GROUP} ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
+COPY --chown=${USER}:${GROUP} entrypoint.sh ./entrypoint.sh
+
 COPY --chown=${USER}:${GROUP} pablog_api ./pablog_api
 
-CMD ["gunicorn", "--config", "pablog_api/gunicorn_conf.py", "pablog_api.api.server:app"]
+ENTRYPOINT ["./entrypoint.sh"]
+
+CMD ["server"]
 
 
 # The build is used only one time during CI so there is no any optimisations here
