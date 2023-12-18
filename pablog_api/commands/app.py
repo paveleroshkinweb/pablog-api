@@ -24,7 +24,7 @@ def generate_schema():
         description="PablogAPI openapi specification",
         routes=server.routes,
     ))
-    filepath = os.path.join(os.getcwd(), "docs", "openapi-schema", "openapi.json")
+    filepath = os.path.join(os.getcwd(), "docs", "openapi-schema", f"openapi_{VERSION}.json")
     with open(filepath, "w") as file:
         file.write(schema)
         file.flush()
