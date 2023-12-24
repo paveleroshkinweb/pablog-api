@@ -19,7 +19,7 @@ API_PATH_V1 = f"/api/{API_VERSION}"
 
 VERSION = "1.0.0"
 
-ACCESS_LOGS_BLACKLIST = [f"{API_PATH_V1}/status"]
+ACCESS_LOGS_BLACKLIST = ["/healthcheck"]
 
 app = FastAPI(
     title="PablogAPI",
@@ -44,9 +44,13 @@ async def logging_middleware(
         request_id=request_id,
     )
 
-    logger.info("Received new request")
-    response = await call_next(request)
-    logger.info("Processed request")
+    # Do not log utils requests
+    if request.url.path not in ACCESS_LOGS_BLACKLIST:
+        logger.info("Received new request")
+        response = await call_next(request)
+        logger.info("Processed request")
+    else:
+        response = await call_next(request)
 
     return response
 

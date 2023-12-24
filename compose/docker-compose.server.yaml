@@ -4,6 +4,7 @@ version: "3"
 services:
   nginx:
     image: nginx:1.25
+    container_name: nginx-frontend
     restart: unless-stopped
     ports:
       - "80:80"
@@ -26,6 +27,7 @@ services:
     build:
       context: ../
       target: prod
+    container_name: pablog-api
     restart: unless-stopped
     env_file:
       - .env.server
