@@ -29,6 +29,8 @@ app = FastAPI(
     version=VERSION,
 )
 
+logger = structlog.get_logger(__name__)
+
 
 @app.middleware("http")
 async def logging_middleware(
@@ -42,12 +44,14 @@ async def logging_middleware(
         request_id=request_id,
     )
 
+    logger.info("Received new request")
     response = await call_next(request)
+    logger.info("Processed request")
 
     return response
 
 
-@app.get("/api/healthcheck")
+@app.get("/healthcheck")
 def healthcheck() -> Response:
     return Response(status_code=status.HTTP_200_OK)
 

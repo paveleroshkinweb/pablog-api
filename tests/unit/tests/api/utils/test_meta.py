@@ -4,7 +4,7 @@ from fastapi import status
 from httpx import AsyncClient
 
 
-PING_PATH = "/api/healthcheck"
+PING_PATH = "/healthcheck"
 INFO_PATH = "/api/info"
 
 
