@@ -47,9 +47,14 @@ async def logging_middleware(
     return response
 
 
-@app.get(f"{API_PATH_V1}/healthcheck")
+@app.get("/healthcheck")
 def healthcheck() -> Response:
     return Response(status_code=status.HTTP_200_OK)
+
+
+@app.get("/api/info")
+def info() -> Response:
+    return ORJSONResponse(status_code=status.HTTP_200_OK, content={"version": VERSION})
 
 
 def run_dev_server():
