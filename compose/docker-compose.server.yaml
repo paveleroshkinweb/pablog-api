@@ -8,10 +8,13 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ../nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ../nginx/site.conf:/etc/nginx/conf.d/default.conf
+      - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ../nginx/site.conf:/etc/nginx/conf.d/default.conf:ro
+      - ../nginx/api_json_errors.conf:/etc/nginx/api_json_errors.conf:ro
       - ../logs/nginx/:/var/log/nginx/
       - app_runtime:/var/run/pablog-service/
+    networks:
+      web:
     healthcheck:
       test: curl -s http://localhost:80 > /dev/null || exit 1
       interval: 5s
@@ -28,7 +31,13 @@ services:
       - .env.server
     volumes:
       - app_runtime:/var/run/pablog-service/
+    networks:
+      web:
 
 
 volumes:
   app_runtime:
+
+
+networks:
+  web:

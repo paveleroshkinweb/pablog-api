@@ -47,8 +47,8 @@ async def logging_middleware(
     return response
 
 
-@app.get(f"{API_PATH_V1}/status")
-def pong() -> Response:
+@app.get(f"{API_PATH_V1}/healthcheck")
+def healthcheck() -> Response:
     return Response(status_code=status.HTTP_200_OK)
 
 
