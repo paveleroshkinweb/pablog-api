@@ -47,7 +47,7 @@ async def logging_middleware(
     return response
 
 
-@app.get("/healthcheck")
+@app.get("/api/healthcheck")
 def healthcheck() -> Response:
     return Response(status_code=status.HTTP_200_OK)
 
