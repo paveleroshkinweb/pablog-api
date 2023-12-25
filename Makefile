@@ -44,7 +44,7 @@ check-docker:
 	docker run --rm -i hadolint/hadolint hadolint --ignore DL3008 --ignore DL4006 - < Dockerfile
 
 check-nginx:
-	docker run --rm -v ./nginx/nginx.conf:/etc/nginx/nginx.conf -v ./nginx/site.conf:/etc/nginx/conf.d/default.conf -v ./nginx/api_json_errors.conf:/etc/nginx/api_json_errors.conf nginx nginx -t
+	docker run --rm -v ./nginx/nginx.conf:/etc/nginx/nginx.conf -v ./nginx/site.conf:/etc/nginx/conf.d/default.conf -v ./nginx/api_json_errors.conf:/etc/nginx/api_json_errors.conf -v ./nginx/extra_headers.conf:/etc/nginx/extra_headers.conf nginx nginx -t
 
 clean:
 	find . -type f -name "*.pyc" | xargs rm -fr
