@@ -19,7 +19,7 @@ API_PATH_V1 = f"/api/{API_VERSION}"
 
 VERSION = "1.0.0"
 
-ACCESS_LOGS_BLACKLIST = [f"{API_PATH_V1}/status"]
+ACCESS_LOGS_BLACKLIST = ["/healthcheck"]
 
 app = FastAPI(
     title="PablogAPI",
@@ -28,6 +28,8 @@ app = FastAPI(
     default_response_class=ORJSONResponse,
     version=VERSION,
 )
+
+logger = structlog.get_logger(__name__)
 
 
 @app.middleware("http")
@@ -42,14 +44,25 @@ async def logging_middleware(
         request_id=request_id,
     )
 
-    response = await call_next(request)
+    # Do not log utils requests
+    if request.url.path not in ACCESS_LOGS_BLACKLIST:
+        logger.info("Received new request")
+        response = await call_next(request)
+        logger.info("Processed request")
+    else:
+        response = await call_next(request)
 
     return response
 
 
-@app.get(f"{API_PATH_V1}/status")
-def pong() -> Response:
+@app.get("/healthcheck")
+def healthcheck() -> Response:
     return Response(status_code=status.HTTP_200_OK)
+
+
+@app.get("/api/info")
+def info() -> Response:
+    return ORJSONResponse(status_code=status.HTTP_200_OK, content={"version": VERSION})
 
 
 def run_dev_server():

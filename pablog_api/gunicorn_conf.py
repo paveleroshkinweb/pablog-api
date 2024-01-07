@@ -23,9 +23,9 @@ reuse_port = True
 
 pidfile = settings.service_settings.pidfile
 
-max_requests = 50000
+max_requests = 10000
 
-max_requests_jitter = 10000
+max_requests_jitter = 2000
 
 # logging
 disable_redirect_access_to_syslog = True
