@@ -24,20 +24,25 @@ It includes 2 main workflows:
 
 
 ### Development commands
+#### CI
+1) ```make unit-test``` - run unit tests (not in docker container)
+2) ```make check-server-cfg``` - validate gunicorn config
+3) ```make schema``` - build new openapi schema for application
+4) ```make lint``` - run ruff linter
+5) ```make fix``` - fix linter issues if possible
+6) ```make mypy``` - run static analysis with mypy
+7) ```make bandit``` - check for security issues in python code
+8) ```make check-docker``` - validate docker config
+9) ```make check-nginx``` - validate nginx config
+
+#### LOCAL DEVELOPMENT
 1) ```make prod-server``` - locally run production version of server
 2) ```make dev-server``` - run uvicorn development server
-3) ```make unit-test``` - run unit tests (not in docker container)
-4) ```make shell``` - run ipython interpreter with project context
-5) ```make check-server-cfg``` - validate gunicorn config
-6) ```make schema``` - build new openapi schema for application
-7) ```make lint``` - run ruff linter
-8) ```make fix``` - fix linter issues if possible
-9) ```make mypy``` - run static analysis with mypy
-10) ```make bandit``` - check for security issues in python code
-11) ```make check-docker``` - validate docker config
-12) ```make check-nginx``` - validate nginx config
-13) ```make init-dev-structure``` - setup basic folders for local development. i.e logs, pid folders
-14) ```make clean``` - clean trash from project
+3) ```make shell``` - run ipython interpreter with project context
+
+#### UTILS
+1) ```make init-dev-structure``` - setup basic folders for local development. i.e logs, pid folders
+2) ```make clean``` - clean trash from project
 
 
 ### Architecture
