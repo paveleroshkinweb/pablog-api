@@ -60,7 +60,7 @@ def healthcheck() -> Response:
     return Response(status_code=status.HTTP_200_OK)
 
 
-@app.get("/api/info")
+@app.get(f"{API_PATH_V1}/info")
 def info() -> Response:
     return ORJSONResponse(status_code=status.HTTP_200_OK, content={"version": VERSION})
 

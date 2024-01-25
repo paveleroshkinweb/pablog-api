@@ -5,7 +5,7 @@ from httpx import AsyncClient
 
 
 PING_PATH = "/healthcheck"
-INFO_PATH = "/api/info"
+INFO_PATH = "/api/v1/info"
 
 
 async def test_status(client: AsyncClient):
