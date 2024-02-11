@@ -4,9 +4,7 @@
 
 ### Development instruction
 
-1) Copy **.env.example** to **.env** file. Application depends only on environment variables and this step is used
-only for more convenient development.
-2) Execute ```make dev-server``` It will run the uvicorn server (easy to debug).
+Execute ```make prod-server``` It will run the server and all required services in docker.
 
 
 ### CI
@@ -37,8 +35,7 @@ It includes 2 main workflows:
 
 #### LOCAL DEVELOPMENT
 1) ```make prod-server``` - locally run production version of server
-2) ```make dev-server``` - run uvicorn development server
-3) ```make shell``` - run ipython interpreter with project context
+2) ```make shell``` - run ipython interpreter with project context
 
 #### UTILS
 1) ```make init-dev-structure``` - setup basic folders for local development. i.e logs, pid folders

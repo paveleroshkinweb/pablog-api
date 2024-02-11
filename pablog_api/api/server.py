@@ -63,14 +63,3 @@ def healthcheck() -> Response:
 @app.get(f"{API_PATH_V1}/info")
 def info() -> Response:
     return ORJSONResponse(status_code=status.HTTP_200_OK, content={"version": VERSION})
-
-
-def run_dev_server():
-    import uvicorn
-    uvicorn.run(
-        "pablog_api.api.server:app",
-        host=settings.service_settings.api_host,
-        port=settings.service_settings.api_port,
-        log_config=settings.logging.get_config(settings.environment),
-        reload=settings.is_development()
-    )
