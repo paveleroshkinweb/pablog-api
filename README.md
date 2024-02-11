@@ -55,7 +55,6 @@ Each node is a dedicated Linux virtual machine. It consists of the following par
 1) **Nginx**
    * handle tcp connections
    * compress traffic
-   * rate limit requests to protect from dos attack
    * pass api requests to application server
 2) **Gunicorn**
    * communicate with nginx to accept/respond on new requests
