@@ -1,0 +1,22 @@
+version: "3"
+
+
+services:
+  master_db:
+    image: postgres:16.2
+    container_name: pablog-masterdb
+    restart: unless-stopped
+    env_file:
+      - .env.db
+    ports:
+      - "5432:5432"
+    volumes:
+      - master_db_volume:/var/lib/postgresql/data
+      - ../db/master.conf:/etc/postgresql/postgresql.conf
+    networks:
+      - db
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
+      interval: 5s
+      timeout: 10s
+      retries: 5

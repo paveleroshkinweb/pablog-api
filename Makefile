@@ -6,7 +6,7 @@ all:
 	# intentionally left empty to prevent accidental run of first recipe
 
 prod-server:
-	docker-compose -f ./compose/docker-compose.server.yaml up --build
+	docker-compose --env-file .env -f ./compose/docker-compose.server.yaml up --build
 
 unit-test:
 	set -a && source tests/unit/.env.test && poetry run pytest tests/unit

@@ -1,5 +1,7 @@
 version: "3"
 
+include:
+  - docker-compose.db.yaml
 
 services:
   nginx:
@@ -18,13 +20,14 @@ services:
       - app_runtime:/var/run/pablog-service/
     networks:
       web:
+    depends_on:
+      - api
     healthcheck:
       test: curl -s http://localhost:8001/healthcheck > /dev/null || exit 1
       interval: 5s
       timeout: 10s
       retries: 5
-    depends_on:
-      - api
+
   api:
     build:
       context: ../
@@ -36,12 +39,17 @@ services:
     volumes:
       - app_runtime:/var/run/pablog-service/
     networks:
-      web:
+      - web
+      - db
+    depends_on:
+      - master_db
 
 
 volumes:
   app_runtime:
+  master_db_volume:
 
 
 networks:
   web:
+  db:
