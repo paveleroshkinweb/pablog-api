@@ -4,10 +4,13 @@
 
 ### Development instruction
 
-1) Run ```make init-dev-structure``` to setup basic folders for local development. i.e logs, pid
-2) Run ```make prod-server``` It will run the server and all required services in docker.
+1) Download tools that you need for local development: poetry, docker
+2) Run ```poetry install --with dev``` to install dev dependencies. i.e linter, static analyzer
+3) Run ```make init-dev-structure``` to setup basic folders for local development. i.e logs, pid
+4) Run ```make prod-server``` It will run the server and all required services in docker.
 
 All application/nginx/database logs can be found in logs folder.
+
 Now you can open your browser and interact with these URLs:
 * Backend, JSON based web API based on OpenAPI: http://localhost:8001/api/v1
 * Automatic interactive documentation with Swagger UI (from the OpenAPI backend): http://localhost:8001/docs/openapi
@@ -46,7 +49,7 @@ It includes 2 main workflows:
 
 #### UTILS
 1) ```make init-dev-structure``` - setup basic folders for local development. i.e logs, pid folders
-2) ```make clean``` - clean trash from project
+2) ```make clean``` - clean trash from project (logs, docker containers)
 
 
 ### Architecture
