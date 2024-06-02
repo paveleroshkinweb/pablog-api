@@ -4,8 +4,15 @@
 
 ### Development instruction
 
-Execute ```make prod-server``` It will run the server and all required services in docker.
+1) Run ```make init-dev-structure``` to setup basic folders for local development. i.e logs, pid
+2) Run ```make prod-server``` It will run the server and all required services in docker.
 
+All application/nginx/database logs can be found in logs folder.
+Now you can open your browser and interact with these URLs:
+* Backend, JSON based web API based on OpenAPI: http://localhost:8001/api/v1
+* Automatic interactive documentation with Swagger UI (from the OpenAPI backend): http://localhost:8001/docs/openapi
+
+Note: The first time you start your stack, it might take a minute for it to be ready. While the backend waits for the database to be ready and configures everything. You can check the logs to monitor it.
 
 ### CI
 
