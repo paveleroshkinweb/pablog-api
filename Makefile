@@ -6,7 +6,7 @@ all:
 	# intentionally left empty to prevent accidental run of first recipe
 
 prod-server:
-	docker-compose --env-file .env -f ./compose/docker-compose.server.yaml up --build
+	docker-compose --env-file ./compose/db/.env.db -f ./compose/docker-compose.server.yaml up --build
 
 unit-test:
 	set -a && source tests/unit/.env.test && poetry run pytest tests/unit
@@ -35,13 +35,14 @@ bandit:
 init-dev-structure:
 	mkdir -p pid
 	mkdir -p logs
+	mkdir -p logs/postgresql
 	touch logs/pablog.logs
 
 check-docker:
 	docker run --rm -i hadolint/hadolint hadolint --ignore DL3008 --ignore DL4006 - < Dockerfile
 
 check-nginx:
-	docker run --rm -v ./nginx/nginx.conf:/etc/nginx/nginx.conf -v ./nginx/site.conf:/etc/nginx/conf.d/default.conf -v ./nginx/api_json_errors.conf:/etc/nginx/api_json_errors.conf -v ./nginx/extra_headers.conf:/etc/nginx/extra_headers.conf -v ./nginx/disable_logs.conf:/etc/nginx/disable_logs.conf nginx nginx -t
+	docker run --rm -v ./compose/nginx/nginx.conf:/etc/nginx/nginx.conf -v ./compose/nginx/site.conf:/etc/nginx/conf.d/default.conf -v ./compose/nginx/api_json_errors.conf:/etc/nginx/api_json_errors.conf -v ./compose/nginx/extra_headers.conf:/etc/nginx/extra_headers.conf -v ./compose/nginx/disable_logs.conf:/etc/nginx/disable_logs.conf nginx nginx -t
 
 clean:
 	find . -type f -name "*.pyc" | xargs rm -fr

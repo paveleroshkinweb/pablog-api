@@ -4,15 +4,17 @@ version: "3"
 services:
   master_db:
     image: postgres:16.2
+    command: -c config_file=/etc/postgresql/postgresql.conf
     container_name: pablog-masterdb
     restart: unless-stopped
     env_file:
-      - .env.db
+      - ./db/.env.db
     ports:
       - "5432:5432"
     volumes:
       - master_db_volume:/var/lib/postgresql/data
-      - ../db/master.conf:/etc/postgresql/postgresql.conf
+      - ./db/master.conf:/etc/postgresql/postgresql.conf
+      - ../logs/postgresql/:/var/log/postgresql/
     networks:
       - db
     healthcheck:
@@ -20,3 +22,11 @@ services:
       interval: 5s
       timeout: 10s
       retries: 5
+
+
+volumes:
+  master_db_volume:
+
+
+networks:
+  db:

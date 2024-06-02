@@ -11,7 +11,7 @@ class ServiceSettings(BaseAppSettings):
 
     api_port: int = pydantic.Field(default=8001)
 
-    workers: int = pydantic.Field(default=multiprocessing.cpu_count() * 2 + 1)
+    workers: int = pydantic.Field(default=multiprocessing.cpu_count())
 
     pidfile: str = pydantic.Field(default="/var/run/pablog.pid")
 
