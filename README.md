@@ -2,9 +2,16 @@
 
 ## API for handling your personal blog
 
+### Technology Stack
+* [FastAPI](https://fastapi.tiangolo.com/) for the Python backend API.
+* [Nginx](https://nginx.org/) as a webserver
+* [PostgreSQL](https://www.postgresql.org/) as master database
+* [Docker](https://www.docker.com/) for testing/development/production.
+* [Pytest](https://docs.pytest.org/en/8.2.x/) for smoke/unit/integration tests
+
 ### Development instruction
 
-1) Download tools that you need for local development: poetry, docker
+1) Download tools that you need for local development: [poetry](https://python-poetry.org/), [docker](https://www.docker.com/)
 2) Run ```poetry install --with dev``` to install dev dependencies. i.e linter, static analyzer
 3) Run ```make init-dev-structure``` to setup basic folders for local development. i.e logs, pid
 4) Run ```make prod-server``` It will run the server and all required services in docker.
