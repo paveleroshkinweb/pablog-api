@@ -49,3 +49,6 @@ clean:
 	find . -type d -name __pycache__ | xargs rm -fr
 	rm -fr logs/*
 	rm -fr pid/*
+	docker rm pablog-masterdb
+	docker rm nginx-frontend
+	docker rm pablog-api
