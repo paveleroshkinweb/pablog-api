@@ -35,7 +35,7 @@ It includes 2 main workflows:
 #### CI
 1) ```make unit-test``` - run unit tests (not in docker container)
 2) ```make check-server-cfg``` - validate gunicorn config
-3) ```make schema``` - build new openapi schema for application
+3) ```make schema``` - export new openapi schema into docs/openapi-schema/openapi_VERSION.json
 4) ```make lint``` - run ruff linter
 5) ```make fix``` - fix linter issues if possible
 6) ```make mypy``` - run static analysis with mypy
