@@ -18,6 +18,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     curl \
     # dependencies for building Python packages \
     build-essential \
+    # psycopg dependencies
+    libpq-dev \
     # install poetry
     && curl -sSL https://install.python-poetry.org | python3 - \
     && apt-get clean \

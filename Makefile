@@ -1,19 +1,31 @@
 SHELL := /bin/bash
 
-.PHONY: all prod-server unit-test shell check-server-cfg schema lint fix mypy bandit init-dev-structure check-docker check-nginx clean
+.PHONY: all prod-server unit-test shell check-server-cfg schema lint lint-fix mypy bandit init-dev-structure check-docker check-nginx clean
 
 all:
 	# intentionally left empty to prevent accidental run of first recipe
 
+
+# -------------------------------------------------
+# DEVELOPMENT
+# -------------------------------------------------
 prod-server:
 	docker-compose --env-file ./compose/db/.env.db -f ./compose/docker-compose.server.yaml up --build
 
+shell:
+	set -a && source ./compose/server/.env.server && poetry run ipython
+
+
+# -------------------------------------------------
+# TESTS
+# -------------------------------------------------
 unit-test:
 	set -a && source tests/unit/.env.test && poetry run pytest tests/unit
 
-shell:
-	set -a && source .env && poetry run ipython
 
+# -------------------------------------------------
+# CI
+# -------------------------------------------------
 check-server-cfg:
 	set -a && source .env.example && poetry run gunicorn --config pablog_api/gunicorn_conf.py --check-config pablog_api.api.server:app
 
@@ -23,7 +35,7 @@ schema:
 lint:
 	poetry run ruff check .
 
-fix:
+lint-fix:
 	poetry run ruff check --fix .
 
 mypy:
@@ -32,17 +44,21 @@ mypy:
 bandit:
 	poetry run bandit -r pablog_api/
 
-init-dev-structure:
-	mkdir -p pid
-	mkdir -p logs
-	mkdir -p logs/postgresql
-	touch logs/pablog.logs
-
 check-docker:
 	docker run --rm -i hadolint/hadolint hadolint --ignore DL3008 --ignore DL4006 - < Dockerfile
 
 check-nginx:
 	docker run --rm -v ./compose/nginx/nginx.conf:/etc/nginx/nginx.conf -v ./compose/nginx/site.conf:/etc/nginx/conf.d/default.conf -v ./compose/nginx/api_json_errors.conf:/etc/nginx/api_json_errors.conf -v ./compose/nginx/extra_headers.conf:/etc/nginx/extra_headers.conf -v ./compose/nginx/disable_logs.conf:/etc/nginx/disable_logs.conf nginx nginx -t
+
+
+# -------------------------------------------------
+# UTILS
+# -------------------------------------------------
+init-dev-structure:
+	mkdir -p pid
+	mkdir -p logs
+	mkdir -p logs/postgresql
+	touch logs/pablog.logs
 
 clean:
 	find . -type f -name "*.pyc" | xargs rm -fr

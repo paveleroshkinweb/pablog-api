@@ -23,7 +23,7 @@ repos:
     hooks:
       - id: lint-fix
         name: lint-fix
-        entry: bash -c 'make fix'
+        entry: bash -c 'make lint-fix'
         language: system
 
   - repo: local

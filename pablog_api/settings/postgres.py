@@ -29,6 +29,6 @@ class PostgresSettings(BaseAppSettings):
                 password=self.db_password,
                 host=self.db_host,
                 port=self.db_port,
-                path=f"/{self.db_name}",
+                path=self.db_name
             )
         )
