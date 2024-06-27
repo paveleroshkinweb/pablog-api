@@ -21,7 +21,7 @@ def init_database(dsn: str, debug: bool = False):
         dsn,
         echo=debug,
         future=True,
-        pool_size=2,
+        pool_size=1,
         max_overflow=0,
         pool_pre_ping=True,
         connect_args={'options': f'-csearch_path={PABLOG_SCHEMA}'}
