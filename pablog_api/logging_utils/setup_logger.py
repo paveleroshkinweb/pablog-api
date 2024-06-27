@@ -3,7 +3,6 @@ import logging.config
 import sys
 
 from pablog_api.settings.app import AppSettings
-from pablog_api.settings.code_environment import CodeEnvironment
 
 import structlog
 
@@ -15,11 +14,6 @@ def configure_logger(settings: AppSettings):
         return
 
     logging.config.dictConfig(config)
-
-    if settings.environment == CodeEnvironment.DEV:
-        uvicorn_access = logging.getLogger("uvicorn.access")
-        uvicorn_access.disabled = True
-        uvicorn_access.propagate = False
 
     structlog.configure_once(
         processors=[

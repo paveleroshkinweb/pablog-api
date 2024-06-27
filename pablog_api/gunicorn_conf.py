@@ -15,8 +15,6 @@ workers = settings.service_settings.workers
 
 worker_class = "pablog_api.gunicorn_conf.HeadlessUvicornWorker"
 
-reload = settings.is_development()
-
 preload_app = True
 
 reuse_port = True
