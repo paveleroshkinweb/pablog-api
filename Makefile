@@ -13,7 +13,7 @@ prod-server:
 	docker-compose --env-file ./compose/db/.env.db -f ./compose/docker-compose.server.yaml up --build
 
 shell:
-	set -a && source ./compose/server/.env.server && poetry run ipython
+	./bin/utils/run_ishell.sh
 
 
 # -------------------------------------------------
@@ -62,6 +62,7 @@ check-nginx:
 # UTILS
 # -------------------------------------------------
 init-dev-structure:
+	chmod -R +x bin
 	mkdir -p pid
 	mkdir -p logs
 	mkdir -p logs/postgresql

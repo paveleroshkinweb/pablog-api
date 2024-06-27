@@ -14,7 +14,7 @@ class PostgresSettings(BaseAppSettings):
 
     db_password: str = pydantic.Field()
 
-    db_host: str = pydantic.Field(default="localhost")
+    db_host: str = pydantic.Field(default="127.0.0.1")
 
     db_port: int = pydantic.Field(default=5432)
 

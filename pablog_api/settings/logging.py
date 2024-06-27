@@ -27,43 +27,6 @@ class LoggerLevelType(str, Enum):
     DEBUG: str = "DEBUG"
 
 
-def get_dev_config(log_level: LoggerLevelType, log_file_path: str) -> dict[str, Any]:
-    config = {
-        "version": 1,
-        "disable_existing_loggers": False,
-        "formatters": {
-            "default": {
-                "()": structlog.stdlib.ProcessorFormatter,
-                "processor": structlog.processors.format_exc_info,
-                "fmt": COMMON_FORMAT
-            }
-        },
-        "handlers": {
-            "console": {
-                "level": LoggerLevelType.DEBUG.value,
-                "class": "logging.StreamHandler",
-                "stream": "ext://sys.stdout",
-                "formatter": "default"
-            },
-            "file": {
-                "level": LoggerLevelType.DEBUG.value,
-                "class": "logging.FileHandler",
-                "mode": "a",
-                "encoding": "UTF-8",
-                "filename": log_file_path,
-                "formatter": "default"
-            }
-        },
-        "loggers": {
-            "": {
-                "handlers": ["console", "file"],
-                "level": log_level.value
-            }
-        }
-    }
-    return config
-
-
 def get_prod_config(log_level: LoggerLevelType) -> dict[str, Any]:
     config = {
         "version": 1,
@@ -106,8 +69,6 @@ class LoggingSettings(BaseAppSettings):
     log_file_path: str = pydantic.Field(default=os.path.join(os.getcwd(), "logs", "pablog.logs"))
 
     def get_config(self, environment: CodeEnvironment = CodeEnvironment.DEV) -> dict[str, Any] | None:
-        if environment == CodeEnvironment.DEV:
-            return get_dev_config(self.log_level, self.log_file_path)
-        elif environment == CodeEnvironment.PROD:
+        if environment in [CodeEnvironment.DEV, CodeEnvironment.PROD]:
             return get_prod_config(self.log_level)
         return {}

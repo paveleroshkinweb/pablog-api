@@ -165,3 +165,5 @@ pid/
 logs/
 
 .DS_Store
+
+nohup.out
