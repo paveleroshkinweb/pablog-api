@@ -54,11 +54,12 @@ It includes 2 main workflows:
 1) ```make start-cluster``` - locally run production version of cluster
 2) ```make stop-cluster``` - stops local cluster
 3) ```make logs``` - shows logs for all cluster processes
-4) ```make py-shell``` - run ipython interpreter with project context
-5) ```make c-bash``` - run bash interpreter inside of docker container
-6) ```make migrations name={custom_name}``` - create migrations based on new models updates
-7) ```make drop-migrations``` - drops all alembic migrations information from database.
-8) ```make migrate``` - migrate database to latest revision
+4) ```make pyshell``` - run ipython interpreter with project context
+5) ```make cbash``` - run bash interpreter inside of docker container
+6) ```make dbshell``` - run psql terminal command for master database
+7) ```make migrations name={custom_name}``` - create migrations based on new models updates
+8) ```make drop-migrations``` - drops all alembic migrations information from database.
+9) ```make migrate``` - migrate database to latest revision
 
 #### UTILS
 1) ```make init-dev-structure``` - setup basic folders for local development. i.e logs, pid folders

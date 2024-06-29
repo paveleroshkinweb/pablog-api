@@ -9,6 +9,7 @@ COMMAND=$1
 if [ "$COMMAND" = "start-cluster" ]; then
     docker-compose --env-file ./compose/db/.env.db -f ./compose/docker-compose.server.yaml up --build
     exit 0
+
 elif [ "$COMMAND" = "stop-cluster" ]; then
     docker stop pablog-masterdb nginx-frontend pablog-api
     exit 0
@@ -32,15 +33,23 @@ set -a \
 
 if [ "$COMMAND" = "logs" ]; then
     docker-compose -f ./compose/docker-compose.server.yaml logs --follow
-elif [ "$COMMAND" = "py-shell" ]; then
+
+elif [ "$COMMAND" = "pyshell" ]; then
     poetry run ipython
-elif [ "$COMMAND" = "c-bash" ]; then
+
+elif [ "$COMMAND" = "cbash" ]; then
     docker exec -u root -it pablog-api /bin/bash
+
+elif [ "$COMMAND" = "dbshell" ]; then
+    docker exec -it pablog-masterdb psql -U $postgres_db_name
+
 elif [ "$COMMAND" = "drop-migrations" ]; then
     poetry run alembic stamp base && poetry run alembic downgrade base
+
 elif [ "$COMMAND" = "migrations" ]; then
     MIGRATIONS_COMMENT=$2
     poetry run alembic revision --autogenerate -m "$MIGRATIONS_COMMENT"
+
 elif [ "$COMMAND" = "migrate" ]; then
     poetry run alembic upgrade head
 fi
