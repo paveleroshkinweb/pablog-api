@@ -20,4 +20,4 @@ done
 set -a \
 		&& source ./compose/server/.env.server \
 		&& export postgres_db_host=127.0.0.1 \
-		&& poetry run ipython
+		&& poetry run alembic revision --autogenerate -m "$(name)"

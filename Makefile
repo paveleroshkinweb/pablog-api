@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: all prod-server unit-test py-shell c-bash check-server-cfg schema lint lint-fix mypy bandit init-dev-structure check-docker check-nginx clean
+.PHONY: all server unit-test py-shell c-bash migrations migrate check-server-cfg schema lint lint-fix mypy bandit init-dev-structure check-docker check-nginx clean
 
 all:
 	# intentionally left empty to prevent accidental run of first recipe
@@ -9,7 +9,7 @@ all:
 # -------------------------------------------------
 # DEVELOPMENT
 # -------------------------------------------------
-prod-server:
+server:
 	docker-compose --env-file ./compose/db/.env.db -f ./compose/docker-compose.server.yaml up --build
 
 py-shell:
@@ -17,6 +17,12 @@ py-shell:
 
 c-bash:
 	docker exec -u root -it pablog-api /bin/bash
+
+migrations:
+	./bin/utils/run_migrations.sh
+
+migrate:
+	./bin/utils/migrate.sh
 
 # -------------------------------------------------
 # TESTS

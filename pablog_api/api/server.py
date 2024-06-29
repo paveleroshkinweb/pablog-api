@@ -1,7 +1,7 @@
 from collections.abc import Awaitable, Callable
 from contextlib import asynccontextmanager
 
-from pablog_api.database import close_database, create_database, init_database, purge_database
+from pablog_api.database import close_database, init_database
 from pablog_api.logging_utils.setup_logger import configure_logger
 from pablog_api.settings.app import get_app_settings
 
@@ -30,10 +30,6 @@ logger = structlog.get_logger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_database(dsn=settings.postgres.dsn, debug=settings.is_development())
-
-    # Just a temporal hack for test purposes before migrations are integrated
-    await purge_database()
-    await create_database()
 
     yield
     await close_database()

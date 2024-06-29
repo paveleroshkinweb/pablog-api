@@ -10,7 +10,7 @@ session_factory: None | async_sessionmaker = None
 
 
 class PablogBase(AsyncAttrs, DeclarativeBase):
-    pass
+    __table_args__ = {"schema": PABLOG_SCHEMA}
 
 
 def init_database(dsn: str, debug: bool = False):
