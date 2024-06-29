@@ -51,12 +51,13 @@ It includes 2 main workflows:
 9) ```make check-nginx``` - validate nginx config
 
 #### LOCAL DEVELOPMENT
-1) ```make server``` - locally run production version of server
-2) ```make stop-server``` - stops local cluster
+1) ```make start-cluster``` - locally run production version of cluster
+2) ```make stop-cluster``` - stops local cluster
 3) ```make py-shell``` - run ipython interpreter with project context
 4) ```make c-bash``` - run bash interpreter inside of docker container
-5) ```make migrations``` - create migrations based on new models updates
-6) ```make migrate``` - migrate database to latest revision
+5) ```make migrations name={custom_name}``` - create migrations based on new models updates
+6) ```make drop-migrations``` - drops all alembic migrations from database
+7) ```make migrate``` - migrate database to latest revision
 
 #### UTILS
 1) ```make init-dev-structure``` - setup basic folders for local development. i.e logs, pid folders
