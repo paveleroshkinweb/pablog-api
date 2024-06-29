@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: all server unit-test py-shell c-bash migrations migrate check-server-cfg schema lint lint-fix mypy bandit init-dev-structure check-docker check-nginx clean
+.PHONY: all server stop-server unit-test py-shell c-bash migrations migrate check-server-cfg schema lint lint-fix mypy bandit init-dev-structure check-docker check-nginx clean
 
 all:
 	# intentionally left empty to prevent accidental run of first recipe
@@ -11,6 +11,9 @@ all:
 # -------------------------------------------------
 server:
 	docker-compose --env-file ./compose/db/.env.db -f ./compose/docker-compose.server.yaml up --build
+
+stop-server:
+	docker stop pablog-masterdb nginx-frontend pablog-api
 
 py-shell:
 	./bin/utils/run_ishell.sh
@@ -23,6 +26,7 @@ migrations:
 
 migrate:
 	./bin/utils/migrate.sh
+
 
 # -------------------------------------------------
 # TESTS

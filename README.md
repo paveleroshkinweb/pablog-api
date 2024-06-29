@@ -52,10 +52,11 @@ It includes 2 main workflows:
 
 #### LOCAL DEVELOPMENT
 1) ```make server``` - locally run production version of server
-2) ```make py-shell``` - run ipython interpreter with project context
-3) ```make c-bash``` - run bash interpreter inside of docker container
-4) ```make migrations``` - create migrations based on new models updates
-5) ```make migrate``` - migrate database to latest revision
+2) ```make stop-server``` - stops local cluster
+3) ```make py-shell``` - run ipython interpreter with project context
+4) ```make c-bash``` - run bash interpreter inside of docker container
+5) ```make migrations``` - create migrations based on new models updates
+6) ```make migrate``` - migrate database to latest revision
 
 #### UTILS
 1) ```make init-dev-structure``` - setup basic folders for local development. i.e logs, pid folders
