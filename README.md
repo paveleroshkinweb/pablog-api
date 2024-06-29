@@ -56,7 +56,7 @@ It includes 2 main workflows:
 3) ```make py-shell``` - run ipython interpreter with project context
 4) ```make c-bash``` - run bash interpreter inside of docker container
 5) ```make migrations name={custom_name}``` - create migrations based on new models updates
-6) ```make drop-migrations``` - drops all alembic migrations from database
+6) ```make drop-migrations``` - drops all alembic migrations information from database.
 7) ```make migrate``` - migrate database to latest revision
 
 #### UTILS
