@@ -30,7 +30,9 @@ set -a \
 		&& source ./compose/server/.env.server \
 		&& export postgres_db_host=127.0.0.1 \
 
-if [ "$COMMAND" = "py-shell" ]; then
+if [ "$COMMAND" = "logs" ]; then
+    docker-compose -f ./compose/docker-compose.server.yaml logs --follow
+elif [ "$COMMAND" = "py-shell" ]; then
     poetry run ipython
 elif [ "$COMMAND" = "c-bash" ]; then
     docker exec -u root -it pablog-api /bin/bash

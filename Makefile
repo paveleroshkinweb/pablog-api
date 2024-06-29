@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: all server stop-server unit-test py-shell c-bash migrations drop-migrations migrate check-server-cfg schema lint lint-fix mypy bandit init-dev-structure check-docker check-nginx clean
+.PHONY: all start-cluster stop-cluster logs unit-test py-shell c-bash migrations drop-migrations migrate check-server-cfg schema lint lint-fix mypy bandit init-dev-structure check-docker check-nginx clean
 
 all:
 	# intentionally left empty to prevent accidental run of first recipe
@@ -14,6 +14,9 @@ start-cluster:
 
 stop-cluster:
 	./bin/cluster/local_cluster_control.sh stop-cluster
+
+logs:
+	./bin/cluster/local_cluster_control.sh logs
 
 py-shell:
 	./bin/cluster/local_cluster_control.sh py-shell
