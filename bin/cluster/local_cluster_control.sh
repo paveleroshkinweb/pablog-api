@@ -16,7 +16,7 @@ fi
 
 
 if [ "$( docker container inspect -f '{{.State.Running}}' pablog-api )" != "true" ]; then
-  nohup make server &
+  nohup make start-cluster &
 fi
 
 

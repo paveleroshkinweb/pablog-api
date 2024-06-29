@@ -14,7 +14,7 @@
 1) Download tools that you need for local development: [poetry](https://python-poetry.org/), [docker](https://www.docker.com/)
 2) Run ```poetry install --with dev``` to install dev dependencies. i.e linter, static analyzer
 3) Run ```make init-dev-structure``` to setup basic folders for local development. i.e logs, pid
-4) Run ```make server``` It will run the server and all required services in docker.
+4) Run ```make start-cluster``` It will run the server and all required services in docker.
 
 All application/nginx/database logs can be found in logs folder.
 

@@ -1,3 +1,4 @@
+from sqlalchemy import MetaData
 from sqlalchemy.ext.asyncio import AsyncAttrs, AsyncEngine, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
 
@@ -12,6 +13,8 @@ session_factory: None | async_sessionmaker = None
 class PablogBase(AsyncAttrs, DeclarativeBase):
     __table_args__ = {"schema": PABLOG_SCHEMA}
 
+    metadata = MetaData(schema=PABLOG_SCHEMA)
+
 
 def init_database(dsn: str, debug: bool = False):
     global engine
@@ -24,7 +27,7 @@ def init_database(dsn: str, debug: bool = False):
         pool_size=1,
         max_overflow=0,
         pool_pre_ping=True,
-        connect_args={'options': f'-csearch_path={PABLOG_SCHEMA}'}
+        connect_args={'options': f'-csearch_path={PablogBase.metadata.schema}'}
     )
 
     session_factory = async_sessionmaker(engine, expire_on_commit=False)
