@@ -2,6 +2,7 @@ import os
 
 from logging.config import fileConfig
 
+from pablog_api.database.models import *
 from pablog_api.database.connection import PablogBase
 
 from alembic import context
