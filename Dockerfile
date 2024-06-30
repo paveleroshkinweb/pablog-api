@@ -40,6 +40,12 @@ ARG APP_PATH
 ARG USER
 ARG GROUP
 
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    # psycopg dependencies
+    libpq-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN groupadd -r ${GROUP} \
   && useradd -d ${APP_PATH} -r -g ${GROUP} ${USER}
 
