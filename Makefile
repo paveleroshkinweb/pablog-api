@@ -34,7 +34,7 @@ drop-migrations:
 	./bin/cluster/local_cluster_control.sh drop-migrations
 
 migrate:
-	./bin/cluster/local_cluster_control.sh migrate
+	./bin/cluster/local_cluster_control.sh migrate $(rev)
 
 
 # -------------------------------------------------

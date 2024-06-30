@@ -51,5 +51,10 @@ elif [ "$COMMAND" = "migrations" ]; then
     poetry run alembic revision --autogenerate -m "$MIGRATIONS_COMMENT"
 
 elif [ "$COMMAND" = "migrate" ]; then
-    poetry run alembic upgrade head
+    if [ "$#" -ne 2 ]; then
+      poetry run alembic upgrade head
+    else
+      REVISION=$2
+      poetry run alembic upgrade $REVISION
+    fi
 fi
