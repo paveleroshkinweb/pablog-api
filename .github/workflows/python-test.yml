@@ -10,10 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Build test docker image
-        run: |
-          docker build --target test -t pablog-test .
-
       - name: Run unit tests
         run: |
-          docker run --env-file tests/unit/.env.test pablog-test
+          make unit-test

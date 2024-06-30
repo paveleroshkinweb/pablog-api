@@ -44,7 +44,7 @@ check-migrations:
 # TESTS
 # -------------------------------------------------
 unit-test:
-	set -a && source tests/unit/.env.test && poetry run pytest tests/unit
+	./bin/testing_utils/run_tests.sh unit-test
 
 
 # -------------------------------------------------
