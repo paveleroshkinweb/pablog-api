@@ -57,4 +57,7 @@ elif [ "$COMMAND" = "migrate" ]; then
       REVISION=$2
       poetry run alembic upgrade $REVISION
     fi
+
+elif [ "$COMMAND" = "check-migrations" ]; then
+    poetry run alembic check
 fi

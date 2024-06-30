@@ -46,3 +46,10 @@ repos:
         name: check-security-issues
         entry: bash -c 'make bandit'
         language: system
+
+  - repo: local
+    hooks:
+      - id: check-if-migrations-generated
+        name: check-if-migrations-generated
+        entry: bash -c 'make check-migrations'
+        language: system

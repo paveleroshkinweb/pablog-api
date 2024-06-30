@@ -36,6 +36,9 @@ drop-migrations:
 migrate:
 	./bin/cluster/local_cluster_control.sh migrate $(rev)
 
+check-migrations:
+	./bin/cluster/local_cluster_control.sh check-migrations
+
 
 # -------------------------------------------------
 # TESTS
