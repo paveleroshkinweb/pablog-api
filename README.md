@@ -34,7 +34,6 @@ It includes 2 main workflows:
    * gunicorn config validation
    * python code security check
    * docker config validation
-   * db migrations validation
 2) Tests CI
    * unit tests
 
@@ -61,7 +60,7 @@ It includes 2 main workflows:
 7) ```make migrations name={custom_name}``` - create migrations based on new models updates
 8) ```make drop-migrations``` - drops all alembic migrations information from database.
 9) ```make migrate rev={revision_id}``` - migrate database to particular revision. leave empty (```make migrate```) if want to update to latest revision
-10) ```make check-migrations``` - checks if required migrations generated or not. it's integrated into pre-commit hook and also in github actions CI. So if you forgot to generate migrations you will know about it as soon as possible.
+10) ```make check-migrations``` - checks if required migrations generated or not. it's integrated into pre-commit hook
 
 #### UTILS
 1) ```make init-dev-structure``` - setup basic folders for local development. i.e logs, pid folders
