@@ -91,6 +91,8 @@ ENV POETRY_VERSION=1.4.2 \
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
     curl \
+    # psycopg dependencies
+    libpq-dev \
     # dependencies for building Python packages \
     build-essential \
     # install poetry
