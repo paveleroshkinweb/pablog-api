@@ -21,7 +21,7 @@ reuse_port = True
 
 pidfile = settings.service_settings.pidfile
 
-max_requests = 100000
+max_requests = 30000
 
 max_requests_jitter = 10000
 
