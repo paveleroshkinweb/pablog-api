@@ -12,6 +12,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
+      - archive_db_volume:/var/lib/postgresql/db/wal_archive/
       - master_db_volume:/var/lib/postgresql/data
       - ./db/master.conf:/etc/postgresql/postgresql.conf
       - ../logs/postgresql/:/var/log/postgresql/
@@ -26,6 +27,7 @@ services:
 
 volumes:
   master_db_volume:
+  archive_db_volume:
 
 
 networks:
