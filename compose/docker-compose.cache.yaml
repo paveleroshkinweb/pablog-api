@@ -1,0 +1,32 @@
+version: "3"
+
+
+services:
+  cache:
+    image: redis:7.2.5
+    entrypoint: ["redis-server", "/etc/redis/redis.conf"]
+    container_name: pablog-cache
+    restart: unless-stopped
+    env_file:
+      - ./cache/.env.cache
+    ports:
+      - "6379:6379"
+    volumes:
+      - cache_volume:/data
+      - ./cache/redis.conf:/etc/redis/redis.conf
+      - ../logs/cache:/var/log/redis
+    networks:
+      - cache
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+
+
+volumes:
+  cache_volume:
+
+
+networks:
+  cache:

@@ -90,6 +90,7 @@ init-dev-structure:
 	mkdir -p pid
 	mkdir -p logs
 	mkdir -p logs/postgresql
+	mkdir -p logs/cache
 	touch logs/pablog.logs
 
 clean:

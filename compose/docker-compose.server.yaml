@@ -2,6 +2,8 @@ version: "3"
 
 include:
   - docker-compose.db.yaml
+  - docker-compose.cache.yaml
+
 
 services:
   nginx:
@@ -41,6 +43,7 @@ services:
     networks:
       - web
       - db
+      - cache
     depends_on:
       - master_db
 
