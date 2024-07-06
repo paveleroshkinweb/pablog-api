@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: all start-cluster stop-cluster logs unit-test pyshell cbash dbshell migrations drop-migrations migrate check-migrations check-server-cfg schema lint lint-fix mypy bandit init-dev-structure check-docker check-nginx clean
+.PHONY: all start-cluster stop-cluster logs connect unit-test pyshell dbshell redishell migrations drop-migrations migrate check-migrations check-server-cfg schema lint lint-fix mypy bandit init-dev-structure check-docker check-nginx clean
 
 all:
 	# intentionally left empty to prevent accidental run of first recipe
@@ -24,7 +24,8 @@ pyshell:
 dbshell:
 	./bin/cluster/local_cluster_control.sh dbshell
 
-# redis cli shell here
+redishell:
+	./bin/cluster/local_cluster_control.sh redishell
 
 connect:
 	./bin/cluster/local_cluster_control.sh connect $(service)

@@ -34,15 +34,18 @@ set -a \
 if [ "$COMMAND" = "logs" ]; then
     docker-compose -f ./compose/docker-compose.server.yaml logs --follow
 
-elif [ "$COMMAND" = "pyshell" ]; then
-    poetry run ipython
-
 elif [ "$COMMAND" = "connect" ]; then
   SERVICE_NAME=$2
   docker exec -u root -it $SERVICE_NAME /bin/bash
 
+elif [ "$COMMAND" = "pyshell" ]; then
+    poetry run ipython
+
 elif [ "$COMMAND" = "dbshell" ]; then
     docker exec -it pablog-masterdb psql -U $postgres_db_name
+
+elif [ "$COMMAND" = "redishell" ]; then
+    docker exec -it pablog-cache redis-cli
 
 elif [ "$COMMAND" = "drop-migrations" ]; then
     poetry run alembic stamp base && poetry run alembic downgrade base
