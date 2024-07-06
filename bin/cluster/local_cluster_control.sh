@@ -11,7 +11,7 @@ if [ "$COMMAND" = "start-cluster" ]; then
     exit 0
 
 elif [ "$COMMAND" = "stop-cluster" ]; then
-    docker stop pablog-masterdb nginx-frontend pablog-api
+    docker-compose -f ./compose/docker-compose.server.yaml stop
     exit 0
 fi
 
@@ -37,8 +37,9 @@ if [ "$COMMAND" = "logs" ]; then
 elif [ "$COMMAND" = "pyshell" ]; then
     poetry run ipython
 
-elif [ "$COMMAND" = "cbash" ]; then
-    docker exec -u root -it pablog-api /bin/bash
+elif [ "$COMMAND" = "connect" ]; then
+  SERVICE_NAME=$2
+  docker exec -u root -it $SERVICE_NAME /bin/bash
 
 elif [ "$COMMAND" = "dbshell" ]; then
     docker exec -it pablog-masterdb psql -U $postgres_db_name

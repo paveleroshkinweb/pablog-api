@@ -6,6 +6,7 @@
 * [FastAPI](https://fastapi.tiangolo.com/) for the Python backend API.
 * [Nginx](https://nginx.org/) as a webserver
 * [PostgreSQL](https://www.postgresql.org/) as master database
+* [Redis](https://redis.io/) as cache service
 * [Docker](https://www.docker.com/) for testing/development/production.
 * [Pytest](https://docs.pytest.org/en/8.2.x/) for smoke/unit/integration tests
 
@@ -55,7 +56,7 @@ It includes 2 main workflows:
 2) ```make stop-cluster``` - stops local cluster
 3) ```make logs``` - shows logs for all cluster processes
 4) ```make pyshell``` - run ipython interpreter with project context
-5) ```make cbash``` - run bash interpreter inside of docker container
+5) ```make connect service={service_name}``` - run bash interpreter inside of docker container service
 6) ```make dbshell``` - run psql terminal command for master database
 7) ```make migrations name={custom_name}``` - create migrations based on new models updates
 8) ```make drop-migrations``` - drops all alembic migrations information from database.

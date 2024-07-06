@@ -21,11 +21,13 @@ logs:
 pyshell:
 	./bin/cluster/local_cluster_control.sh pyshell
 
-cbash:
-	./bin/cluster/local_cluster_control.sh cbash
-
 dbshell:
 	./bin/cluster/local_cluster_control.sh dbshell
+
+# redis cli shell here
+
+connect:
+	./bin/cluster/local_cluster_control.sh connect $(service)
 
 migrations:
 	./bin/cluster/local_cluster_control.sh migrations $(name)
@@ -98,6 +100,4 @@ clean:
 	find . -type d -name __pycache__ | xargs rm -fr
 	rm -fr logs/*
 	rm -fr pid/*
-	docker rm pablog-masterdb
-	docker rm nginx-frontend
-	docker rm pablog-api
+	docker-compose -f ./compose/docker-compose.server.yaml rm
