@@ -7,13 +7,16 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [ "3.11.9", "3.12.4" ]
     steps:
       - uses: actions/checkout@v2
 
       - name: Set up python
         uses: actions/setup-python@v3
         with:
-          python-version: 3.11.6
+          python-version: ${{matrix.python}}
 
       - name: Install and configure poetry
         uses: snok/install-poetry@v1
