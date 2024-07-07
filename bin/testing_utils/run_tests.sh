@@ -16,6 +16,5 @@ if [ "$COMMAND" = "unit" ]; then
     docker build --build-arg="PYTHON_VERSION=$BUILD_PYTHON_VERSION" --target test -t pablog-test .
     docker run --env-file tests/unit/.env.test pablog-test unit
 elif [ "$COMMAND" = "integration" ]; then
-    docker-compose -f ./compose/docker-compose.test.yaml stop
-    docker-compose --env-file tests/integration/.env.test -f compose/docker-compose.test.yaml run --rm --build test integration
+    docker-compose --env-file tests/integration/.env.test -f compose/docker-compose.test.yaml up --abort-on-container-exit --build
 fi
