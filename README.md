@@ -37,6 +37,7 @@ It includes 2 main workflows:
    * docker config validation
 2) Tests CI
    * unit tests
+   * integration tests
 
 
 ### Development commands
