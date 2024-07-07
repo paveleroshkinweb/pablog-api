@@ -1,5 +1,6 @@
-from fastapi import status
 import aiohttp
+
+from fastapi import status
 
 
 async def test_status():
