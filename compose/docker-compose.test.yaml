@@ -7,19 +7,14 @@ services:
     build:
       context: ../
       target: test
-    container_name: pablog-test
     env_file:
       - ../tests/integration/.env.test
-    networks:
-      - web
-      - db
-      - cache
     depends_on:
-      - nginx
+      nginx:
+        condition: service_healthy
 
   nginx:
     image: nginx:1.25
-    container_name: pablog-frontend
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/site.conf:/etc/nginx/conf.d/default.conf:ro
@@ -27,8 +22,6 @@ services:
       - ./nginx/extra_headers.conf:/etc/nginx/extra_headers.conf:ro
       - ./nginx/disable_logs.conf:/etc/nginx/disable_logs.conf:ro
       - app_runtime:/var/run/pablog-service/
-    networks:
-      web:
     depends_on:
       - api
     healthcheck:
@@ -41,28 +34,23 @@ services:
     build:
       context: ../
       target: prod
-    container_name: pablog-api
     env_file:
       - ./server/.env.server
     volumes:
       - app_runtime:/var/run/pablog-service/
-    networks:
-      - web
-      - db
-      - cache
     depends_on:
-      - master_db
+      master_db:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
 
   master_db:
     image: postgres:16.2
     command: -c config_file=/etc/postgresql/postgresql.conf
-    container_name: pablog-masterdb
     env_file:
       - ./db/.env.db
     volumes:
       - ./db/master.conf:/etc/postgresql/postgresql.conf
-    networks:
-      - db
     healthcheck:
       test: [ "CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'" ]
       interval: 5s
@@ -72,13 +60,8 @@ services:
   cache:
     image: redis:7.2.5
     entrypoint: [ "redis-server", "/etc/redis/redis.conf" ]
-    container_name: pablog-cache
-    env_file:
-      - ./cache/.env.cache
     volumes:
-      - ./cache/redis.conf:/etc/redis/redis.conf
-    networks:
-      - cache
+      - ./cache/redis-test.conf:/etc/redis/redis.conf
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 5s
@@ -88,9 +71,3 @@ services:
 
 volumes:
   app_runtime:
-
-
-networks:
-  web:
-  db:
-  cache:

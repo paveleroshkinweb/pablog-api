@@ -45,7 +45,10 @@ services:
       - db
       - cache
     depends_on:
-      - master_db
+      master_db:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
 
 
 volumes:
