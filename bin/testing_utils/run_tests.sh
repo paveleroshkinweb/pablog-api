@@ -17,5 +17,5 @@ if [ "$COMMAND" = "unit" ]; then
     docker run --env-file tests/unit/.env.test pablog-test unit
 elif [ "$COMMAND" = "integration" ]; then
     docker-compose -f ./compose/docker-compose.test.yaml stop
-    docker-compose -f ./compose/docker-compose.test.yaml run test integration
+    docker-compose -f ./compose/docker-compose.test.yaml run test integration --build
 fi
