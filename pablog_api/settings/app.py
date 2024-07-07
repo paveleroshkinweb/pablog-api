@@ -1,6 +1,7 @@
 from functools import lru_cache
 
 from pablog_api.settings.base import BaseAppSettings
+from pablog_api.settings.cache import CacheSettings
 from pablog_api.settings.code_environment import CodeEnvironment
 from pablog_api.settings.logging import LoggingSettings
 from pablog_api.settings.postgres import PostgresSettings
@@ -11,10 +12,14 @@ import pydantic
 
 class AppSettings(BaseAppSettings):
 
+    app_name: str = "PablogAPI"
+    app_version: str = "0.1.0"
+
     environment: CodeEnvironment = pydantic.Field(default=CodeEnvironment.DEV)
     service_settings: ServiceSettings = ServiceSettings()
     logging: LoggingSettings = LoggingSettings()
     postgres: PostgresSettings = PostgresSettings()
+    cache: CacheSettings = CacheSettings()
 
     def is_development(self) -> bool:
         return self.environment == CodeEnvironment.DEV

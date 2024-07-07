@@ -59,7 +59,9 @@ check-server-cfg:
 		&& poetry run gunicorn --config pablog_api/gunicorn_conf.py --check-config pablog_api.api.server:app
 
 schema:
-	 poetry run python pablog_api/main.py schema
+	set -a \
+		&& source .env.example \
+		&& poetry run python pablog_api/main.py schema
 
 lint:
 	poetry run ruff check .

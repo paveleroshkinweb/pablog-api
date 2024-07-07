@@ -1,6 +1,7 @@
 from collections.abc import Awaitable, Callable
 from contextlib import asynccontextmanager
 
+from pablog_api.cache import init_cache
 from pablog_api.database import close_database, init_database
 from pablog_api.logging_utils.setup_logger import configure_logger
 from pablog_api.settings.app import get_app_settings
@@ -19,8 +20,6 @@ API_VERSION = "v1"
 
 API_PATH_V1 = f"/api/{API_VERSION}"
 
-VERSION = "0.1.0"
-
 ACCESS_LOGS_BLACKLIST = ["/healthcheck", "/docs"]
 
 
@@ -30,6 +29,7 @@ logger = structlog.get_logger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_database(dsn=settings.postgres.dsn, debug=settings.is_development())
+    await init_cache(settings.cache, settings.app_name)
 
     yield
     await close_database()
@@ -37,11 +37,11 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     lifespan=lifespan,
-    title="PablogAPI",
+    title=settings.app_name,
     docs_url="/docs/openapi",
     openapi_url="/docs/openapi.json",
     default_response_class=ORJSONResponse,
-    version=VERSION,
+    version=settings.app_version,
 )
 
 
@@ -76,4 +76,4 @@ def healthcheck() -> Response:
 
 @app.get(f"{API_PATH_V1}/info")
 def info() -> Response:
-    return ORJSONResponse(status_code=status.HTTP_200_OK, content={"version": VERSION})
+    return ORJSONResponse(status_code=status.HTTP_200_OK, content={"version": settings.app_version})
