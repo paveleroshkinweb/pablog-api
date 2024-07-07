@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: all start-cluster stop-cluster logs connect unit-test pyshell dbshell redishell migrations drop-migrations migrate check-migrations check-server-cfg schema lint lint-fix mypy bandit init-dev-structure check-docker check-nginx clean
+.PHONY: all start-cluster stop-cluster logs connect unit-test integration-test pyshell dbshell redishell migrations drop-migrations migrate check-migrations check-server-cfg schema lint lint-fix mypy bandit init-dev-structure check-docker check-nginx clean
 
 all:
 	# intentionally left empty to prevent accidental run of first recipe
@@ -47,7 +47,10 @@ check-migrations:
 # TESTS
 # -------------------------------------------------
 unit-test:
-	./bin/testing_utils/run_tests.sh unit-test
+	./bin/testing_utils/run_tests.sh unit
+
+integration-test:
+	./bin/testing_utils/run_tests.sh integration
 
 
 # -------------------------------------------------

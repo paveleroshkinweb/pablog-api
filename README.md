@@ -41,15 +41,16 @@ It includes 2 main workflows:
 
 ### Development commands
 #### CI
-1) ```make unit-test``` - run unit tests (not in docker container)
-2) ```make check-server-cfg``` - validate gunicorn config
-3) ```make schema``` - export new openapi schema into docs/openapi-schema/openapi_VERSION.json
-4) ```make lint``` - run ruff linter
-5) ```make lint-fix``` - fix linter issues if possible
-6) ```make mypy``` - run static analysis with mypy
-7) ```make bandit``` - check for security issues in python code
-8) ```make check-docker``` - validate docker config
-9) ```make check-nginx``` - validate nginx config
+1) ```make unit-test``` - run unit tests
+2) ```make integration-test``` - run integration tests
+3) ```make check-server-cfg``` - validate gunicorn config
+4) ```make schema``` - export new openapi schema into docs/openapi-schema/openapi_VERSION.json
+5) ```make lint``` - run ruff linter
+6) ```make lint-fix``` - fix linter issues if possible
+7) ```make mypy``` - run static analysis with mypy
+8) ```make bandit``` - check for security issues in python code
+9) ```make check-docker``` - validate docker config
+10) ```make check-nginx``` - validate nginx config
 
 #### LOCAL DEVELOPMENT
 1) ```make start-cluster``` - locally run production version of cluster

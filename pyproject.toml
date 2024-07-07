@@ -22,6 +22,7 @@ sqlalchemy = "^2.0.27"
 greenlet = "^3.0.3"
 psycopg = "^3.1.19"
 redis = "^5.0.7"
+aiohttp = "^3.9.5"
 
 
 [tool.poetry.group.dev.dependencies]

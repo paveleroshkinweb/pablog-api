@@ -11,8 +11,11 @@ else
   BUILD_PYTHON_VERSION="${PYTHON_VERSION}"
 fi
 
-docker build --build-arg="PYTHON_VERSION=$BUILD_PYTHON_VERSION" --target test -t pablog-test .
 
-if [ "$COMMAND" = "unit-test" ]; then
-    docker run --env-file tests/unit/.env.test pablog-test
+if [ "$COMMAND" = "unit" ]; then
+    docker build --build-arg="PYTHON_VERSION=$BUILD_PYTHON_VERSION" --target test -t pablog-test .
+    docker run --env-file tests/unit/.env.test pablog-test unit
+elif [ "$COMMAND" = "integration" ]; then
+    docker-compose -f ./compose/docker-compose.test.yaml stop
+    docker-compose -f ./compose/docker-compose.test.yaml run --build --service-ports test integration
 fi

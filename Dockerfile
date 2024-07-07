@@ -115,4 +115,6 @@ RUN poetry install --no-root --with dev
 
 COPY --chown=${USER}:${GROUP} . .
 
-CMD ["poetry", "run", "pytest", "tests/unit"]
+ENTRYPOINT ["./entrypoint-test.sh"]
+
+CMD ["unit"]
