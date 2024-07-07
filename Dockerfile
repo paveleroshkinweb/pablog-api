@@ -1,4 +1,4 @@
-ARG PYTHON_VERSION=3.11-slim-buster
+ARG PYTHON_VERSION=3.11-slim
 ARG APP_PATH=/opt/pablog-api
 ARG USER=pablog
 ARG GROUP=pablog
