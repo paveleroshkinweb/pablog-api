@@ -30,6 +30,9 @@ redishell:
 connect:
 	./bin/cluster/local_cluster_control.sh connect $(service)
 
+stop:
+	./bin/cluster/local_cluster_control.sh stop $(service)
+
 migrations:
 	./bin/cluster/local_cluster_control.sh migrations $(name)
 

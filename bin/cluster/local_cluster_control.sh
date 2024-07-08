@@ -37,7 +37,11 @@ if [ "$COMMAND" = "logs" ]; then
 
 elif [ "$COMMAND" = "connect" ]; then
   SERVICE_NAME=$2
-  docker exec -u root -it $SERVICE_NAME /bin/bash
+  docker-compose -f ./compose/docker-compose.server.yaml exec -u root -it $SERVICE_NAME /bin/bash
+
+elif [ "$COMMAND" = "stop" ]; then
+  SERVICE_NAME=$2
+  docker-compose -f ./compose/docker-compose.server.yaml stop $SERVICE_NAME
 
 elif [ "$COMMAND" = "pyshell" ]; then
     poetry run ipython

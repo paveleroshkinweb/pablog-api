@@ -58,13 +58,14 @@ It includes 2 main workflows:
 2) ```make stop-cluster``` - stops local cluster
 3) ```make logs``` - shows logs for all cluster processes
 4) ```make connect service={service_name}``` - run bash interpreter inside of docker container service
-5) ```make pyshell``` - run ipython interpreter with project context
-6) ```make dbshell``` - run psql terminal command for master database
-7) ```make redishell``` - run redis-cli terminal
-8) ```make migrations name={custom_name}``` - create migrations based on new models updates
-9) ```make drop-migrations``` - drops all alembic migrations information from database.
-10) ```make migrate rev={revision_id}``` - migrate database to particular revision. leave empty (```make migrate```) if want to update to latest revision
-11) ```make check-migrations``` - checks if required migrations generated or not. it's integrated into pre-commit hook
+5) ```make stop service={service_name}``` - stop the service
+6) ```make pyshell``` - run ipython interpreter with project context
+7) ```make dbshell``` - run psql terminal command for master database
+8) ```make redishell``` - run redis-cli terminal
+9) ```make migrations name={custom_name}``` - create migrations based on new models updates
+10) ```make drop-migrations``` - drops all alembic migrations information from database.
+11) ```make migrate rev={revision_id}``` - migrate database to particular revision. leave empty (```make migrate```) if want to update to latest revision
+12) ```make check-migrations``` - checks if required migrations generated or not. it's integrated into pre-commit hook
 
 #### UTILS
 1) ```make init-dev-structure``` - setup basic folders for local development. i.e logs, pid folders
