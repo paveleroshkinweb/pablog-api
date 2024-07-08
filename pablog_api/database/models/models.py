@@ -31,6 +31,7 @@ class TimestampMixin:
         server_default=text("current_timestamp(0)")
     )
 
+
 class SoftDeleteMixin:
 
     deleted_at: Mapped[datetime] = mapped_column(nullable=True)

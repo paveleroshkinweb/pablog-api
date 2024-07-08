@@ -58,8 +58,8 @@ async def logging_middleware(
     )
 
     # Do not log utils requests
-    shouldLogRequest = not any(request.url.path.startswith(pattern) for pattern in ACCESS_LOGS_BLACKLIST)
-    if shouldLogRequest:
+    should_log_request = not any(request.url.path.startswith(pattern) for pattern in ACCESS_LOGS_BLACKLIST)
+    if should_log_request:
         logger.info("Received new request")
         response = await call_next(request)
         logger.info("Processed request")
