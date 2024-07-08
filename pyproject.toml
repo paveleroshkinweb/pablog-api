@@ -36,6 +36,7 @@ httpx = "^0.25.2"
 ipython = "^8.18.1"
 alembic = "^1.13.2"
 pytest-benchmark = "^4.0.0"
+sqlalchemy = {extras = ["mypy"], version = "^2.0.31"}
 
 
 [build-system]
@@ -99,4 +100,4 @@ section-order = ["future", "standard-library", "first-party", "local-folder", "t
 files = "pablog_api/"
 ignore_missing_imports = "True"
 strict_optional = "True"
-plugins = ["pydantic.mypy"]
+plugins = ["pydantic.mypy", "sqlalchemy.ext.mypy.plugin"]
