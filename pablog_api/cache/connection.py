@@ -22,7 +22,7 @@ async def init_cache(cache_settings: CacheSettings, app_name: str):
         retry_on_error=[BusyLoadingError, ConnectionError, TimeoutError],
         retry=Retry(ExponentialBackoff(), 3),
         single_connection_client=True,
-        health_check_interval=7,
+        health_check_interval=10,
         client_name=app_name
     )
 
