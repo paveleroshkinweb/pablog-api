@@ -4,7 +4,7 @@ from pablog_api.api.v1 import router as v1_router
 from pablog_api.cache import init_cache
 from pablog_api.database import close_database, init_database
 from pablog_api.logging_utils.setup_logger import configure_logger
-from pablog_api.middleware import LogRequestMiddleware
+from pablog_api.middleware import LogRequestMiddleware, RequiredRequestID
 from pablog_api.settings.app import get_app_settings
 
 from fastapi import APIRouter, FastAPI
@@ -42,6 +42,7 @@ app = FastAPI(
     }
 )
 
+app.add_middleware(RequiredRequestID, environment=settings.environment)
 app.add_middleware(LogRequestMiddleware)
 
 api_router = APIRouter(prefix="/api")
