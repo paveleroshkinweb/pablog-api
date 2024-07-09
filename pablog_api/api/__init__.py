@@ -15,6 +15,9 @@ settings = get_app_settings()
 
 configure_logger(settings)
 
+DOCS_URL = "/docs/openapi" if settings.is_development() else None
+OPENAPI_URL = "/docs/openapi.json" if settings.is_development() else None
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -28,8 +31,8 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     lifespan=lifespan,
     title=settings.app_name,
-    docs_url="/docs/openapi",
-    openapi_url="/docs/openapi.json",
+    docs_url=DOCS_URL,
+    openapi_url=OPENAPI_URL,
     default_response_class=ORJSONResponse,
     version=settings.app_version,
     contact={

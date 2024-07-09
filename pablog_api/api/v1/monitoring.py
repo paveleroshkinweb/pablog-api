@@ -6,7 +6,7 @@ from fastapi import APIRouter, status
 
 settings = get_app_settings()
 
-router = APIRouter(tags=["utils"])
+router = APIRouter(tags=["monitoring"])
 
 
 @router.get(
