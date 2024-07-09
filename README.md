@@ -46,12 +46,13 @@ It includes 2 main workflows:
 2) ```make integration-test``` - run integration tests
 3) ```make check-server-cfg``` - validate gunicorn config
 4) ```make schema``` - export new openapi schema into docs/openapi-schema/openapi_VERSION.json
-5) ```make lint``` - run ruff linter
-6) ```make lint-fix``` - fix linter issues if possible
-7) ```make mypy``` - run static analysis with mypy
-8) ```make bandit``` - check for security issues in python code
-9) ```make check-docker``` - validate docker config
-10) ```make check-nginx``` - validate nginx config
+5) ```make check-lock``` - check if poetry lock file is consistent with toml
+6) ```make lint``` - run ruff linter
+7) ```make lint-fix``` - fix linter issues if possible
+8) ```make mypy``` - run static analysis with mypy
+9) ```make bandit``` - check for security issues in python code
+10) ```make check-docker``` - validate docker config
+11) ```make check-nginx``` - validate nginx config
 
 #### LOCAL DEVELOPMENT
 1) ```make start-cluster``` - locally run production version of cluster

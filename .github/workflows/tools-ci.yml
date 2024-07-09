@@ -11,17 +11,13 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install hadolint
-        run: |
-          docker pull pipelinecomponents/hadolint:0.25.8
+        run: docker pull pipelinecomponents/hadolint:0.25.8
 
       - name: Check Dockerfile issues
-        run: |
-          make check-docker
+        run: make check-docker
 
       - name: Install nginx
-        run: |
-          docker pull nginx:1.25.0-alpine
+        run: docker pull nginx:1.25.0-alpine
 
       - name: Validate nginx
-        run:
-          make check-nginx
+        run: make check-nginx

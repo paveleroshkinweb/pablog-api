@@ -25,22 +25,20 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
+      - name: Validate that lock file is consistent with pyproject.toml
+        run: make check-lock
+
       - name: Install dependencies
-        run: |
-          poetry install --with dev
+        run: poetry install --with dev
 
       - name: Run linter
-        run: |
-          make lint
+        run: make lint
 
       - name: Run mypy
-        run: |
-          make mypy
+        run: make mypy
 
       - name: Check gunicorn config
-        run: |
-          make check-server-cfg
+        run: make check-server-cfg
 
       - name: Check security issues
-        run: |
-          make bandit
+        run: make bandit

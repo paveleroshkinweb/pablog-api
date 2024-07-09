@@ -53,3 +53,10 @@ repos:
         name: check-if-migrations-generated
         entry: bash -c 'make check-migrations'
         language: system
+
+  - repo: local
+    hooks:
+      - id: check-if-lock-file-consistent
+        name: check-if-lock-file-consistent
+        entry: bash -c 'make check-lock'
+        language: system

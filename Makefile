@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: all start-cluster stop-cluster logs connect stop unit-test integration-test pyshell dbshell redishell migrations drop-migrations migrate check-migrations check-server-cfg schema lint lint-fix mypy bandit init-dev-structure check-docker check-nginx clean
+.PHONY: all start-cluster stop-cluster logs connect stop unit-test integration-test pyshell dbshell redishell migrations drop-migrations migrate check-migrations check-server-cfg schema check-lock lint lint-fix mypy bandit init-dev-structure check-docker check-nginx clean
 
 all:
 	# intentionally left empty to prevent accidental run of first recipe
@@ -68,6 +68,9 @@ schema:
 	set -a \
 		&& source .env.example \
 		&& poetry run python pablog_api/main.py schema
+
+check-lock:
+	poetry check --lock
 
 lint:
 	poetry run ruff check .
