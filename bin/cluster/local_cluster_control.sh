@@ -69,4 +69,7 @@ elif [ "$COMMAND" = "migrate" ]; then
 
 elif [ "$COMMAND" = "check-migrations" ]; then
     poetry run alembic check
+
+elif [ "$COMMAND" = "rollback" ]; then
+    poetry run alembic downgrade -1
 fi

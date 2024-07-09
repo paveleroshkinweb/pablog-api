@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: all start-cluster stop-cluster logs connect stop unit-test integration-test pyshell dbshell redishell migrations drop-migrations migrate check-migrations check-server-cfg schema check-lock lint lint-fix mypy bandit init-dev-structure check-docker check-nginx clean
+.PHONY: all start-cluster stop-cluster logs connect stop unit-test integration-test pyshell dbshell redishell migrations drop-migrations migrate rollback check-migrations check-server-cfg schema check-lock lint lint-fix mypy bandit init-dev-structure check-docker check-nginx clean
 
 all:
 	# intentionally left empty to prevent accidental run of first recipe
@@ -41,6 +41,9 @@ drop-migrations:
 
 migrate:
 	./bin/cluster/local_cluster_control.sh migrate $(rev)
+
+rollback:
+	./bin/cluster/local_cluster_control.sh rollback
 
 check-migrations:
 	./bin/cluster/local_cluster_control.sh check-migrations
