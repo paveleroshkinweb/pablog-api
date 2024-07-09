@@ -1,6 +1,6 @@
 import asyncio
 
-from pablog_api.api.server import app
+from pablog_api.api import app
 from pablog_api.settings.app import get_app_settings
 
 import pytest_asyncio

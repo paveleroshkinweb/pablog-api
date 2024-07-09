@@ -62,7 +62,7 @@ integration-test:
 check-server-cfg:
 	set -a \
 		&& source .env.example \
-		&& poetry run gunicorn --config pablog_api/gunicorn_conf.py --check-config pablog_api.api.server:app
+		&& poetry run gunicorn --config pablog_api/gunicorn_conf.py --check-config pablog_api.api:app
 
 schema:
 	set -a \

@@ -25,7 +25,7 @@ services:
     depends_on:
       - api
     healthcheck:
-      test: curl -s http://127.0.0.1:8001/healthcheck > /dev/null || exit 1
+      test: curl -s http://127.0.0.1:8001/api/v1/healthcheck > /dev/null || exit 1
       interval: 5s
       timeout: 10s
       retries: 5

@@ -1,7 +1,7 @@
 import json
 import os
 
-from pablog_api.api.server import app as server
+from pablog_api.api import app as server
 from pablog_api.settings.app import get_app_settings
 
 import typer
