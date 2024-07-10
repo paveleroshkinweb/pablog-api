@@ -44,7 +44,7 @@ elif [ "$COMMAND" = "stop" ]; then
   docker-compose -f ./compose/docker-compose.server.yaml stop $SERVICE_NAME
 
 elif [ "$COMMAND" = "pyshell" ]; then
-    poetry run ipython
+    poetry run ipython -i ./bin/utils/ipython_helper.py
 
 elif [ "$COMMAND" = "dbshell" ]; then
     docker exec -it pablog-masterdb psql -U $postgres_db_name

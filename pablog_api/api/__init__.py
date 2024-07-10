@@ -21,7 +21,7 @@ OPENAPI_URL = "/docs/openapi.json" if settings.is_development() else None
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    init_database(dsn=settings.postgres.dsn, debug=settings.is_development())
+    init_database(settings.postgres, debug=settings.is_development())
     await init_cache(settings.cache, settings.app_name)
 
     yield

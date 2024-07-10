@@ -1,3 +1,5 @@
+from pablog_api.settings import PostgresSettings
+
 from sqlalchemy import MetaData
 from sqlalchemy.ext.asyncio import AsyncAttrs, AsyncEngine, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
@@ -16,12 +18,12 @@ class PablogBase(AsyncAttrs, DeclarativeBase):
     metadata = MetaData(schema=PABLOG_SCHEMA)
 
 
-def init_database(dsn: str, debug: bool = False):
+def init_database(db_settings: PostgresSettings, debug: bool = False):
     global engine
     global session_factory
 
     engine = create_async_engine(
-        dsn,
+        db_settings.dsn,
         echo=debug,
         future=True,
         pool_size=1,
@@ -60,3 +62,7 @@ async def purge_database():
 
     async with engine.begin() as connection:
         await connection.run_sync(PablogBase.metadata.drop_all)
+
+
+def get_session_factory() -> None | async_sessionmaker:
+    return session_factory
