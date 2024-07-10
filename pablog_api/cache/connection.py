@@ -27,7 +27,3 @@ async def init_cache(cache_settings: CacheSettings, app_name: str):
     )
 
     await cache_client.ping()
-
-
-def get_cache_client() -> None | Redis:
-    return cache_client

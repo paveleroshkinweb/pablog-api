@@ -1,3 +1,5 @@
+from pablog_api.constant import REQUEST_ID_HEADER, request_id_ctx_var
+
 import structlog
 
 from fastapi import Request, Response
@@ -16,11 +18,11 @@ class LogRequestMiddleware(BaseHTTPMiddleware):
 
         structlog.contextvars.clear_contextvars()
 
-        request_id = request.headers.get("X-Request-Id", "")
+        request_id = request_id_ctx_var.get()
 
-        structlog.contextvars.bind_contextvars(
-            request_id=request_id,
-        )
+        structlog.contextvars.bind_contextvars(**{
+            REQUEST_ID_HEADER: request_id
+        })
 
         # Do not log utils requests
         should_log_request = not any(request.url.path.startswith(pattern) for pattern in ACCESS_LOGS_BLACKLIST)

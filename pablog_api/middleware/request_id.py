@@ -1,4 +1,6 @@
-from pablog_api.constant import REQUEST_ID_HEADER
+import uuid
+
+from pablog_api.constant import REQUEST_ID_HEADER, request_id_ctx_var
 from pablog_api.schema.response import ErrorResponse
 from pablog_api.settings import CodeEnvironment
 
@@ -8,7 +10,7 @@ from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoin
 from starlette.types import ASGIApp
 
 
-class RequiredRequestID(BaseHTTPMiddleware):
+class AddRequestIDMiddleware(BaseHTTPMiddleware):
 
     def __init__(self, app: ASGIApp, environment: CodeEnvironment):
         super().__init__(app)
@@ -30,4 +32,13 @@ class RequiredRequestID(BaseHTTPMiddleware):
                 content=error_response.model_dump()
             )
 
-        return await call_next(request)
+        # Generate random request_id just for development purposes
+        if not request_id:
+            request_id = str(uuid.uuid4())
+
+        request_id_ctx_var.set(request_id)
+
+        response = await call_next(request)
+
+        response.headers['X-Request-ID'] = request_id
+        return response
