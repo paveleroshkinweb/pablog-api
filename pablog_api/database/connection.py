@@ -41,6 +41,7 @@ def init_database(db_settings: PostgresSettings, debug: bool = False):
         pool_size=1,
         max_overflow=0,
         pool_pre_ping=True,
+        isolation_level=db_settings.db_transaction_isolation_level,
         connect_args={'options': f'-csearch_path={PablogBase.metadata.schema}'}
     )
 

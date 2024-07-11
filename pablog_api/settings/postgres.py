@@ -1,3 +1,4 @@
+from pablog_api.constant import IsolationLevel
 from pablog_api.settings.base import BaseAppSettings
 
 import pydantic
@@ -19,6 +20,8 @@ class PostgresSettings(BaseAppSettings):
     db_port: int = pydantic.Field(default=5432)
 
     db_scheme: str = "postgresql+psycopg"
+
+    db_transaction_isolation_level: IsolationLevel = pydantic.Field(default=IsolationLevel.READ_COMMITTED)
 
     @property
     def dsn(self) -> str:
