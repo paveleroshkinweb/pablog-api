@@ -1,3 +1,6 @@
+from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
+
 from pablog_api.constant import request_id_ctx_var
 from pablog_api.settings import PostgresSettings
 
@@ -5,6 +8,7 @@ from sqlalchemy import MetaData
 from sqlalchemy.ext.asyncio import (
     AsyncAttrs,
     AsyncEngine,
+    AsyncSession,
     async_scoped_session,
     async_sessionmaker,
     create_async_engine,
@@ -16,7 +20,7 @@ PABLOG_SCHEMA = 'pablog'
 
 engine: None | AsyncEngine = None
 session_factory: None | async_sessionmaker = None
-async_session: None | async_scoped_session = None
+scoped_session_factory: None | async_scoped_session = None
 
 
 class PablogBase(AsyncAttrs, DeclarativeBase):
@@ -32,13 +36,13 @@ def bind_session_to_request_id():
 def init_database(db_settings: PostgresSettings, debug: bool = False):
     global engine
     global session_factory
-    global async_session
+    global scoped_session_factory
 
     engine = create_async_engine(
         db_settings.dsn,
         echo=debug,
         future=True,
-        pool_size=1,
+        pool_size=db_settings.db_connection_pool_size,
         max_overflow=0,
         pool_pre_ping=True,
         isolation_level=db_settings.db_transaction_isolation_level,
@@ -46,33 +50,42 @@ def init_database(db_settings: PostgresSettings, debug: bool = False):
     )
 
     session_factory = async_sessionmaker(engine, expire_on_commit=False)
-    async_session = async_scoped_session(session_factory, scopefunc=bind_session_to_request_id)
+    scoped_session_factory = async_scoped_session(session_factory, scopefunc=bind_session_to_request_id)
 
 
 async def close_database():
-    global engine
-
-    if engine is None:
+    if not engine:
         return
 
     await engine.dispose()
 
 
 async def create_database():
-    global engine
-
-    if engine is None:
-        return
+    if not engine:
+        raise RuntimeError("Engine has not been initialised!")
 
     async with engine.begin() as connection:
         await connection.run_sync(PablogBase.metadata.create_all)
 
 
 async def purge_database():
-    global engine
-
-    if engine is None:
-        return
+    if not engine:
+        raise RuntimeError("Engine has not been initialised!")
 
     async with engine.begin() as connection:
         await connection.run_sync(PablogBase.metadata.drop_all)
+
+
+@asynccontextmanager
+async def get_scoped_session() -> AsyncGenerator[AsyncSession, None]:
+    if not scoped_session_factory:
+        raise RuntimeError("Session has not been initialised!")
+
+    async with scoped_session_factory() as session:
+        yield session
+
+
+def get_scoped_session_factory() -> async_scoped_session:
+    if not scoped_session_factory:
+        raise RuntimeError("Session has not been initialised!")
+    return scoped_session_factory
