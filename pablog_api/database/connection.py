@@ -83,9 +83,3 @@ async def get_scoped_session() -> AsyncGenerator[AsyncSession, None]:
 
     async with scoped_session_factory() as session:
         yield session
-
-
-def get_scoped_session_factory() -> async_scoped_session:
-    if not scoped_session_factory:
-        raise RuntimeError("Session has not been initialised!")
-    return scoped_session_factory
