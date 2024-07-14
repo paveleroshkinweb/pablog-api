@@ -1,9 +1,10 @@
-from .base import (
+from .base import PablogException
+from .http import (
     BadRequestException,
     DuplicateValueException,
     ForbiddenException,
     NotFoundException,
-    PablogException,
+    PablogHttpException,
     UnauthorizedException,
     UnprocessableEntity,
 )
@@ -11,10 +12,11 @@ from .base import (
 
 __all__ = [
     'PablogException',
+    'PablogHttpException',
     'BadRequestException',
     'NotFoundException',
     'ForbiddenException',
     'UnauthorizedException',
     'UnprocessableEntity',
-    'DuplicateValueException'
+    'DuplicateValueException',
 ]

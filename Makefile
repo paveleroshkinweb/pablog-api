@@ -93,7 +93,6 @@ check-docker:
 check-nginx:
 	docker run --rm -v ./compose/nginx/nginx.conf:/etc/nginx/nginx.conf \
 					-v ./compose/nginx/site.conf:/etc/nginx/conf.d/default.conf \
-					-v ./compose/nginx/api_json_errors.conf:/etc/nginx/api_json_errors.conf \
 					-v ./compose/nginx/extra_headers.conf:/etc/nginx/extra_headers.conf \
 					-v ./compose/nginx/disable_logs.conf:/etc/nginx/disable_logs.conf \
 					nginx nginx -t

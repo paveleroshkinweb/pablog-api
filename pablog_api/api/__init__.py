@@ -1,30 +1,77 @@
 from contextlib import asynccontextmanager
+from http import HTTPStatus
 
 from pablog_api.api.v1 import router as v1_router
 from pablog_api.cache import init_cache
+from pablog_api.constant import REQUEST_ID_HEADER, request_id_ctx_var
 from pablog_api.database import close_database, init_database
+from pablog_api.exception import PablogException, PablogHttpException
 from pablog_api.logging_utils.setup_logger import configure_logger
 from pablog_api.middleware import AddRequestIDMiddleware, LogRequestMiddleware
+from pablog_api.schema.response import ErrorResponse
 from pablog_api.settings.app import get_app_settings
 
-from fastapi import APIRouter, FastAPI
+import structlog
+
+from fastapi import APIRouter, FastAPI, Request
 from fastapi.responses import ORJSONResponse
 
 
 settings = get_app_settings()
 configure_logger(settings)
 
-DOCS_URL = "/docs/openapi" if settings.is_development() else None
-OPENAPI_URL = "/docs/openapi.json" if settings.is_development() else None
+logger = structlog.get_logger(__name__)
+
+is_development = settings.is_development()
+
+DOCS_URL = "/docs/openapi" if is_development else None
+OPENAPI_URL = "/docs/openapi.json" if is_development else None
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    init_database(settings.postgres, debug=settings.is_development())
+    logger.info("Initializing infrastructure connections")
+
+    init_database(settings.postgres, debug=is_development)
     await init_cache(settings.cache, settings.app_name)
 
     yield
     await close_database()
+
+
+async def handle_exception(request: Request, exception: Exception):
+    request_data = {
+        'url': str(request.url),
+        'method': request.method,
+        'query_string': dict(request.query_params),
+        'headers': dict(request.headers)
+    }
+
+    logger.critical(exception, **request_data)
+
+    headers = {REQUEST_ID_HEADER: request_id_ctx_var.get()}
+
+    if isinstance(exception, PablogHttpException):
+        error_response = ErrorResponse(message=exception.detail)
+        return ORJSONResponse(
+            status_code=exception.status_code,
+            content=error_response.model_dump(),
+            headers={**headers, **exception.headers}
+        )
+    elif isinstance(exception, PablogException):
+        error_response = ErrorResponse(message=exception.detail)
+        return ORJSONResponse(
+            status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
+            content=error_response.model_dump(),
+            headers=headers
+        )
+    else:
+        error_response = ErrorResponse(message=HTTPStatus.INTERNAL_SERVER_ERROR.description)
+        return ORJSONResponse(
+            status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
+            content=error_response.model_dump(),
+            headers=headers
+        )
 
 
 app = FastAPI(
@@ -40,6 +87,9 @@ app = FastAPI(
         "email": "eroshkin321@gmail.com"
     }
 )
+
+app.add_exception_handler(Exception, handle_exception)
+app.add_exception_handler(PablogHttpException, handle_exception)
 
 app.add_middleware(LogRequestMiddleware)
 app.add_middleware(AddRequestIDMiddleware, environment=settings.environment)
