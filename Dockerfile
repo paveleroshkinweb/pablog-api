@@ -66,7 +66,7 @@ ENV VIRTUAL_ENV=${APP_PATH}/.venv \
 
 COPY --from=base --chown=${USER}:${GROUP} ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
-COPY --chown=${USER}:${GROUP} ["entrypoint.sh", "VERSION", "./"]
+COPY --chown=${USER}:${GROUP} entrypoint.sh VERSION ./
 
 COPY --chown=${USER}:${GROUP} pablog_api ./pablog_api
 
