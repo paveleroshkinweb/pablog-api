@@ -1,3 +1,5 @@
+import os
+
 from functools import lru_cache
 
 from pablog_api.settings.base import BaseAppSettings
@@ -10,10 +12,17 @@ from pablog_api.settings.service import ServiceSettings
 import pydantic
 
 
+def _read_version():
+    cwd = os.getcwd()
+    version_file = os.path.join(cwd, "VERSION")
+    with open(version_file) as file:
+        return file.readline().strip()
+
+
 class AppSettings(BaseAppSettings):
 
     app_name: str = "PablogAPI"
-    app_version: str = "0.1.0"
+    app_version: str = _read_version()
 
     environment: CodeEnvironment = pydantic.Field(default=CodeEnvironment.DEV)
     service_settings: ServiceSettings = ServiceSettings()
