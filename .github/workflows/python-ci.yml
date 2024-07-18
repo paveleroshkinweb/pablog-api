@@ -1,7 +1,11 @@
 name: python validation
 
 
-on: [push]
+on:
+  push:
+    paths:
+      - pablog_api/**
+      - tests/**
 
 
 jobs:

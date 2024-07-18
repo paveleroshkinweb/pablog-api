@@ -1,7 +1,11 @@
 name: extra tools validation
 
 
-on: [push]
+on:
+  push:
+    paths:
+      - Dockerfile
+      - compose/nginx/**
 
 
 jobs:
