@@ -39,13 +39,12 @@ class MasterSlaveManager:
             self.slave_session_factory = None
             self.slave_scoped_session_factory = None
 
-    def get_engine(self, use_master: bool = False):
+    def get_engine(self, use_master: bool = True):
         if use_master:
             return self.master_engine
         return self.slave_engine
 
-    def get_session(self, use_master: bool = False, scoped: bool = True):
-        # Make it context manager ???
+    def get_session(self, use_master: bool = True, scoped: bool = True):
         if use_master:
             return self.__get_master_session(scoped)
         return self.__get_slave_session(scoped)
