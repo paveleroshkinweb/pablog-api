@@ -1,9 +1,12 @@
-import aiohttp
-
 from fastapi import status
+from httpx import AsyncClient
 
 
-async def test_info():
-    async with aiohttp.ClientSession() as session:
-        async with session.get('http://nginx:8001/api/v1/info', timeout=5) as response:
-            assert response.status == status.HTTP_200_OK
+async def test_healthcheck(client: AsyncClient):
+    response = await client.get("/api/v1/healthcheck")
+    assert response.status_code == status.HTTP_200_OK
+
+
+async def test_info(client: AsyncClient):
+    response = await client.get("/api/v1/info")
+    assert response.status_code == status.HTTP_200_OK

@@ -11,32 +11,6 @@ services:
     env_file:
       - ../tests/integration/.env.test
     depends_on:
-      nginx:
-        condition: service_healthy
-
-  nginx:
-    image: nginx:1.25
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/site.conf:/etc/nginx/conf.d/default.conf:ro
-      - app_runtime:/var/run/pablog-service/
-    depends_on:
-      - api
-    healthcheck:
-      test: curl -s http://127.0.0.1:8001/api/v1/healthcheck > /dev/null || exit 1
-      interval: 5s
-      timeout: 10s
-      retries: 5
-
-  api:
-    build:
-      context: ../
-      target: prod
-    env_file:
-      - ./server/.env.server
-    volumes:
-      - app_runtime:/var/run/pablog-service/
-    depends_on:
       master_db:
         condition: service_healthy
       cache:
@@ -45,8 +19,10 @@ services:
   master_db:
     image: postgres:16.2
     command: -c config_file=/etc/postgresql/postgresql.conf
-    env_file:
-      - ./db/.env.db
+    environment:
+      POSTGRES_DB: pablog
+      POSTGRES_USER: pablog
+      POSTGRES_PASSWORD: pablog
     volumes:
       - ./db/master.conf:/etc/postgresql/postgresql.conf
     healthcheck:
