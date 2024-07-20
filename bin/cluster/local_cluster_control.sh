@@ -7,7 +7,7 @@ set -o nounset
 COMMAND=$1
 
 if [ "$COMMAND" = "start-cluster" ]; then
-    docker-compose --env-file ./compose/db/.env.db -f ./compose/docker-compose.server.yaml up --build
+    docker-compose -f ./compose/docker-compose.server.yaml up --build
     exit 0
 
 elif [ "$COMMAND" = "stop-cluster" ]; then

@@ -7,8 +7,10 @@ services:
     command: -c config_file=/etc/postgresql/postgresql.conf
     container_name: pablog-masterdb
     restart: unless-stopped
-    env_file:
-      - ./db/.env.db
+    environment:
+      POSTGRES_DB: pablog
+      POSTGRES_USER: pablog
+      POSTGRES_PASSWORD: pablog
     ports:
       - "5432:5432"
     volumes:
