@@ -23,7 +23,7 @@ class PostgresSettings(BaseAppSettings):
 
     db_transaction_isolation_level: IsolationLevel = pydantic.Field(default=IsolationLevel.READ_COMMITTED)
 
-    db_connection_pool_size: int = pydantic.Field(default=3)
+    db_connection_pool_size: int = pydantic.Field(default=2)
 
     @property
     def dsn(self) -> str:

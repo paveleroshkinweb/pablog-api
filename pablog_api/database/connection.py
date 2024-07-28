@@ -1,12 +1,9 @@
 from pablog_api.database.db_manager import MasterSlaveManager
+from pablog_api.database.session import MasterSlaveSession
 from pablog_api.settings import PostgresSettings
 
 from sqlalchemy import MetaData
-from sqlalchemy.ext.asyncio import (
-    AsyncAttrs,
-    AsyncEngine,
-    create_async_engine,
-)
+from sqlalchemy.ext.asyncio import AsyncAttrs, AsyncEngine, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
 
 
@@ -14,6 +11,7 @@ PABLOG_SCHEMA = 'pablog'
 
 master_engine: None | AsyncEngine = None
 slave_engine: None | AsyncEngine = None
+session_factory: None | async_sessionmaker = None
 db_manager: None | MasterSlaveManager = None
 
 
@@ -26,6 +24,7 @@ class PablogBase(AsyncAttrs, DeclarativeBase):
 def init_database(db_settings: PostgresSettings, debug: bool = False):
     global master_engine
     global slave_engine
+    global session_factory
     global db_manager
 
     # initialize master engine
@@ -40,10 +39,15 @@ def init_database(db_settings: PostgresSettings, debug: bool = False):
         connect_args={'options': f'-csearch_path={PablogBase.metadata.schema}'}
     )
 
-    # initialize slave engine
-    slave_engine = None
+    engines = {
+        'master': master_engine,
+        # Currently use master as slave before replication is implemented
+        'slaves': [master_engine]
+    }
 
-    db_manager = MasterSlaveManager(master_engine, slave_engine)
+    session_factory = async_sessionmaker(class_=MasterSlaveSession, engines=engines, autoflush=True)
+
+    db_manager = MasterSlaveManager(session_factory=session_factory)
 
 
 async def close_database():
@@ -54,20 +58,18 @@ async def close_database():
 
 
 async def create_database():
-    if not db_manager:
-        raise RuntimeError("DB Manager has not been initialised!")
+    if not master_engine:
+        raise RuntimeError("Master engine has not been initialised!")
 
-    engine = db_manager.get_engine(use_master=True)
-    async with engine.begin() as connection:
+    async with master_engine.begin() as connection:
         await connection.run_sync(PablogBase.metadata.create_all)
 
 
 async def purge_database():
-    if not db_manager:
-        raise RuntimeError("DB Manager has not been initialised!")
+    if not master_engine:
+        raise RuntimeError("Master engine has not been initialised!")
 
-    engine = db_manager.get_engine(use_master=True)
-    async with engine.begin() as connection:
+    async with master_engine.begin() as connection:
         await connection.run_sync(PablogBase.metadata.drop_all)
 
 

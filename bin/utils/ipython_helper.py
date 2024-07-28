@@ -19,5 +19,5 @@ init_database(settings.postgres, debug=True)
 
 asyncio.run(init_cache(settings.cache, settings.app_name))
 
-from pablog_api.database.connection import get_db_manager
+from pablog_api.database.connection import session_factory, db_manager
 from pablog_api.cache.connection import cache_client
