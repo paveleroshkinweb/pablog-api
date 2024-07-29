@@ -1,24 +1,15 @@
 from pablog_api.database.db_manager import MasterSlaveManager
+from pablog_api.database.models import PablogBase
 from pablog_api.database.session import MasterSlaveSession
 from pablog_api.settings import PostgresSettings
 
-from sqlalchemy import MetaData
-from sqlalchemy.ext.asyncio import AsyncAttrs, AsyncEngine, async_sessionmaker, create_async_engine
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker, create_async_engine
 
-
-PABLOG_SCHEMA = 'pablog'
 
 master_engine: None | AsyncEngine = None
 slave_engine: None | AsyncEngine = None
 session_factory: None | async_sessionmaker = None
 db_manager: None | MasterSlaveManager = None
-
-
-class PablogBase(AsyncAttrs, DeclarativeBase):
-    __table_args__ = {"schema": PABLOG_SCHEMA}
-
-    metadata = MetaData(schema=PABLOG_SCHEMA)
 
 
 def init_database(db_settings: PostgresSettings, debug: bool = False):

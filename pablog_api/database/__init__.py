@@ -1,5 +1,4 @@
 from .connection import (
-    PablogBase,
     close_database,
     create_database,
     get_db_manager,
@@ -7,7 +6,8 @@ from .connection import (
     purge_database,
 )
 from .db_manager import MasterSlaveManager
-from .models import SoftDeleteMixin, TimestampMixin, UUIDMixin
+from .models import PablogBase, SoftDeleteMixin, TimestampMixin, UUIDPrimaryKeyMixin
+from .repository import BaseRepository
 
 
 __all__ = [
@@ -18,7 +18,8 @@ __all__ = [
     'close_database',
     'get_db_manager',
     'MasterSlaveManager',
-    'UUIDMixin',
+    'UUIDPrimaryKeyMixin',
     'TimestampMixin',
-    'SoftDeleteMixin'
+    'SoftDeleteMixin',
+    'BaseRepository'
 ]

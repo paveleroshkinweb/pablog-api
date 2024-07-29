@@ -1,14 +1,32 @@
 import uuid
 
 from datetime import datetime
+from typing import Generic, TypeVar
 
-from sqlalchemy import text
+from sqlalchemy import MetaData, text
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.ext.asyncio import AsyncAttrs
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.sql import func
 
 
-class UUIDMixin:
+PABLOG_SCHEMA = 'pablog'
+
+PrimaryKeyType = TypeVar("PrimaryKeyType", int, str, uuid.UUID)
+
+
+class PablogBase(AsyncAttrs, DeclarativeBase, Generic[PrimaryKeyType]):
+    __abstract__ = True
+
+    __table_args__ = {"schema": PABLOG_SCHEMA}
+
+    metadata = MetaData(schema=PABLOG_SCHEMA)
+
+    id: Mapped[PrimaryKeyType] = mapped_column(primary_key=True)
+
+
+class UUIDPrimaryKeyMixin(PablogBase[uuid.UUID]):
+    __abstract__ = True
 
     id: Mapped[uuid.UUID] = mapped_column(
         UUID,
@@ -18,7 +36,20 @@ class UUIDMixin:
     )
 
 
+class IntPrimaryKeyMixin(PablogBase[int]):
+    __abstract__ = True
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+
+
+class StringPrimaryKeyMixin(PablogBase[str]):
+    __abstract__ = True
+
+    id: Mapped[str] = mapped_column(primary_key=True)
+
+
 class TimestampMixin:
+    __abstract__ = True
 
     created_at: Mapped[datetime] = mapped_column(
         default=func.now(),
@@ -33,6 +64,7 @@ class TimestampMixin:
 
 
 class SoftDeleteMixin:
+    __abstract__ = True
 
     deleted_at: Mapped[datetime] = mapped_column(nullable=True)
 

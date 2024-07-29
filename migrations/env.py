@@ -2,7 +2,6 @@ import os
 
 from logging.config import fileConfig
 
-from pablog_api.database.connection import PablogBase
 from pablog_api.database.models import *  # type: ignore # noqa: F403
 
 from alembic import context
@@ -35,7 +34,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = PablogBase.metadata
+target_metadata = PablogBase.metadata  # type: ignore # noqa: F405
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
