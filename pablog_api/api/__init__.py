@@ -2,10 +2,10 @@ from contextlib import asynccontextmanager
 from http import HTTPStatus
 
 from pablog_api.api.v1 import router as v1_router
-from pablog_api.cache import init_cache
 from pablog_api.constant import REQUEST_ID_HEADER, request_id_ctx_var
 from pablog_api.database import close_database, init_database
 from pablog_api.exception import PablogException, PablogHttpException
+from pablog_api.inmemory_storage import init_in_memory_storage
 from pablog_api.logging_utils.setup_logger import configure_logger
 from pablog_api.middleware import AddRequestIDMiddleware, LogRequestMiddleware
 from pablog_api.schema.response import ErrorResponse
@@ -33,7 +33,7 @@ async def lifespan(app: FastAPI):
     logger.info("Initializing infrastructure connections")
 
     init_database(settings.postgres, debug=is_development)
-    await init_cache(settings.cache, settings.app_name)
+    await init_in_memory_storage(settings.cache, settings.app_name)
 
     yield
     await close_database()

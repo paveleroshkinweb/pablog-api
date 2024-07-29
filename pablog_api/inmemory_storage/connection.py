@@ -6,13 +6,13 @@ from redis.backoff import ExponentialBackoff
 from redis.exceptions import BusyLoadingError, ConnectionError, TimeoutError
 
 
-cache_client: None | Redis = None
+storage: None | Redis = None
 
 
-async def init_cache(cache_settings: CacheSettings, app_name: str):
-    global cache_client
+async def init_in_memory_storage(cache_settings: CacheSettings, app_name: str):
+    global storage
 
-    cache_client = Redis(
+    storage = Redis(
         host=cache_settings.host,
         port=cache_settings.port,
         db=0,
@@ -26,4 +26,13 @@ async def init_cache(cache_settings: CacheSettings, app_name: str):
         client_name=app_name
     )
 
-    await cache_client.ping()
+    await storage.ping()
+
+
+async def close_memory_storage():
+    global storage
+
+    if not storage:
+        return
+
+    await storage.close()
