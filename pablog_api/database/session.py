@@ -5,14 +5,25 @@ from typing import Any
 
 from pablog_api.exception import PablogException
 
+import structlog
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class MasterSession(AsyncSession):
-    pass
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.__logger = structlog.get_logger(__name__)
+        self.__logger.debug(f"Initiating master session: {kwargs['bind'].url}")
 
 
 class SlaveSession(AsyncSession):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.__logger = structlog.get_logger(__name__)
+        self.__logger.debug(f"Initiating slave session: {kwargs['bind'].url}")
 
     def _is_clean(self):
         return not self.new and not self.dirty and not self.deleted
