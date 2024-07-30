@@ -28,7 +28,7 @@ async def init_redis_cluster(settings: CacheSettings):
     await redis_cluster.ping()
 
 
-def get_redis_cluster():
+def get_redis_cluster() -> Redis:
     if not redis_cluster:
         raise RuntimeError("Redis cluster was not initialized!")
     return redis_cluster
