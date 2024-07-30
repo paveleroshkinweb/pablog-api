@@ -3,6 +3,7 @@ from pablog_api.database.models import PablogBase
 from pablog_api.database.session import MasterSlaveSession
 from pablog_api.settings import PostgresSettings
 
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker, create_async_engine
 
 
@@ -12,7 +13,7 @@ session_factory: None | async_sessionmaker = None
 db_manager: None | MasterSlaveManager = None
 
 
-def init_database(db_settings: PostgresSettings, debug: bool = False):
+async def init_database(db_settings: PostgresSettings, debug: bool = False):
     global master_engine
     global slave_engine
     global session_factory
@@ -32,13 +33,17 @@ def init_database(db_settings: PostgresSettings, debug: bool = False):
 
     engines = {
         'master': master_engine,
-        # Currently use master as slave before replication is implemented
+        # TODO: replace with real slaves once the replication is implemented
         'slaves': [master_engine]
     }
 
     session_factory = async_sessionmaker(class_=MasterSlaveSession, engines=engines, autoflush=True)
 
     db_manager = MasterSlaveManager(session_factory=session_factory)
+
+    # Ping
+    async with db_manager.master_session() as session:
+        await session.execute(text("SELECT 1;"))
 
 
 async def close_database():

@@ -10,14 +10,13 @@ from sqlalchemy.ext.asyncio import async_scoped_session
 from pablog_api.constant import *
 from pablog_api.database.models import *
 from pablog_api.database import *
-from pablog_api.inmemory_storage.connection import init_in_memory_storage
+from pablog_api.memory_storage.redis_cluster import init_redis_cluster
 from pablog_api.settings import get_app_settings
 
 
 settings = get_app_settings()
-init_database(settings.postgres, debug=True)
-
-asyncio.run(init_in_memory_storage(settings.cache, settings.app_name))
+asyncio.run(init_database(settings.postgres, debug=True))
+asyncio.run(init_redis_cluster(settings.cache))
 
 from pablog_api.database.connection import session_factory, db_manager
-from pablog_api.inmemory_storage.connection import init_in_memory_storage
+from pablog_api.memory_storage.redis_cluster import redis_cluster

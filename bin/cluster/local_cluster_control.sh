@@ -30,7 +30,7 @@ done
 set -a \
 		&& source ./compose/server/.env.server \
 		&& export postgres_db_host=127.0.0.1 \
-		&& export redis_host=127.0.0.1
+		&& export cache_host=127.0.0.1
 
 if [ "$COMMAND" = "logs" ]; then
     docker-compose -f ./compose/docker-compose.server.yaml logs --follow
