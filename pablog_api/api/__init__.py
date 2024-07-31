@@ -47,7 +47,7 @@ async def handle_exception(request: Request, exception: Exception):
         'query_string': dict(request.query_params),
     }
 
-    logger.critical(exception, **request_data)
+    logger.exception(exception, **request_data)
 
     headers = {REQUEST_ID_HEADER: request_id_ctx_var.get()}
 

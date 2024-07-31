@@ -95,7 +95,7 @@ def get_dev_config(log_level: LoggerLevelType, log_file_path: str) -> dict[str, 
                 "level": log_level
             },
             "gunicorn.error": {
-                "level": LoggerLevelType.CRITICAL,
+                "level": LoggerLevelType.INFO,
                 "handlers": ["console", "file"],
                 "propagate": False,
                 "qualname": "gunicorn.error"

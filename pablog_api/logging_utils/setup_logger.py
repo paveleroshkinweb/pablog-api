@@ -26,7 +26,6 @@ def configure_logger(settings: AppSettings):
             structlog.processors.StackInfoRenderer(),
             structlog.processors.format_exc_info,
             structlog.processors.UnicodeDecoder(),
-            structlog.stdlib.ExtraAdder(),
             structlog.stdlib.ProcessorFormatter.wrap_for_formatter
         ],
         logger_factory=structlog.stdlib.LoggerFactory(),
