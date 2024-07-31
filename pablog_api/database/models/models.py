@@ -69,3 +69,7 @@ class SoftDeleteMixin:
     deleted_at: Mapped[datetime] = mapped_column(nullable=True)
 
     is_deleted: Mapped[bool] = mapped_column(default=False)
+
+
+class SoftDeleteModelType(PablogBase[PrimaryKeyType], SoftDeleteMixin):
+    __abstract__ = True

@@ -1,15 +1,15 @@
 from typing import Generic, TypeVar
 
-from pablog_api.database.models.models import PablogBase, PrimaryKeyType
+from pablog_api.database.models.models import PablogBase, PrimaryKeyType, SoftDeleteModelType
 
-from sqlalchemy import delete, inspect, select
+from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
 ModelType = TypeVar("ModelType", bound=PablogBase)
 
 
-class BaseRepository(Generic[ModelType, PrimaryKeyType]):
+class BaseRelationalRepository(Generic[ModelType, PrimaryKeyType]):
 
     def __init__(self, model: type[ModelType]):
         self.model = model
@@ -22,16 +22,29 @@ class BaseRepository(Generic[ModelType, PrimaryKeyType]):
         result = await session.execute(stmt)
         return result.scalar()
 
-    async def save(self, session: AsyncSession, data: ModelType) -> ModelType:
-        inspr = inspect(data)
-        if not inspr.modified and inspr.has_identity:
-            return data
-
-        session.add(data)
+    async def save(self, session: AsyncSession, instance: ModelType) -> ModelType:
+        session.add(instance)
         await session.flush()
-        await session.refresh(data)
-        return data
+        await session.refresh(instance)
+        return instance
 
-    async def delete(self, session: AsyncSession, id: PrimaryKeyType):
+    async def delete(self, session: AsyncSession, instance: ModelType):
+        await self.delete_by_id(session, instance.id)
+
+    async def delete_by_id(self, session: AsyncSession, id: PrimaryKeyType):
         stmt = delete(self.model).where(self.model.id == id)
+        await session.execute(stmt)
+
+
+SoftDeleteType = TypeVar("SoftDeleteType", bound=SoftDeleteModelType)
+
+
+class SoftDeleteRepository(BaseRelationalRepository[SoftDeleteType, PrimaryKeyType]):
+
+    async def delete(self, session: AsyncSession, instance: SoftDeleteType):
+        instance.is_deleted = True
+        await self.save(session, instance)
+
+    async def delete_by_id(self, session: AsyncSession, id: PrimaryKeyType):
+        stmt = update(self.model).where(self.model.id == id).values(is_deleted=True)
         await session.execute(stmt)

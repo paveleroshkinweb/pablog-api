@@ -7,7 +7,7 @@ from .connection import (
 )
 from .db_manager import MasterSlaveManager
 from .models import PablogBase, SoftDeleteMixin, TimestampMixin, UUIDPrimaryKeyMixin
-from .repository import BaseRepository
+from .repository import BaseRelationalRepository, SoftDeleteRepository
 
 
 __all__ = [
@@ -21,5 +21,6 @@ __all__ = [
     'UUIDPrimaryKeyMixin',
     'TimestampMixin',
     'SoftDeleteMixin',
-    'BaseRepository'
+    'BaseRelationalRepository',
+    'SoftDeleteRepository'
 ]
