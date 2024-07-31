@@ -45,7 +45,6 @@ async def handle_exception(request: Request, exception: Exception):
         'url': str(request.url),
         'method': request.method,
         'query_string': dict(request.query_params),
-        'headers': dict(request.headers)
     }
 
     logger.critical(exception, **request_data)
