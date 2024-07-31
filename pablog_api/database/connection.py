@@ -1,7 +1,10 @@
+import logging
+
 from pablog_api.database.db_manager import MasterSlaveManager
 from pablog_api.database.models import PablogBase
 from pablog_api.database.session import MasterSlaveSession
 from pablog_api.settings import PostgresSettings
+from pablog_api.settings.logging import LoggerLevelType
 
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker, create_async_engine
@@ -22,7 +25,7 @@ async def init_database(db_settings: PostgresSettings, debug: bool = False):
     # initialize master engine
     master_engine = create_async_engine(
         db_settings.dsn,
-        echo=debug,
+        echo=False,
         future=True,
         pool_size=db_settings.db_connection_pool_size,
         max_overflow=0,
@@ -30,6 +33,10 @@ async def init_database(db_settings: PostgresSettings, debug: bool = False):
         isolation_level=db_settings.db_transaction_isolation_level,
         connect_args={'options': f'-csearch_path={PablogBase.metadata.schema}'}
     )
+
+    # Hack to overwrite default echo=True handler
+    if debug:
+        logging.getLogger("sqlalchemy.engine").setLevel(LoggerLevelType.DEBUG)
 
     engines = {
         'master': master_engine,

@@ -36,6 +36,7 @@ services:
     env_file:
       - ./server/.env.server
     volumes:
+      - ../logs/pablog.logs:/opt/pablog-api/logs/pablog.logs
       - app_runtime:/var/run/pablog-service/
     networks:
       - web

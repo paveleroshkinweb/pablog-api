@@ -19,10 +19,14 @@ def configure_logger(settings: AppSettings):
         processors=[
             structlog.contextvars.merge_contextvars,
             structlog.stdlib.filter_by_level,
+            structlog.processors.TimeStamper(fmt="iso"),
+            structlog.stdlib.add_logger_name,
+            structlog.stdlib.add_log_level,
             structlog.stdlib.PositionalArgumentsFormatter(),
             structlog.processors.StackInfoRenderer(),
             structlog.processors.format_exc_info,
             structlog.processors.UnicodeDecoder(),
+            structlog.stdlib.ExtraAdder(),
             structlog.stdlib.ProcessorFormatter.wrap_for_formatter
         ],
         logger_factory=structlog.stdlib.LoggerFactory(),
