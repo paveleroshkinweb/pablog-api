@@ -24,6 +24,7 @@ class AppSettings(BaseAppSettings):
     app_name: str = "PablogAPI"
     app_version: str = _read_version()
 
+    enable_stats: bool = pydantic.Field(default=False)
     environment: CodeEnvironment = pydantic.Field(default=CodeEnvironment.DEV)
     service_settings: ServiceSettings = ServiceSettings()
     logging: LoggingSettings = LoggingSettings()
