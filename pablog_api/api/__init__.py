@@ -8,7 +8,7 @@ from pablog_api.exception import PablogException, PablogHttpException
 from pablog_api.logging_utils.setup_logger import configure_logger
 from pablog_api.memory_storage import close_redis_cluster, init_redis_cluster
 from pablog_api.middleware import AddRequestIDMiddleware, LogRequestMiddleware
-from pablog_api.schema.response import ErrorResponse
+from pablog_api.schema.error import ErrorResponse
 from pablog_api.settings.app import get_app_settings
 
 import structlog

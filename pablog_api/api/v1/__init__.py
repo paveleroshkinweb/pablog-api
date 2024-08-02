@@ -1,4 +1,4 @@
-from .monitoring import router as monitoring_router
+from pablog_api.apps.monitoring.router import router as monitoring_router
 
 from fastapi import APIRouter
 

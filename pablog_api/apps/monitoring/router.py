@@ -1,4 +1,4 @@
-from pablog_api.schema.response import HealthCheckResponse, InfoResponse
+from pablog_api.apps.monitoring.response import HealthCheckResponse, InfoResponse
 from pablog_api.settings.app import get_app_settings
 
 from fastapi import APIRouter, status
