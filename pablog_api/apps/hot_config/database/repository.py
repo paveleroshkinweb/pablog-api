@@ -15,7 +15,7 @@ class IConfigurationRepository(ABC):
         pass
 
     @abstractmethod
-    async def save_config(self, data: Configuration):
+    async def save_config(self, data: Configuration) -> Configuration:
         pass
 
 
@@ -29,8 +29,8 @@ class ConfigurationRepository(BaseRelationalRepository[Configuration, int], ICon
         result = await self.session.scalar(select(Configuration).filter(Configuration.id == find_max_config_id))
         return result
 
-    async def save_config(self, data: Configuration):
-        await self.save(data)
+    async def save_config(self, data: Configuration) -> Configuration:
+        return await self.save(data)
 
 
 @lru_cache(maxsize=1)

@@ -3,10 +3,12 @@ import hashlib
 import json
 import os
 
+from pablog_api.apps.hot_config.constant import CLUSTER_NOTIFICATION_CHANNEL
 from pablog_api.apps.hot_config.database import Configuration, get_configuration_repository
 from pablog_api.apps.hot_config.schema import ConfigurationSchema
 from pablog_api.commands.app import app as main_app
 from pablog_api.database import close_database, get_db_manager, init_database
+from pablog_api.memory_storage import close_redis_cluster, get_redis_cluster, init_redis_cluster
 from pablog_api.settings.app import get_app_settings
 
 import structlog
@@ -63,12 +65,21 @@ async def write_config():
                     logger.info("Nothing changed! So do not update cluster settings")
                     return
 
+                logger.info("Writing config to db")
+
                 new_config = Configuration()
                 new_config.checksum = checksum
                 new_config.data = config_dict_schema
-                await config_repository.save_config(new_config)
+                new_config_id = (await config_repository.save_config(new_config)).id
                 await session.commit()
 
+        logger.info("Notifying cluster")
+        try:
+            await init_redis_cluster(settings.cache)
+            redis_cluster = get_redis_cluster()
+            await redis_cluster.publish(CLUSTER_NOTIFICATION_CHANNEL, new_config_id)
+        finally:
+            await close_redis_cluster()
     finally:
         await close_database()
 
