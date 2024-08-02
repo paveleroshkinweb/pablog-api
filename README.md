@@ -68,6 +68,8 @@ It includes 2 main workflows:
 11) ```make migrate rev={revision_id}``` - migrate database to particular revision. leave empty (```make migrate```) if want to update to latest revision
 12) ```make rollback``` - rollback last applied migration from database
 13) ```make check-migrations``` - checks if required migrations generated or not. it's integrated into pre-commit hook
+14) ```make fetch-config``` - fetch cluster hot configuration from db and saves to _config folder
+15) ```make write-config``` - take file from _config folder and save it to db + notify cluster about new configuration available
 
 #### UTILS
 1) ```make init-dev-structure``` - setup basic folders for local development. i.e logs, pid folders

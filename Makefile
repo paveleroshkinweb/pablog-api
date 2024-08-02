@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: all start-cluster stop-cluster logs connect stop unit-test integration-test pyshell dbshell redishell migrations drop-migrations migrate rollback check-migrations check-server-cfg schema check-lock lint lint-fix mypy bandit init-dev-structure check-docker check-nginx clean
+.PHONY: all start-cluster stop-cluster logs connect stop unit-test integration-test pyshell dbshell redishell migrations drop-migrations migrate rollback check-migrations fetch-config write-config check-server-cfg schema check-lock lint lint-fix mypy bandit init-dev-structure check-docker check-nginx clean
 
 all:
 	# intentionally left empty to prevent accidental run of first recipe
@@ -48,6 +48,11 @@ rollback:
 check-migrations:
 	./bin/cluster/local_cluster_control.sh check-migrations
 
+fetch-config:
+	./bin/cluster/local_cluster_control.sh fetch-config
+
+write-config:
+	./bin/cluster/local_cluster_control.sh write-config
 
 # -------------------------------------------------
 # TESTS
@@ -101,6 +106,7 @@ check-nginx:
 # -------------------------------------------------
 init-dev-structure:
 	chmod -R +x bin
+	mkdir -p hot_config
 	mkdir -p pid
 	mkdir -p logs
 	mkdir -p logs/postgresql

@@ -12,7 +12,7 @@ from pablog_api.settings.service import ServiceSettings
 import pydantic
 
 
-def _read_version():
+def _read_version() -> str:
     cwd = os.getcwd()
     version_file = os.path.join(cwd, "VERSION")
     with open(version_file) as file:
@@ -36,5 +36,5 @@ class AppSettings(BaseAppSettings):
 
 
 @lru_cache(maxsize=1)
-def get_app_settings():
+def get_app_settings() -> AppSettings:
     return AppSettings()
