@@ -1,7 +1,10 @@
+import asyncio
+
 from contextlib import asynccontextmanager
 from http import HTTPStatus
 
 from pablog_api.api.v1 import router as v1_router
+from pablog_api.apps.hot_config.core import set_config_from_db, subscribe_to_config_updates
 from pablog_api.constant import REQUEST_ID_HEADER, request_id_ctx_var
 from pablog_api.database import close_database, init_database
 from pablog_api.exception import PablogException, PablogHttpException
@@ -34,6 +37,9 @@ async def lifespan(app: FastAPI):
 
     await init_database(settings.postgres, debug=is_development)
     await init_redis_cluster(settings.cache)
+
+    await set_config_from_db()
+    asyncio.create_task(subscribe_to_config_updates())
 
     yield
     await close_redis_cluster()

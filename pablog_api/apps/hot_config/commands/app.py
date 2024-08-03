@@ -5,7 +5,7 @@ import os
 
 from pablog_api.apps.hot_config.constant import CLUSTER_NOTIFICATION_CHANNEL
 from pablog_api.apps.hot_config.database import Configuration, get_configuration_repository
-from pablog_api.apps.hot_config.schema import ConfigurationSchema
+from pablog_api.apps.hot_config.schema import ConfigurationBodySchema
 from pablog_api.commands.app import app as main_app
 from pablog_api.database import close_database, get_db_manager, init_database
 from pablog_api.memory_storage import close_redis_cluster, get_redis_cluster, init_redis_cluster
@@ -35,7 +35,8 @@ async def fetch_config():
 
             logger.info(f"Obtained config, id = {latest_config.id}, checksum = {latest_config.checksum}")
             with open(CONFIG_FILE_PATH, "w") as file:
-                file.write(json.dumps(latest_config.data))
+                config = ConfigurationBodySchema(**latest_config.data)
+                file.write(json.dumps(config.model_dump()))
                 file.flush()
     finally:
         await close_database()
@@ -55,10 +56,14 @@ async def write_config():
             latest_config = await config_repository.get_last_config()
 
             with open(CONFIG_FILE_PATH) as file:
-                config_schema = ConfigurationSchema(**json.loads(file.read()))
-                config_dict_schema = config_schema.model_dump()
+                config_body_schema = ConfigurationBodySchema(**json.loads(file.read()))
                 sha256_hash = hashlib.sha256()
-                sha256_hash.update(json.dumps(config_dict_schema, sort_keys=True, separators=(',', ':')).encode())
+                sha256_hash.update(
+                    json.dumps(
+                        config_body_schema.model_dump(),
+                        sort_keys=True, separators=(',', ':')
+                    ).encode()
+                )
                 checksum = sha256_hash.hexdigest()
 
                 if latest_config and latest_config.checksum == checksum:
@@ -69,7 +74,7 @@ async def write_config():
 
                 new_config = Configuration()
                 new_config.checksum = checksum
-                new_config.data = config_dict_schema
+                new_config.data = config_body_schema.model_dump()
                 new_config_id = (await config_repository.save_config(new_config)).id
                 await session.commit()
 

@@ -53,7 +53,7 @@ def get_ci_config(log_level: LoggerLevelType) -> dict[str, Any]:
                 "qualname": "sqlalchemy.engine"
             },
             "gunicorn.error": {
-                "level": LoggerLevelType.CRITICAL,
+                "level": LoggerLevelType.INFO,
                 "handlers": ["console"],
                 "propagate": False,
                 "qualname": "gunicorn.error"
@@ -135,7 +135,7 @@ def get_prod_config(log_level: LoggerLevelType) -> dict[str, Any]:
                 "qualname": "sqlalchemy.engine"
             },
             "gunicorn.error": {
-                "level": LoggerLevelType.CRITICAL,
+                "level": LoggerLevelType.INFO,
                 "handlers": ["console"],
                 "propagate": False,
                 "qualname": "gunicorn.error"

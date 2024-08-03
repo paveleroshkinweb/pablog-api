@@ -1,6 +1,7 @@
-from .schema import ConfigurationSchema
+from .schema import ConfigurationBodySchema, ConfigurationSchema
 
 
 __all__ = [
-    'ConfigurationSchema'
+    'ConfigurationSchema',
+    'ConfigurationBodySchema'
 ]
