@@ -1,8 +1,8 @@
 """create_config
 
-Revision ID: d55bb03c274f
+Revision ID: c52baf8c8d97
 Revises: 
-Create Date: 2024-08-02 09:51:37.072563
+Create Date: 2024-08-03 16:32:45.469463
 
 """
 from collections.abc import Sequence
@@ -14,7 +14,7 @@ from sqlalchemy.dialects import postgresql
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'd55bb03c274f'
+revision: str = 'c52baf8c8d97'
 down_revision: str | None = None
 branch_labels: str | (Sequence[str] | None) = None
 depends_on: str | (Sequence[str] | None) = None

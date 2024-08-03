@@ -2,6 +2,7 @@ from .models import (
     IntPrimaryKeyMixin,
     PablogBase,
     SoftDeleteMixin,
+    SoftDeleteModelType,
     StringPrimaryKeyMixin,
     TimestampMixin,
     UUIDPrimaryKeyMixin,
@@ -14,5 +15,6 @@ __all__ = [
     "StringPrimaryKeyMixin",
     "TimestampMixin",
     "SoftDeleteMixin",
-    "PablogBase"
+    "PablogBase",
+    "SoftDeleteModelType"
 ]

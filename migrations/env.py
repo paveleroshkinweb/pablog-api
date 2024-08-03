@@ -43,13 +43,6 @@ target_metadata = PablogBase.metadata  # type: ignore # noqa: F405
 # ... etc.
 
 
-def include_name_filter(name, type_, parent_names):
-    if type_ == "schema":
-        return name == target_metadata.schema
-
-    return True
-
-
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
 
@@ -67,10 +60,10 @@ def run_migrations_offline() -> None:
         url=url,
         target_metadata=target_metadata,
         version_table_schema=target_metadata.schema,
-        include_schemas=True,
         literal_binds=True,
-        include_name=include_name_filter,
-        dialect_opts={"paramstyle": "named"},
+        compare_type=True,
+        compare_server_default=True,
+        include_schemas=True,
     )
 
     with context.begin_transaction():
@@ -94,8 +87,8 @@ def run_migrations_online() -> None:
         context.configure(
             connection=connection,
             target_metadata=target_metadata,
-            version_table_schema=target_metadata.schema,
-            include_name=include_name_filter,
+            compare_type=True,
+            compare_server_default=True,
             include_schemas=True
         )
 
