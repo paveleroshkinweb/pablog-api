@@ -16,11 +16,11 @@ logging.Formatter.converter = time.gmtime
 
 
 class LoggerLevelType(StrEnum):
-    CRITICAL: str = "CRITICAL"
-    ERROR: str = "ERROR"
-    WARNING: str = "WARNING"
-    INFO: str = "INFO"
-    DEBUG: str = "DEBUG"
+    CRITICAL = "CRITICAL"
+    ERROR = "ERROR"
+    WARNING = "WARNING"
+    INFO = "INFO"
+    DEBUG = "DEBUG"
 
 
 def get_ci_config(log_level: LoggerLevelType) -> dict[str, Any]:

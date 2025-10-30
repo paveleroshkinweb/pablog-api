@@ -23,7 +23,3 @@ class CacheStorage(ABC):
     @abstractmethod
     async def exists(self, *keys: KeyT) -> bool:
         pass
-
-    @abstractmethod
-    async def close(self):
-        pass

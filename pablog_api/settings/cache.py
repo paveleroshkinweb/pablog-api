@@ -7,7 +7,7 @@ import pydantic
 
 
 class StorageType(StrEnum):
-    REDIS_STORAGE: str = "REDIS_STORAGE"
+    REDIS_STORAGE = "REDIS_STORAGE"
 
 
 class CacheSettings(BaseAppSettings):

@@ -3,14 +3,13 @@ from enum import IntEnum, StrEnum, auto
 
 class Propagation(IntEnum):
 
-    REQUIRED: int = auto()
-    NESTED: int = auto()
+    REQUIRED = auto()
+    NESTED = auto()
 
 
 class IsolationLevel(StrEnum):
 
-    DEFAULT: str = ""
-    READ_UNCOMMITTED: str = "READ UNCOMMITTED"
-    READ_COMMITTED: str = "READ COMMITTED"
-    REPEATABLE_READ: str = "REPEATABLE READ"
-    SERIALIZABLE: str = "SERIALIZABLE"
+    READ_UNCOMMITTED = "READ UNCOMMITTED"
+    READ_COMMITTED = "READ COMMITTED"
+    REPEATABLE_READ = "REPEATABLE READ"
+    SERIALIZABLE = "SERIALIZABLE"

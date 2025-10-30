@@ -33,6 +33,3 @@ class RedisStorage(CacheStorage):
 
     async def exists(self, *keys: KeyT) -> bool:
         return await self.redis_client.exists(*keys)
-
-    async def close(self):
-        pass
