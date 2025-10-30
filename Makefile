@@ -79,6 +79,9 @@ init-dev-structure:
 	mkdir -p logs/cache
 	touch logs/pablog.logs
 
+	mkdir -p db
+	touch db/pablog.db
+
 clean:
 	find . -type f -name "*.pyc" | xargs rm -fr
 	find . -type d -name __pycache__ | xargs rm -fr

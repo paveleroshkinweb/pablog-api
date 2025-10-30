@@ -3,24 +3,18 @@ import uuid
 from datetime import datetime
 from typing import Generic, TypeVar
 
-from sqlalchemy import MetaData, text
+from sqlalchemy import text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.sql import func
 
 
-PABLOG_SCHEMA = 'pablog'
-
 PrimaryKeyType = TypeVar("PrimaryKeyType", int, str, uuid.UUID)
 
 
 class PablogBase(AsyncAttrs, DeclarativeBase, Generic[PrimaryKeyType]):
     __abstract__ = True
-
-    __table_args__ = {"schema": PABLOG_SCHEMA}
-
-    metadata = MetaData(schema=PABLOG_SCHEMA)
 
     id: Mapped[PrimaryKeyType] = mapped_column(primary_key=True)
 

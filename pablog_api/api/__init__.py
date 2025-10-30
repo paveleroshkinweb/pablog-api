@@ -33,7 +33,7 @@ OPENAPI_URL = "/docs/openapi.json" if is_development else None
 async def lifespan(app: FastAPI):
     logger.info("Initializing infrastructure connections")
 
-    await init_database(settings.postgres, debug=is_development)
+    await init_database(settings.sqlite, debug=is_development)
     await init_redis_cluster(settings.cache)
 
     yield

@@ -1,7 +1,6 @@
 version: "3"
 
 include:
-  - docker-compose.db.yaml
   - docker-compose.cache.yaml
 
 
@@ -37,14 +36,12 @@ services:
       - ./server/.env.server
     volumes:
       - ../logs/pablog.logs:/opt/pablog-api/logs/pablog.logs
+      - ../db/:/var/db/
       - app_runtime:/var/run/pablog-service/
     networks:
       - web
-      - db
       - cache
     depends_on:
-      master_db:
-        condition: service_healthy
       cache:
         condition: service_healthy
 

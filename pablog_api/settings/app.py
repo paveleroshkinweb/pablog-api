@@ -6,8 +6,8 @@ from pablog_api.settings.base import BaseAppSettings
 from pablog_api.settings.cache import CacheSettings
 from pablog_api.settings.code_environment import CodeEnvironment
 from pablog_api.settings.logging import LoggingSettings
-from pablog_api.settings.postgres import PostgresSettings
 from pablog_api.settings.service import ServiceSettings
+from pablog_api.settings.sqlite import SQLiteSettings
 
 import pydantic
 
@@ -28,7 +28,7 @@ class AppSettings(BaseAppSettings):
     environment: CodeEnvironment = pydantic.Field(default=CodeEnvironment.DEV)
     service_settings: ServiceSettings = ServiceSettings()
     logging: LoggingSettings = LoggingSettings()
-    postgres: PostgresSettings = PostgresSettings()
+    sqlite: SQLiteSettings = SQLiteSettings()
     cache: CacheSettings = CacheSettings()
 
     def is_development(self) -> bool:

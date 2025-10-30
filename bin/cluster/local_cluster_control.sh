@@ -13,6 +13,10 @@ if [ "$COMMAND" = "start-cluster" ]; then
 elif [ "$COMMAND" = "stop-cluster" ]; then
     docker-compose -f ./compose/docker-compose.server.yaml stop
     exit 0
+
+elif [ "$COMMAND" = "dbshell" ]; then
+    sqlite3 ../db/pablog.db
+    exit 0
 fi
 
 
@@ -29,8 +33,8 @@ done
 
 set -a \
 		&& source ./compose/server/.env.server \
-		&& export postgres_db_host=127.0.0.1 \
-		&& export cache_host=127.0.0.1
+		&& export cache_host=127.0.0.1 \
+    && export sqlite_url=sqlite+aiosqlite:///./db/pablog.db
 
 if [ "$COMMAND" = "logs" ]; then
     docker-compose -f ./compose/docker-compose.server.yaml logs --follow
@@ -45,9 +49,6 @@ elif [ "$COMMAND" = "stop" ]; then
 
 elif [ "$COMMAND" = "pyshell" ]; then
     poetry run ipython -i ./bin/utils/ipython_helper.py
-
-elif [ "$COMMAND" = "dbshell" ]; then
-    docker exec -it pablog-masterdb psql -U $postgres_db_name
 
 elif [ "$COMMAND" = "redishell" ]; then
     docker exec -it pablog-cache redis-cli

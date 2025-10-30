@@ -169,3 +169,5 @@ logs/
 nohup.out
 
 _config/
+
+db/

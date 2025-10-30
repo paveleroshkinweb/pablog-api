@@ -5,7 +5,7 @@
 ### Technology Stack
 * [FastAPI](https://fastapi.tiangolo.com/) for the Python backend API.
 * [Nginx](https://nginx.org/) as a webserver
-* [PostgreSQL](https://www.postgresql.org/) as master database
+* [SQLite](https://sqlite.org/) as master database
 * [Redis](https://redis.io/) as cache service
 * [Docker](https://www.docker.com/) for testing/development/production.
 * [Pytest](https://docs.pytest.org/en/8.2.x/) for smoke/unit/integration tests
@@ -35,9 +35,6 @@ It includes 2 main workflows:
    * gunicorn config validation
    * python code security check
    * docker config validation
-2) Tests CI
-   * unit tests
-   * integration tests
 
 
 ### Development commands

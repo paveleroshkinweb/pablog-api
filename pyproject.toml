@@ -20,37 +20,24 @@ orjson = "^3.9.10"
 structlog = "^23.2.0"
 sqlalchemy = "^2.0.27"
 greenlet = "^3.0.3"
-psycopg = "^3.1.19"
 redis = "^5.0.7"
 aiohttp = "^3.9.5"
+aiosqlite = "^0.21.0"
 
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.4.2"
 ruff = "^0.0.291"
 mypy = "^1.5.1"
 setuptools = "^68.2.2"
-bandit = "^1.7.5"
-pytest-asyncio = "^0.21.1"
 httpx = "^0.25.2"
 ipython = "^8.18.1"
 alembic = "^1.13.2"
-pytest-benchmark = "^4.0.0"
 sqlalchemy = {extras = ["mypy"], version = "^2.0.31"}
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-
-[tool.pytest.ini_options]
-filterwarnings = [
-    "ignore::RuntimeWarning",
-    "ignore::pytest.PytestCollectionWarning",
-    "ignore::DeprecationWarning",
-]
-asyncio_mode = "auto"
 
 
 [tool.ruff]
