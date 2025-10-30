@@ -61,7 +61,7 @@ def get_dev_config(log_level: LoggerLevelType, log_file_path: str) -> dict[str, 
                 "qualname": "sqlalchemy.engine"
             },
             "gunicorn.error": {
-                "level": LoggerLevelType.INFO,
+                "level": log_level,
                 "handlers": ["console", "file"],
                 "propagate": False,
                 "qualname": "gunicorn.error"
@@ -101,7 +101,7 @@ def get_prod_config(log_level: LoggerLevelType) -> dict[str, Any]:
                 "qualname": "sqlalchemy.engine"
             },
             "gunicorn.error": {
-                "level": LoggerLevelType.INFO,
+                "level": log_level,
                 "handlers": ["console"],
                 "propagate": False,
                 "qualname": "gunicorn.error"
