@@ -1,29 +1,20 @@
 import zlib
 
-from enum import StrEnum
+from enum import IntEnum
 
 
-class CompressionType(StrEnum):
-    NO_COMPRESSION = "NO_COMPRESSION"
-    BEST_SPEED = "BEST_SPEED"
-    BALANCED = "BALANCED"
-    BEST_COMPRESSION = "BEST_COMPRESSION"
-
-
-COMPRESSION_LEVEL_MAP = {
-    CompressionType.NO_COMPRESSION: 0,
-    CompressionType.BEST_SPEED: 1,
-    CompressionType.BALANCED: 6,
-    CompressionType.BEST_COMPRESSION: 9
-}
+class CompressionType(IntEnum):
+    NO_COMPRESSION = 0
+    BEST_SPEED = 1
+    BALANCED = 6
+    BEST_COMPRESSION = 9
 
 
 def zlib_compression(compression_type: CompressionType, data: bytes) -> bytes:
-    if type == CompressionType.NO_COMPRESSION:
+    if compression_type == CompressionType.NO_COMPRESSION:
         return data
 
-    level = COMPRESSION_LEVEL_MAP[compression_type]
-    return zlib.compress(data, level)
+    return zlib.compress(data, compression_type)
 
 
 def zlib_decompression(data: bytes) -> bytes:
