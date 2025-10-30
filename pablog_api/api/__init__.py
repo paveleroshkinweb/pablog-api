@@ -90,6 +90,7 @@ app = FastAPI(
 )
 
 app.add_exception_handler(Exception, handle_exception)
+app.add_exception_handler(PablogException, handle_exception)
 app.add_exception_handler(PablogHttpException, handle_exception)
 
 app.add_middleware(LogRequestMiddleware)
