@@ -73,9 +73,4 @@ elif [ "$COMMAND" = "check-migrations" ]; then
 elif [ "$COMMAND" = "rollback" ]; then
     poetry run alembic downgrade -1
 
-elif [ "$COMMAND" = "fetch-config" ]; then
-    poetry run python pablog_api/main.py fetch-config
-
-elif [ "$COMMAND" = "write-config" ]; then
-    poetry run python pablog_api/main.py write-config
 fi

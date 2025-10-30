@@ -2,7 +2,6 @@ import os
 
 from logging.config import fileConfig
 
-from pablog_api.apps.hot_config.database.models import *  # type: ignore # noqa: F403
 from pablog_api.database.models import *  # type: ignore # noqa: F403
 
 from alembic import context

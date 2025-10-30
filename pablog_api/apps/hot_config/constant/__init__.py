@@ -1,6 +1,0 @@
-from .channel import CLUSTER_NOTIFICATION_CHANNEL
-
-
-__all__ = [
-    'CLUSTER_NOTIFICATION_CHANNEL'
-]

@@ -42,17 +42,10 @@ It includes 2 main workflows:
 
 ### Development commands
 #### CI
-1) ```make unit-test``` - run unit tests
-2) ```make integration-test``` - run integration tests
-3) ```make check-server-cfg``` - validate gunicorn config
-4) ```make schema``` - export new openapi schema into docs/openapi-schema/openapi_VERSION.json
-5) ```make check-lock``` - check if poetry lock file is consistent with toml
-6) ```make lint``` - run ruff linter
-7) ```make lint-fix``` - fix linter issues if possible
-8) ```make mypy``` - run static analysis with mypy
-9) ```make bandit``` - check for security issues in python code
-10) ```make check-docker``` - validate docker config
-11) ```make check-nginx``` - validate nginx config
+1) ```make schema``` - export new openapi schema into docs/openapi-schema/openapi_VERSION.json
+2) ```make lint``` - run ruff linter
+3) ```make lint-fix``` - fix linter issues if possible
+4) ```make mypy``` - run static analysis with mypy
 
 #### LOCAL DEVELOPMENT
 1) ```make start-cluster``` - locally run production version of cluster
@@ -68,8 +61,6 @@ It includes 2 main workflows:
 11) ```make migrate rev={revision_id}``` - migrate database to particular revision. leave empty (```make migrate```) if want to update to latest revision
 12) ```make rollback``` - rollback last applied migration from database
 13) ```make check-migrations``` - checks if required migrations generated or not. it's integrated into pre-commit hook
-14) ```make fetch-config``` - fetch cluster hot configuration from db and saves to _config folder
-15) ```make write-config``` - take file from _config folder and save it to db + notify cluster about new configuration available
 
 #### UTILS
 1) ```make init-dev-structure``` - setup basic folders for local development. i.e logs, pid folders
