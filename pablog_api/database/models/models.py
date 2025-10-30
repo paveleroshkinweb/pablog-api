@@ -1,33 +1,19 @@
-import uuid
-
 from datetime import datetime
 from typing import Generic, TypeVar
 
 from sqlalchemy import text
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.sql import func
 
 
-PrimaryKeyType = TypeVar("PrimaryKeyType", int, str, uuid.UUID)
+PrimaryKeyType = TypeVar("PrimaryKeyType", int, str)
 
 
 class PablogBase(AsyncAttrs, DeclarativeBase, Generic[PrimaryKeyType]):
     __abstract__ = True
 
     id: Mapped[PrimaryKeyType] = mapped_column(primary_key=True)
-
-
-class UUIDPrimaryKeyMixin(PablogBase[uuid.UUID]):
-    __abstract__ = True
-
-    id: Mapped[uuid.UUID] = mapped_column(
-        UUID,
-        primary_key=True,
-        default=uuid.uuid4,
-        server_default=text("gen_random_uuid()")
-    )
 
 
 class IntPrimaryKeyMixin(PablogBase[int]):

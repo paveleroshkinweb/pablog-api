@@ -5,12 +5,10 @@ from .models import (
     SoftDeleteModelType,
     StringPrimaryKeyMixin,
     TimestampMixin,
-    UUIDPrimaryKeyMixin,
 )
 
 
 __all__ = [
-    "UUIDPrimaryKeyMixin",
     "IntPrimaryKeyMixin",
     "StringPrimaryKeyMixin",
     "TimestampMixin",

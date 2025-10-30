@@ -3,7 +3,7 @@ from .connection import (
     get_session,
     init_database,
 )
-from .models import PablogBase, SoftDeleteMixin, TimestampMixin, UUIDPrimaryKeyMixin
+from .models import PablogBase, SoftDeleteMixin, TimestampMixin
 from .repository import BaseRelationalRepository, SoftDeleteRepository
 
 
@@ -14,7 +14,6 @@ __all__ = [
     'PablogBase',
     'SoftDeleteMixin',
     'TimestampMixin',
-    'UUIDPrimaryKeyMixin',
     'BaseRelationalRepository',
     'SoftDeleteRepository'
 ]
