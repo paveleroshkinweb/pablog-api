@@ -6,7 +6,7 @@ from pablog_api.utils.compression import CompressionType
 import pydantic
 
 
-class StorageType(StrEnum):
+class CacheStorageType(StrEnum):
     REDIS_STORAGE = "REDIS_STORAGE"
 
 
@@ -17,7 +17,7 @@ class CacheSettings(BaseAppSettings):
 
     client_name: str = "PablogAPI"
 
-    storage_type: StorageType = pydantic.Field(default=StorageType.REDIS_STORAGE)
+    storage_type: CacheStorageType = pydantic.Field(default=CacheStorageType.REDIS_STORAGE)
 
     compression_type: CompressionType = pydantic.Field(default=CompressionType.BALANCED)
 

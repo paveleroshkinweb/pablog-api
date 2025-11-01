@@ -3,6 +3,7 @@ import os
 from functools import lru_cache
 
 from pablog_api.settings.base import BaseAppSettings
+from pablog_api.settings.blob import BlobSettings
 from pablog_api.settings.cache import CacheSettings
 from pablog_api.settings.code_environment import CodeEnvironment
 from pablog_api.settings.logging import LoggingSettings
@@ -30,6 +31,7 @@ class AppSettings(BaseAppSettings):
     logging: LoggingSettings = LoggingSettings()
     sqlite: SQLiteSettings = SQLiteSettings()
     cache: CacheSettings = CacheSettings()
+    blob: BlobSettings = BlobSettings()
 
     def is_development(self) -> bool:
         return self.environment == CodeEnvironment.DEV

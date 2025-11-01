@@ -1,4 +1,5 @@
 from .app import AppSettings, get_app_settings
+from .blob import BlobSettings
 from .cache import CacheSettings
 from .code_environment import CodeEnvironment
 from .logging import LoggerLevelType, LoggingSettings
@@ -14,5 +15,6 @@ __all__ = [
     'LoggingSettings',
     'LoggerLevelType',
     'SQLiteSettings',
-    'ServiceSettings'
+    'ServiceSettings',
+    'BlobSettings'
 ]
