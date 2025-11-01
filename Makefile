@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: all start-cluster stop-cluster logs connect stop pyshell dbshell redishell migrations drop-migrations migrate rollback check-migrations schema lint lint-fix mypy init-dev-structure clean
+.PHONY: all start-cluster stop-cluster logs connect stop pyshell dbshell redishell migrations drop-migrations migrate rollback check-migrations check-lock schema lint lint-fix mypy init-dev-structure clean
 
 all:
 	# intentionally left empty to prevent accidental run of first recipe
@@ -52,6 +52,8 @@ check-migrations:
 # -------------------------------------------------
 # CI
 # -------------------------------------------------
+check-lock:
+	poetry check --lock
 
 schema:
 	set -a \
