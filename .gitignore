@@ -171,3 +171,5 @@ nohup.out
 _config/
 
 db/
+
+compose/server/.env.server
