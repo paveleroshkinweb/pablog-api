@@ -33,5 +33,6 @@ class Post(IntPrimaryKeyMixin):
 
     tags: Mapped[list[str]] = mapped_column(
         JSON,
-        nullable=True
+        nullable=False,
+        default=list
     )

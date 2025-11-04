@@ -15,7 +15,7 @@ elif [ "$COMMAND" = "stop-cluster" ]; then
     exit 0
 
 elif [ "$COMMAND" = "dbshell" ]; then
-    sqlite3 ../../db/pablog.db
+    sqlite3 ./db/pablog.db
     exit 0
 fi
 

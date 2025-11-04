@@ -2,7 +2,7 @@ from datetime import datetime
 
 from pablog_api.database.models import IntPrimaryKeyMixin
 
-from sqlalchemy import Integer, String, text
+from sqlalchemy import JSON, Integer, String, text
 from sqlalchemy.orm import Mapped, mapped_column
 
 
@@ -29,4 +29,10 @@ class User(IntPrimaryKeyMixin):
     created_at: Mapped[datetime] = mapped_column(
         server_default=text("CURRENT_TIMESTAMP"),
         nullable=False
+    )
+
+    roles: Mapped[list[int]] = mapped_column(
+        JSON,
+        nullable=False,
+        default=list
     )
