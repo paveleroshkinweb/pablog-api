@@ -6,7 +6,7 @@ from pablog_api.constant import request_id_ctx_var
 from pablog_api.settings import SQLiteSettings
 from pablog_api.utils import async_retry
 
-from sqlalchemy import text
+from sqlalchemy import event, text
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
@@ -36,10 +36,19 @@ async def init_database(db_settings: SQLiteSettings):
         db_settings.dsn,
         echo=False,
         future=True,
+        pool_pre_ping=True,
     )
 
     session_factory = async_sessionmaker(bind=engine, expire_on_commit=False, autoflush=False)
     scoped_session = async_scoped_session(session_factory, scopefunc=bind_session_to_request_id)
+
+    def set_pragmas(dbapi_connection, connection_record):
+        cursor = dbapi_connection.cursor()
+        cursor.execute("PRAGMA journal_mode=WAL;")
+        cursor.execute(f"PRAGMA busy_timeout={db_settings.busy_timeout};")
+        cursor.close()
+
+    event.listen(engine.sync_engine, "connect", set_pragmas)
 
     await ping()
 
@@ -69,4 +78,3 @@ async def close_database():
         await engine.dispose()
     except Exception:
         pass
-
