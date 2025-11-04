@@ -1,10 +1,9 @@
-import logging
 import uuid
 
 from collections.abc import AsyncGenerator
 
 from pablog_api.constant import request_id_ctx_var
-from pablog_api.settings import LoggerLevelType, SQLiteSettings
+from pablog_api.settings import SQLiteSettings
 from pablog_api.utils import async_retry
 
 from sqlalchemy import text
@@ -25,13 +24,10 @@ scoped_session: None | async_scoped_session = None
 
 def bind_session_to_request_id():
     request_id = request_id_ctx_var.get()
-    # In shell environment
-    if not request_id:
-        request_id = uuid.uuid4()
-    return request_id
+    return request_id or str(uuid.uuid4())
 
 
-async def init_database(db_settings: SQLiteSettings, debug: bool = False):
+async def init_database(db_settings: SQLiteSettings):
     global engine
     global session_factory
     global scoped_session
@@ -42,11 +38,7 @@ async def init_database(db_settings: SQLiteSettings, debug: bool = False):
         future=True,
     )
 
-    # Hack to overwrite default echo handler
-    if debug:
-        logging.getLogger("sqlalchemy.engine").setLevel(LoggerLevelType.DEBUG)
-
-    session_factory = async_sessionmaker(bind=engine, expire_on_commit=False, autoflush=True)
+    session_factory = async_sessionmaker(bind=engine, expire_on_commit=False, autoflush=False)
     scoped_session = async_scoped_session(session_factory, scopefunc=bind_session_to_request_id)
 
     await ping()

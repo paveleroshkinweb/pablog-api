@@ -14,7 +14,7 @@ from pablog_api.settings import get_app_settings
 
 
 settings = get_app_settings()
-asyncio.run(init_database(settings.sqlite, debug=True))
+asyncio.run(init_database(settings.sqlite))
 asyncio.run(init_redis_cluster(settings.cache))
 
 from pablog_api.database.connection import session_factory
