@@ -7,6 +7,7 @@ from pablog_api.settings import CodeEnvironment
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from starlette.types import ASGIApp
+from structlog.contextvars import bind_contextvars
 
 
 class AddRequestIDMiddleware(BaseHTTPMiddleware):
@@ -28,6 +29,7 @@ class AddRequestIDMiddleware(BaseHTTPMiddleware):
             request_id = str(uuid.uuid4())
 
         request_id_ctx_var.set(request_id)
+        bind_contextvars(request_id=request_id)
 
         response = await call_next(request)
 

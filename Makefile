@@ -77,7 +77,6 @@ init-dev-structure:
 	chmod -R +x bin
 	mkdir -p pid
 	mkdir -p logs
-	mkdir -p logs/postgresql
 	mkdir -p logs/cache
 	touch logs/pablog.logs
 
