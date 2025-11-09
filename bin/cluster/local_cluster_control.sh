@@ -7,7 +7,17 @@ set -o nounset
 COMMAND=$1
 
 if [ "$COMMAND" = "start-cluster" ]; then
-    docker-compose -f ./compose/docker-compose.server.yaml up --build
+    TMP_ENV="/tmp/.temp.env"
+    {
+      rsa_private_key=$(cat ./compose/server/private_jwt.pem | base64 | tr -d '\n')
+      rsa_public_key=$(cat ./compose/server/public_jwt.pem | base64 | tr -d '\n')
+      echo "oauth_rsa_private_key=$rsa_private_key"
+      echo "oauth_rsa_public_key=$rsa_public_key"
+    } > "$TMP_ENV"
+    sync "$TMP_ENV"
+  
+    docker-compose --env-file "$TMP_ENV" -f ./compose/docker-compose.server.yaml up --build
+    rm -f $TMP_ENV
     exit 0
 
 elif [ "$COMMAND" = "stop-cluster" ]; then
@@ -31,10 +41,6 @@ do
   sleep 4
 done
 
-set -a \
-		&& source ./compose/server/.env.server \
-		&& export cache_host=127.0.0.1 \
-    && export sqlite_url=sqlite+aiosqlite:///./db/pablog.db
 
 if [ "$COMMAND" = "logs" ]; then
     docker-compose -f ./compose/docker-compose.server.yaml logs --follow
@@ -48,7 +54,7 @@ elif [ "$COMMAND" = "stop" ]; then
   docker-compose -f ./compose/docker-compose.server.yaml stop $SERVICE_NAME
 
 elif [ "$COMMAND" = "pyshell" ]; then
-    poetry run ipython -i ./bin/utils/ipython_helper.py
+    docker exec -it pablog-api ipython -i /opt/pablog-service/ipython_helper.py
 
 elif [ "$COMMAND" = "redishell" ]; then
     docker exec -it pablog-cache redis-cli

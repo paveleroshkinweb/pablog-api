@@ -1,5 +1,5 @@
 ARG PYTHON_VERSION=3.11-slim
-ARG APP_PATH=/opt/pablog-api
+ARG APP_PATH=/opt/pablog-service
 ARG USER=pablog
 ARG GROUP=pablog
 

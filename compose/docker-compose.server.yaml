@@ -34,8 +34,12 @@ services:
     restart: unless-stopped
     env_file:
       - ./server/.env.server
+    environment:
+      - oauth_rsa_private_key=${oauth_rsa_private_key}
+      - oauth_rsa_public_key=${oauth_rsa_public_key}
     volumes:
-      - ../logs/pablog.logs:/opt/pablog-api/logs/pablog.logs
+      - ../logs/pablog.logs:/opt/pablog-service/logs/pablog.logs
+      - ../bin/utils/ipython_helper.py:/opt/pablog-service/ipython_helper.py
       - ../db/:/var/db/
       - app_runtime:/var/run/pablog-service/
     networks:

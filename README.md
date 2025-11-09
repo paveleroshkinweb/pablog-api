@@ -80,3 +80,13 @@ Each node is a dedicated Linux virtual machine. It consists of the following par
    * supervise Uvicorn workers instances (spot/restart new instances)
 3) **Uvicorn worker**
    * handle application business logic
+
+
+### JWT Secrets
+In order to generate RSA keys run:
+
+```openssl genpkey -algorithm RSA -out private_jwt.pem -pkeyopt rsa_keygen_bits:2048```
+
+```openssl rsa -pubout -in private_jwt.pem -out public_jwt.pem```
+
+And put them inside compose/server for local development.

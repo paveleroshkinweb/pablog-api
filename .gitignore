@@ -165,6 +165,7 @@ pid/
 logs/
 
 .DS_Store
+.temp.env
 
 nohup.out
 
@@ -173,3 +174,5 @@ _config/
 db/
 
 compose/server/.env.server
+compose/server/private_jwt.pem
+compose/server/public_jwt.pem
