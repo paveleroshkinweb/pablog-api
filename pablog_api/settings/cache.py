@@ -25,6 +25,8 @@ class CacheSettings(BaseAppSettings):
 
     port: int = pydantic.Field(default=6379)
 
+    max_connections: int = pydantic.Field(default=1)
+
     @property
     def dsn(self):
         return str(

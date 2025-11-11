@@ -20,7 +20,7 @@ async def init_redis_cluster(settings: CacheSettings):
         decode_responses=False,
         retry_on_error=[BusyLoadingError, ConnectionError, TimeoutError],
         retry=Retry(ExponentialBackoff(), 3),
-        single_connection_client=True,
+        max_connections=settings.max_connections,
         health_check_interval=10,
         socket_connect_timeout=6,
         client_name=settings.client_name,
