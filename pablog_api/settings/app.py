@@ -35,6 +35,7 @@ class AppSettings(BaseAppSettings):
     blob: BlobSettings = BlobSettings()
     oauth: OAuthSettings = OAuthSettings()
 
+    @property
     def is_development(self) -> bool:
         return self.environment == CodeEnvironment.DEV
 

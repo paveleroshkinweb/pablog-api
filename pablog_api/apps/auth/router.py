@@ -12,16 +12,21 @@ from pablog_api.exception.http import BadGatewayException, BadRequestException
 from pablog_api.settings.app import get_app_settings
 
 import httpx
+import jwt
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Response
 from fastapi.responses import RedirectResponse
 
 
 settings = get_app_settings()
+oauth = settings.oauth
 
-GITHUB_CLIENT_ID = settings.oauth.github_client_id
-GITHUB_CALLBACK = settings.oauth.github_redirect_uri
-GITHUB_CLIENT_SECRET = settings.oauth.github_client_secret
+HALF_AN_HOUR = 1800
+MONTH = 30 * 24 * 3600
+
+GITHUB_CLIENT_ID = oauth.github_client_id
+GITHUB_CALLBACK = oauth.github_redirect_uri
+GITHUB_CLIENT_SECRET = oauth.github_client_secret
 GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize'
 GITHUB_TOKEN_URL = 'https://github.com/login/oauth/access_token'
 GITHUB_USER_API = 'https://api.github.com/user'
@@ -30,7 +35,7 @@ GITHUB_BASE_REDIRECT_URL = (
         f"&redirect_uri={GITHUB_CALLBACK}"
 )
 
-AUTH_ENCODED_PRIVATE_KEY = settings.oauth.private_key.encode()
+AUTH_ENCODED_PRIVATE_KEY = oauth.private_key.encode()
 
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -51,8 +56,8 @@ def login() -> RedirectResponse:
     path="/callback",
     summary="Handles auth callback from github"
 )
-async def callback(state: str | None = None, code: str | None = None,
-                   user_service: UserService = Depends(get_user_service)):
+async def callback(response: Response, state: str | None = None, code: str | None = None,
+                   user_service: UserService = Depends(get_user_service)) -> Response:
     if not state or not code:
         raise BadRequestException
 
@@ -107,4 +112,37 @@ async def callback(state: str | None = None, code: str | None = None,
                 roles=[Role.READER]
             ))
         except AuthUserAlreadyExistException:
-            pass
+            user = await user_service.find_by_github_id(github_user_id)
+
+    assert user is not None
+
+    access_payload = {
+        'sub': user.id,
+        'username': user.username,
+        'roles': user.roles,
+    }
+    refresh_payload = {
+        'sub': user.id,
+        'type': 'refresh',
+    }
+
+    access_token = jwt.encode(access_payload, AUTH_ENCODED_PRIVATE_KEY, algorithm=oauth.jwt_algorithm.value)
+    refresh_token = jwt.encode(refresh_payload, AUTH_ENCODED_PRIVATE_KEY, algorithm=oauth.jwt_algorithm.value)
+    response.set_cookie(
+        key='access_token',
+        value=access_token,
+        httponly=True,
+        secure=(not settings.is_development),
+        samesite='lax',
+        max_age=HALF_AN_HOUR
+    )
+    response.set_cookie(
+        key='refresh_token',
+        value=refresh_token,
+        httponly=True,
+        secure=(not settings.is_development),
+        samesite='lax',
+        max_age=MONTH
+    )
+    response.status_code = HTTPStatus.OK
+    return response

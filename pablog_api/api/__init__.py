@@ -61,10 +61,8 @@ sys.excepthook = handle_uncaught_exception
 
 logger = structlog.get_logger(__name__)
 
-is_development = settings.is_development()
-
-DOCS_URL = "/docs/openapi" if is_development else None
-OPENAPI_URL = "/docs/openapi.json" if is_development else None
+DOCS_URL = "/docs/openapi" if settings.is_development else None
+OPENAPI_URL = "/docs/openapi.json" if settings.is_development else None
 
 
 @asynccontextmanager
