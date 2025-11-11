@@ -1,4 +1,5 @@
 import asyncio
+
 from concurrent.futures import ThreadPoolExecutor
 
 from pablog_api.settings.app import get_app_settings

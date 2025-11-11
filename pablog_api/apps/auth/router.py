@@ -4,6 +4,9 @@ import secrets
 
 from http import HTTPStatus
 
+from pablog_api.apps.auth.database.models import User
+from pablog_api.apps.auth.exception import AuthUserAlreadyExistException
+from pablog_api.apps.auth.role import Role
 from pablog_api.apps.auth.service import UserService, get_user_service
 from pablog_api.exception.http import BadGatewayException, BadRequestException
 from pablog_api.settings.app import get_app_settings
@@ -95,3 +98,13 @@ async def callback(state: str | None = None, code: str | None = None,
         raise BadGatewayException
 
     user = await user_service.find_by_github_id(github_user_id)
+    if not user:
+        try:
+            user = await user_service.save_user(User(
+                github_id=github_user_id,
+                username=user_json['login'],
+                email="",
+                roles=[Role.READER]
+            ))
+        except AuthUserAlreadyExistException:
+            pass

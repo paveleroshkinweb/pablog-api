@@ -27,7 +27,7 @@ def sync_stats(metric_subtype: str):
 
 
 @asynccontextmanager
-def async_stats(metric_subtype: str):
+async def async_stats(metric_subtype: str):
     from pablog_api.settings import get_app_settings
 
     if not get_app_settings().enable_stats:
