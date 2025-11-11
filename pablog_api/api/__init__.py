@@ -1,12 +1,13 @@
+import logging
+import sys
 
 from contextlib import asynccontextmanager
 from http import HTTPStatus
 
 from pablog_api.api.v1 import router as v1_router
 from pablog_api.constant import REQUEST_ID_HEADER, request_id_ctx_var
-from pablog_api.database import close_database, init_database
+from pablog_api.database.connection import close_database, init_database
 from pablog_api.exception import PablogException, PablogHttpException
-from pablog_api.logging_utils.setup_logger import configure_logger
 from pablog_api.memory_storage import close_redis_cluster, init_redis_cluster
 from pablog_api.middleware import AddRequestIDMiddleware
 from pablog_api.schema.error import ErrorResponse
@@ -19,7 +20,44 @@ from fastapi.responses import ORJSONResponse
 
 
 settings = get_app_settings()
-configure_logger(settings)
+
+logging.config.dictConfig(settings.logging.get_config(settings.environment))
+structlog.configure_once(
+    processors=[
+        structlog.contextvars.merge_contextvars,
+        structlog.stdlib.filter_by_level,
+        structlog.processors.TimeStamper(fmt="iso"),
+        structlog.stdlib.add_logger_name,
+        structlog.stdlib.add_log_level,
+        structlog.stdlib.PositionalArgumentsFormatter(),
+        structlog.processors.StackInfoRenderer(),
+        structlog.processors.format_exc_info,
+        structlog.processors.UnicodeDecoder(),
+        structlog.stdlib.ProcessorFormatter.wrap_for_formatter
+    ],
+    logger_factory=structlog.stdlib.LoggerFactory(),
+    wrapper_class=structlog.stdlib.BoundLogger,
+    cache_logger_on_first_use=True
+)
+
+logger = structlog.get_logger("pablog_api.unhandled")
+
+def handle_uncaught_exception(exc_type, exc_value, exc_traceback):
+    """
+    Log any uncaught exception instead of letting it be printed by Python
+    (but leave KeyboardInterrupt untouched to allow users to Ctrl+C to stop)
+    See https://stackoverflow.com/a/16993115/3641865
+    """
+    if issubclass(exc_type, KeyboardInterrupt):
+        sys.__excepthook__(exc_type, exc_value, exc_traceback)
+        return
+
+    logger.exception(
+        "Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback)
+    )
+
+sys.excepthook = handle_uncaught_exception
+
 
 logger = structlog.get_logger(__name__)
 

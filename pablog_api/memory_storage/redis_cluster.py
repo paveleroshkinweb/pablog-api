@@ -22,7 +22,8 @@ async def init_redis_cluster(settings: CacheSettings):
         retry=Retry(ExponentialBackoff(), 3),
         single_connection_client=True,
         health_check_interval=10,
-        client_name=settings.client_name
+        socket_connect_timeout=6,
+        client_name=settings.client_name,
     )
 
     await redis_cluster.ping()

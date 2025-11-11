@@ -48,3 +48,8 @@ class UnprocessableEntity(PablogHttpException):
 class DuplicateValueException(PablogHttpException):
     status_code: int = HTTPStatus.UNPROCESSABLE_ENTITY
     detail: str = HTTPStatus.UNPROCESSABLE_ENTITY.description
+
+
+class BadGatewayException(PablogHttpException):
+    status_code: int = HTTPStatus.BAD_GATEWAY
+    detail: str = HTTPStatus.BAD_GATEWAY.description

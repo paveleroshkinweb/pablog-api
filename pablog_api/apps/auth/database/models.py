@@ -1,12 +1,10 @@
-from datetime import datetime
+from pablog_api.database.models import IntPrimaryKeyMixin, SoftDeleteModelType, TimestampMixin
 
-from pablog_api.database.models import IntPrimaryKeyMixin
-
-from sqlalchemy import JSON, Integer, String, text
+from sqlalchemy import JSON, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 
-class User(IntPrimaryKeyMixin):
+class User(IntPrimaryKeyMixin, TimestampMixin, SoftDeleteModelType):
 
     __tablename__ = "users"
 
@@ -23,11 +21,6 @@ class User(IntPrimaryKeyMixin):
 
     email: Mapped[str] = mapped_column(
         String,
-        nullable=False
-    )
-
-    created_at: Mapped[datetime] = mapped_column(
-        server_default=text("CURRENT_TIMESTAMP"),
         nullable=False
     )
 

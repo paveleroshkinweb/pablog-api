@@ -33,22 +33,26 @@ class TimestampMixin:
 
     created_at: Mapped[datetime] = mapped_column(
         default=func.now(),
-        server_default=text("current_timestamp(0)")
+        server_default=text("CURRENT_TIMESTAMP"),
+        nullable=False
     )
 
     updated_at: Mapped[datetime] = mapped_column(
         default=func.now(),
+        server_default=text("CURRENT_TIMESTAMP"),
         onupdate=func.now(),
-        server_default=text("current_timestamp(0)")
+        nullable=False
     )
-
 
 class SoftDeleteMixin:
     __abstract__ = True
 
     deleted_at: Mapped[datetime] = mapped_column(nullable=True)
 
-    is_deleted: Mapped[bool] = mapped_column(default=False)
+    is_deleted: Mapped[bool] = mapped_column(
+        default=False,
+        nullable=False
+    )
 
 
 class SoftDeleteModelType(PablogBase[PrimaryKeyType], SoftDeleteMixin):

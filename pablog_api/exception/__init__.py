@@ -1,6 +1,6 @@
 from .base import PablogException
-from .blob import BlobException, DeleteBlobException
 from .http import (
+    BadGatewayException,
     BadRequestException,
     DuplicateValueException,
     ForbiddenException,
@@ -20,6 +20,5 @@ __all__ = [
     'UnauthorizedException',
     'UnprocessableEntity',
     'DuplicateValueException',
-    'BlobException',
-    'DeleteBlobException',
+    'BadGatewayException',
 ]

@@ -27,6 +27,38 @@ elif [ "$COMMAND" = "stop-cluster" ]; then
 elif [ "$COMMAND" = "dbshell" ]; then
     sqlite3 ./db/pablog.db
     exit 0
+
+elif [ "$COMMAND" = "drop-migrations" ]; then
+    export sqlite_url=sqlite+aiosqlite:///./db/pablog.db
+    poetry run alembic stamp base && poetry run alembic downgrade base
+    exit 0
+
+elif [ "$COMMAND" = "migrations" ]; then
+    export sqlite_url=sqlite+aiosqlite:///./db/pablog.db
+    MIGRATIONS_COMMENT=$2
+    poetry run alembic revision --autogenerate -m "$MIGRATIONS_COMMENT"
+    exit 0
+
+elif [ "$COMMAND" = "migrate" ]; then
+    export sqlite_url=sqlite+aiosqlite:///./db/pablog.db
+    if [ "$#" -ne 2 ]; then
+      poetry run alembic upgrade head
+    else
+      REVISION=$2
+      poetry run alembic upgrade $REVISION
+    fi
+    exit 0
+
+elif [ "$COMMAND" = "check-migrations" ]; then
+    export sqlite_url=sqlite+aiosqlite:///./db/pablog.db
+    poetry run alembic check
+    exit 0
+
+elif [ "$COMMAND" = "rollback" ]; then
+    export sqlite_url=sqlite+aiosqlite:///./db/pablog.db
+    poetry run alembic downgrade -1
+    exit 0
+
 fi
 
 
@@ -58,26 +90,5 @@ elif [ "$COMMAND" = "pyshell" ]; then
 
 elif [ "$COMMAND" = "redishell" ]; then
     docker exec -it pablog-cache redis-cli
-
-elif [ "$COMMAND" = "drop-migrations" ]; then
-    poetry run alembic stamp base && poetry run alembic downgrade base
-
-elif [ "$COMMAND" = "migrations" ]; then
-    MIGRATIONS_COMMENT=$2
-    poetry run alembic revision --autogenerate -m "$MIGRATIONS_COMMENT"
-
-elif [ "$COMMAND" = "migrate" ]; then
-    if [ "$#" -ne 2 ]; then
-      poetry run alembic upgrade head
-    else
-      REVISION=$2
-      poetry run alembic upgrade $REVISION
-    fi
-
-elif [ "$COMMAND" = "check-migrations" ]; then
-    poetry run alembic check
-
-elif [ "$COMMAND" = "rollback" ]; then
-    poetry run alembic downgrade -1
 
 fi

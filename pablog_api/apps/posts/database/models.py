@@ -1,12 +1,10 @@
-from datetime import datetime
-
-from pablog_api.database.models import IntPrimaryKeyMixin
+from pablog_api.database.models import IntPrimaryKeyMixin, SoftDeleteMixin, TimestampMixin
 
 from sqlalchemy import JSON, Integer, LargeBinary, String, text
 from sqlalchemy.orm import Mapped, mapped_column
 
 
-class Post(IntPrimaryKeyMixin):
+class Post(IntPrimaryKeyMixin, SoftDeleteMixin, TimestampMixin):
 
     __tablename__ = "posts"
 
@@ -23,11 +21,6 @@ class Post(IntPrimaryKeyMixin):
     mins_to_read: Mapped[int] = mapped_column(
         Integer,
         server_default=text("0"),
-        nullable=False
-    )
-
-    created_at: Mapped[datetime] = mapped_column(
-        server_default=text("CURRENT_TIMESTAMP"),
         nullable=False
     )
 
