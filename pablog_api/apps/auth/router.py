@@ -132,7 +132,7 @@ async def callback(response: Response, state: str | None = None, code: str | Non
         key='access_token',
         value=access_token,
         httponly=True,
-        secure=(not settings.is_development),
+        secure=(settings.is_production),
         samesite='lax',
         max_age=HALF_AN_HOUR
     )
@@ -140,7 +140,7 @@ async def callback(response: Response, state: str | None = None, code: str | Non
         key='refresh_token',
         value=refresh_token,
         httponly=True,
-        secure=(not settings.is_development),
+        secure=(settings.is_production),
         samesite='lax',
         max_age=MONTH
     )

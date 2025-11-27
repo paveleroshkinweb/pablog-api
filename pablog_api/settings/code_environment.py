@@ -5,3 +5,4 @@ from enum import Enum, unique
 class CodeEnvironment(str, Enum):
     DEV = "DEV"
     PROD = "PROD"
+    CI = "CI"

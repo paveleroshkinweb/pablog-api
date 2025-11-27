@@ -36,8 +36,8 @@ class AppSettings(BaseAppSettings):
     oauth: OAuthSettings = OAuthSettings()
 
     @property
-    def is_development(self) -> bool:
-        return self.environment == CodeEnvironment.DEV
+    def is_production(self) -> bool:
+        return self.environment == CodeEnvironment.PROD
 
 
 @lru_cache(maxsize=1)
